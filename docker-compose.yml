@@ -1,0 +1,99 @@
+services:
+    nginx:
+        image: "nginx:stable-alpine"
+        volumes:
+            - ./Docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+            - ./:/var/www/laravel
+        ports:
+            - "7878:80"
+        container_name: ayar_nginx
+        networks:
+            - ayar_network
+        depends_on:
+            -   php
+            -   redis
+            -   ayar_db
+            -   npm
+            -   rabbitmq
+    ayar_db: #менять именя каждый раз иначе не то запускает
+        image: mysql:8.0
+        volumes:
+            - ayar_database:/var/lib/mysql
+            - ./:/var/www/laravel
+        environment:
+            MYSQL_DATABASE: "${DB_DATABASE:-ayar_laravel_db}"
+            MYSQL_USER: laravel
+            MYSQL_PASSWORD: ayarpassword
+            MYSQL_ROOT_PASSWORD: ayarpassword
+        ports:
+            - "4406:3306"
+        networks:
+            - ayar_network
+
+    php:
+        build:
+            dockerfile: ./Docker/php/php.Dockerfile
+        volumes:
+            - ./:/var/www/laravel
+        networks:
+            - ayar_network
+    artisan:
+        volumes:
+            - ./:/var/www/laravel
+        build:
+            dockerfile: ./Docker/php/php.Dockerfile
+        entrypoint: [ "php", "/var/www/laravel/artisan" ]
+        networks:
+            - ayar_network #даже ему надо писать network, я с этим 100 лет провозился
+        user: "${UID:-1000}:${GID:-1000}" # 33:33 - для продакшена
+    #пользователь который щас или 1000
+    rabbitmq:
+        image: rabbitmq:3-management
+        container_name: rabbitmq
+        ports:
+            - "5672:5672"    # основной порт для клиентов (AMQP)
+            - "15672:15672"  # порт для веб-интерфейса управления
+        environment:
+            RABBITMQ_DEFAULT_USER: guest
+            RABBITMQ_DEFAULT_PASS: guest
+        volumes:
+            - rabbitmq_data:/var/lib/rabbitmq
+    redis:
+        image: redis:latest
+        volumes:
+            -   type: volume
+                source: redis_db
+                target: /data
+            - ./:/var/www/laravel
+        ports:
+            - '6379:6379'
+        networks:
+            - ayar_network
+
+    npm:
+        container_name: ayar_npm
+        ports:
+            - '${VITE_PORT:-5173}:5173'
+        build:
+            dockerfile: ./Docker/node/node.Dockerfile
+        networks:
+            - ayar_network
+        volumes:
+            - ./:/var/www/laravel
+    composer:
+        build:
+            dockerfile: ./Docker/php/composer.Dockerfile
+        volumes:
+            - ./:/var/www/laravel
+        networks:
+            - ayar_network
+networks:
+    ayar_network:
+        driver: bridge
+volumes:
+    ayar_database:
+        driver: local
+    redis_db:
+        driver: local
+    rabbitmq_data:
+

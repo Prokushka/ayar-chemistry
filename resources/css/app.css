@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Jost:ital,wght@0,100..900;1,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lobster&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+#scrollbars { scrollbar-width: none; }
+#scrollbars { -ms-overflow-style: none; }
+
+.bg-text{
+  @apply from-yellow-200 via-yellow-100 to-yellow-50 bg-clip-text text-transparent
+}
+
+.button-yellow{
+    @apply hover:text-yellow-500 bg-green-950/70 font-bold hover:ring-white p-8 shadow-md hover:shadow-white shadow-yellow-500 ring-2 ring-yellow-500 rounded-full  transition ease-out duration-300
+}
+
+.swiper-pagination-bullet-active{
+    @apply bg-yellow-500
+}
+
+.bg-green{
+    @apply bg-gradient-to-br from-green-950/95 via-green-900 to-green-950/90
+}

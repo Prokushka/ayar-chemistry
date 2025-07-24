@@ -1,0 +1,74 @@
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Docker/production/Dockerfile
+      target: php
+    environment:
+      APP_ENV: production
+      APP_KEY: ${APP_KEY}
+
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "ls -l /var/www/laravel/public/build && test -f /var/www/laravel/public/build/manifest.json"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+    depends_on:
+      ayar_db:
+       condition: service_healthy
+      redis:
+       condition: service_started
+    networks:
+      - app-network
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./Docker/production/Dockerfile
+      target: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    restart: unless-stopped
+    depends_on:
+      app:
+       condition: service_healthy
+    networks:
+      - app-network
+
+  ayar_db:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: ayar_laravel_db
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: ayarpassword
+      MYSQL_ROOT_PASSWORD: ayarpassword
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-ularavel", "-payarpassword" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    restart: unless-stopped
+    image: redis:alpine
+    networks:
+      - app-network
+
+
+volumes:
+  db_data:
+networks:
+  app-network:

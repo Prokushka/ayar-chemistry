@@ -1,0 +1,150 @@
+name: Laravel CI
+
+on:
+  push:
+    branches: [master, slave]
+  pull_request:
+    branches: [master, slave]
+
+
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Stop and remove containers and volumes
+        if: always()
+        run: docker compose down -v
+      - name: Show current directory
+        run: pwd
+
+      - name: List files in current directory
+        run: ls -la
+
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
+
+      - name: Build and start containers
+        run: docker compose -f production-docker-compose.yml  up -d
+
+      - name: Wait for MySQL to be ready
+        run: |
+          until docker compose exec -T ayar_db mysqladmin ping -u laravel -payarpassword --silent; do
+            echo "Waiting for database connection..."
+            sleep 2
+          done
+
+      - name: Set permissions
+        run: |
+          docker compose -f production-docker-compose.yml exec \
+            -e APP_KEY=base64:${{ secrets.APP_KEY }} \
+            -e DB_CONNECTION=sqlite \
+            -e DB_DATABASE=database/database.sqlite \
+            -e CACHE_DRIVER=array \
+            -e SESSION_DRIVER=array \
+            -e SESSION_DOMAIN=null \
+            -e SESSION_SECURE_COOKIE=false \
+            -e QUEUE_CONNECTION=sync \
+            app chmod -R 777 storage bootstrap/cache
+
+
+
+      - name: Composer install
+        run: |
+          docker compose -f production-docker-compose.yml exec \
+            -e APP_KEY=base64:${{ secrets.APP_KEY }} \
+            -e DB_CONNECTION=sqlite \
+            -e DB_DATABASE=database/database.sqlite \
+            -e CACHE_DRIVER=array \
+            -e SESSION_DRIVER=array \
+            -e SESSION_DOMAIN=null \
+            -e SESSION_SECURE_COOKIE=false \
+            -e QUEUE_CONNECTION=sync \
+            app composer install
+
+      - name: Composer autoload
+        run: |
+          docker compose -f production-docker-compose.yml exec \
+            -e APP_KEY=base64:${{ secrets.APP_KEY }} \
+            -e DB_CONNECTION=sqlite \
+            -e DB_DATABASE=database/database.sqlite \
+            -e CACHE_DRIVER=array \
+            -e SESSION_DRIVER=array \
+            -e SESSION_DOMAIN=null \
+            -e SESSION_SECURE_COOKIE=false \
+            -e QUEUE_CONNECTION=sync \
+            app composer dump-autoload
+
+      - name: check env
+        run: |
+          docker compose -f production-docker-compose.yml exec \
+            -e APP_KEY=base64:${{ secrets.APP_KEY }} \
+            -e DB_CONNECTION=sqlite \
+            -e DB_DATABASE=database/database.sqlite \
+            -e CACHE_DRIVER=array \
+            -e SESSION_DRIVER=array \
+            -e SESSION_DOMAIN=null \
+            -e SESSION_SECURE_COOKIE=false \
+            -e QUEUE_CONNECTION=sync \
+            app cat .env
+
+
+
+#      - name: try connect
+#        run: |
+#          docker compose -f production-docker-compose.yml exec --user root app apt-get update && apt-get install -y mysql-client
+#      - name: connect
+#        run: |
+#          docker compose -f production-docker-compose.yml exec --user root app mysql -h ayar_db -u laravel -payarpassword ayar_laravel_db -e "SELECT 1"
+
+
+      - name: Prepare SQLite file
+        run: touch database/database.sqlite
+
+      - name: Optimize App
+        run: |
+          docker compose -f production-docker-compose.yml exec \
+            -e APP_KEY=base64:${{ secrets.APP_KEY }} \
+            -e DB_CONNECTION=sqlite \
+            -e DB_DATABASE=database/database.sqlite \
+            -e CACHE_DRIVER=array \
+            -e SESSION_DRIVER=array \
+            -e SESSION_DOMAIN=null \
+            -e SESSION_SECURE_COOKIE=false \
+            -e QUEUE_CONNECTION=sync \
+            app php artisan optimize:clear
+
+      - name: Run Laravel migrations
+        run: |
+          docker compose -f production-docker-compose.yml exec \
+            -e APP_KEY=base64:${{ secrets.APP_KEY }} \
+            -e DB_CONNECTION=sqlite \
+            -e DB_DATABASE=database/database.sqlite \
+            -e CACHE_DRIVER=array \
+            -e SESSION_DRIVER=array \
+            -e SESSION_DOMAIN=null \
+            -e SESSION_SECURE_COOKIE=false \
+            -e QUEUE_CONNECTION=sync \
+            app php artisan migrate --force
+
+      - name: check logs
+        run: docker compose -f production-docker-compose.yml logs app
+
+      #- name: Run Laravel tests
+      #  run: |
+     #    docker compose -f production-docker-compose.yml exec \
+      #      -e APP_KEY=base64:${{ secrets.APP_KEY }} \
+      #      -e DB_CONNECTION=sqlite \
+      #      -e DB_DATABASE=database/database.sqlite \
+      #      -e CACHE_DRIVER=array \
+      #      -e SESSION_DRIVER=array \
+      #      -e SESSION_DOMAIN=null \
+      #      -e SESSION_SECURE_COOKIE=false \
+      #      -e QUEUE_CONNECTION=sync \
+      #      app php artisan test
