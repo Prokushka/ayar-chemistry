@@ -9,7 +9,7 @@ services:
       APP_ENV: production
       APP_KEY: ${APP_KEY}
     volumes:
-      - laravel-storage-production:/var/www/storage
+      - laravel-storage-production:/var/www/laravel/storage
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "ls -l /var/www/laravel/public/build && test -f /var/www/laravel/public/build/manifest.json"]
@@ -36,7 +36,7 @@ services:
       - "443:443"
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro
-      - laravel-storage-production:/var/www/storage:ro
+      - laravel-storage-production:/var/www/laravel/storage:ro
     restart: unless-stopped
     depends_on:
       app:
@@ -69,7 +69,11 @@ services:
     image: redis:alpine
     networks:
       - app-network
-
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
 volumes:
   db_data:

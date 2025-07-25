@@ -62,7 +62,6 @@ function mobileMenu(event){
                 На главную
             </Link>
             <Link
-                v-if="$page.props.auth.user"
                 :href="route('product.index')"
                 class="rounded-md px-3 py-2  "
             >

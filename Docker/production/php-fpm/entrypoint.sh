@@ -6,14 +6,14 @@ set -e
 # If the storage directory is empty, copy the initial contents
 # and set the correct permissions.
 # -----------------------------------------------------------
-if [ ! "$(ls -A /var/www/storage)" ]; then
+if [ ! "$(ls -A /var/www/laravel/storage)" ]; then
   echo "Initializing storage directory..."
-  cp -R /var/www/storage-init/. /var/www/storage
-  chown -R www-data:www-data /var/www/storage
+  cp -R /var/www/laravel/storage-init/. /var/www/laravel/storage
+  chown -R www-data:www-data /var/www/laravel/storage
 fi
 
 # Remove storage-init directory
-rm -rf /var/www/storage-init
+rm -rf /var/www/laravel/storage-init
 
 # Run Laravel migrations
 # -----------------------------------------------------------

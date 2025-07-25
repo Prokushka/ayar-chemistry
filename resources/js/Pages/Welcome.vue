@@ -330,7 +330,7 @@ onMounted(() => {
                 </div>
             </div>
 
-            <div>
+            <div v-if="products.length > 3" >
                 <div class="container text-white font-lobster xs:text-[32px] xs:text-4xl place-content-center text-center md:text-5xl lg:text-7xl xs:pb-28 xs:pb-32 md:pb-48 lg:pb-52  items-center lg:text-7xl">
                     Популярные товары
                 </div>
