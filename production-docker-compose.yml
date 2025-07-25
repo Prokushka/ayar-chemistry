@@ -5,9 +5,6 @@ services:
       context: .
       dockerfile: ./Docker/production/Dockerfile
       target: php
-    environment:
-      APP_ENV: production
-      APP_KEY: ${APP_KEY}
     volumes:
       - laravel-storage-production:/var/www/laravel/storage
     restart: unless-stopped

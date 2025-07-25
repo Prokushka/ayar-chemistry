@@ -17,13 +17,16 @@ class OrderController extends Controller
     {
 
         $order = Order::query()->where('user_id', auth()->id())->first();
-        $idsToDetach = $order->products
-        ->filter(fn($product) => $product->pivot->quantity <= 0)
-        ->pluck('id')
-        ->all();
-        if ($idsToDetach) {
-            $order->products()->detach($idsToDetach);
+        if ($order){
+            $idsToDetach = $order->products
+                ->filter(fn($product) => $product->pivot->quantity <= 0)
+                ->pluck('id')
+                ->all();
+            if ($idsToDetach) {
+                $order->products()->detach($idsToDetach);
+            }
         }
+
         return Inertia::render('Order/Index', [
             'orders' => Order::query()->where('user_id', auth()->id())
                 ->where('status', '!=', 'Отменён')->get()
