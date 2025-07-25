@@ -106,7 +106,7 @@ CMD ["php-fpm"]
 
 FROM nginx:alpine AS nginx
 
-COPY ./Docker/production/nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY ./Docker/production/nginx/nginx.conf /etc/nginx/nginx.conf
 
 COPY --from=frontend /var/www/laravel/public /var/www/laravel/public
 
