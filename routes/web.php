@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -13,7 +15,14 @@ Route::get('/status', function () {
     return response('OK', 200);
 });
 
-Route::get('/', function () {
+Route::get('/', function (?Request $request) {
+    $code = $request->query('code');
+    if ($code){
+        Artisan::call('avito:token', [
+            'token' => $code,
+        ]);
+        Log::info('token placed');
+    }
     return Inertia::render('Welcome', [
         'products' => \App\Models\Product::query()->limit(4)->get()
     ]);
@@ -23,7 +32,6 @@ Route::get('/info', function () {
     Log::info('Phpinfo page visited');
     return phpinfo();
 });
-
 Route::post('/profile', [ProfileController::class, 'store'])->name('profile.store');
 
 

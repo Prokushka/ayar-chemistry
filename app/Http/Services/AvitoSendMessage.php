@@ -22,10 +22,12 @@ class AvitoSendMessage
             ->get('{+domen}/messenger/v2/accounts/{user_id}/chats',[
                 'unread_only' => 'true'
             ]);
+
         if ($response->failed()) {
             self::refreshToken();
             return;
         }
+
 
 
         $col = json_decode($response->getBody()->getContents(), true);
@@ -83,28 +85,47 @@ class AvitoSendMessage
     {
         $client = config('services.avito.client');
         $secret = config('services.avito.secret');
-        $refresh = Cache::pull('refresh_token');
+        $refresh = Cache::get('refresh_token');
         if (!$refresh) {
-            \Log::error('Avito refresh_token отсутствует');
-            return;
-        }
-        $token = Http::asForm()->withUrlParameters([
+            $token = Http::asForm()->withUrlParameters([
                 'domen' => 'https://api.avito.ru',
             ])
-            ->post('{+domen}/token',[
-                'client_id' => $client,
-                'client_secret' => $secret,
-                'grant_type' => 'refresh_token',
-                'refresh_token' => $refresh
-            ]);
-        if ($token->failed()) {
-            \Log::error('Ошибка обновления токена Avito: ' . $token->body());
-            return;
-        }
-        $json = $token->json();
+                ->post('{+domen}/token',[
+                    'client_id' => $client,
+                    'client_secret' => $secret,
+                    'grant_type' => 'authorization_code',
+                    'code' => 'DQ9rNuugSyO1no8Y1xsGQg'
 
+                ]);
+
+            if ($token->failed()) {
+                \Log::error('Ошибка обновления токена Avito через authorization_code: ' . $token->body());
+                return;
+            }
+
+
+        }
+
+        else{
+            $token = Http::asForm()->withUrlParameters([
+                'domen' => 'https://api.avito.ru',
+            ])
+                ->post('{+domen}/token',[
+                    'client_id' => $client,
+                    'client_secret' => $secret,
+                    'grant_type' => 'refresh_token',
+                    'refresh_token' => $refresh
+                ]);
+            if ($token->failed()) {
+                \Log::error('Ошибка обновления токена Avito через refresh_token: ' . $token->body());
+                return;
+            }
+        }
+
+        $json = $token->json();
+        dump(Cache::get('access_token'));
         Cache::put('access_token' , $json['access_token'], now()->addDay());
-        Cache::put('refresh_token' , $json['refresh_token'], now()->addDay()->addSeconds(20));
-        AvitoSendMessages::dispatch()->delay(now()->addSeconds(10));
+        Cache::put('refresh_token' , $json['refresh_token']);
+        AvitoSendMessages::dispatch()->delay(now()->addSeconds(3));
     }
 }

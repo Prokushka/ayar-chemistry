@@ -71,7 +71,7 @@ COPY ./Docker/production/php-fpm/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Copy the initial storage structure
-COPY ./storage /var/www/storage-init
+COPY ./storage /var/www/laravel/storage-init
 
 COPY --from=composer /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
 COPY --from=composer /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
@@ -110,7 +110,7 @@ COPY ./Docker/production/nginx/nginx.conf /etc/nginx/nginx.conf
 
 COPY --from=frontend /var/www/laravel/public /var/www/laravel/public
 
-WORKDIR /var/www/laravel
+WORKDIR /var/www/laravel/public
 
 CMD ["nginx", "-g", "daemon off;"]
 
