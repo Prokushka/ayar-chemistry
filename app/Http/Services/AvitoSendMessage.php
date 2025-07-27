@@ -36,17 +36,19 @@ class AvitoSendMessage
 
             for ($i = 0; $i < count($col['chats']); $i++){
                 $chatId = $col['chats'][$i]['id'];
+                $price = false;
                 $lastMessage = $col['chats'][$i]['last_message']['content']['text'];
                 if (mb_strtolower($lastMessage) === 'прайс'){
                     $message = 'прайс';
+                    $price = true;
                 }
                 else{
-                    $message = 'Здравствуйте 🤝 Вас оптом интересует? Какие-то вопросы есть у вас? Напишите пожалуйста нам сюда на WhatApp. Наши номера для связи
+                    $message = 'Здравствуйте. 🤝 Вас оптом интересует? Какие-то вопросы есть у вас? Напишите пожалуйста нам сюда на WhatApp. Наши номера для связи
 
         https://wa.me/79934156684
         https://wa.me/79953664423
 
-        Наш сайт - https://ayar-chemistry.ru
+        Это бот, менеджер подключится чуть позже
 
         Ecли вам необходим прайс - напишите "Прайс"
 
@@ -61,7 +63,6 @@ class AvitoSendMessage
                         'chat_id' => $chatId
                     ])
                     ->post('{+domen}/messenger/v1/accounts/{user_id}/chats/{chat_id}/read');
-
                 Http::withHeaders([
                     'Authorization' => "Bearer $token",
                 ])
@@ -76,10 +77,29 @@ class AvitoSendMessage
                         ],
                         'type' => 'text',
                     ]);
+                if ($price === false){
+                    Http::withHeaders([
+                        'Authorization' => "Bearer $token",
+                    ])
+                        ->withUrlParameters([
+                            'domen' => 'https://api.avito.ru',
+                            'user_id' => $userId,
+                            'chat_id' => $chatId
+                        ])
+                        ->post('{+domen}/messenger/v1/accounts/{user_id}/chats/{chat_id}/messages',[
+                            'message' => [
+                                'text' => "Также, вы можете более подробно ознакомиться с нашими товарами на сайте - https://ayar-chemistry.ru",
+                            ],
+                            'type' => 'text',
+                        ]);
+                }
+
             }
         }
         AvitoSendMessages::dispatch()->delay(now()->addSeconds(3));
     }
+
+
 
     private static function refreshToken()
     {
