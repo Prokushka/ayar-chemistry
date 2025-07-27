@@ -1,9 +1,10 @@
 <script setup xmlns="http://www.w3.org/1999/html">
 
-import {Link} from "@inertiajs/vue3";
+import {Link, router} from "@inertiajs/vue3";
 import {ref} from "vue";
 import {animate} from "animejs";
 import {useLayoutStore} from "@/stores/layout.js";
+import {useUserStore} from "@/stores/user.js";
 
 const layout = useLayoutStore()
 
@@ -49,6 +50,15 @@ function mobileMenu(event){
 
 
 }
+const user = useUserStore()
+const logout = () => {
+
+    router.post(route('logout'), {}, {
+        onSuccess: function (){
+            user.setUser(false)
+        }
+    });
+};
 </script>
 
 <template>
@@ -76,7 +86,7 @@ function mobileMenu(event){
                 Мои заказы
             </Link>
                 <Link
-                    :href="route('logout')"
+                    @click.prevent="logout"
                     method="post"
                     class="rounded-md px-3 py-2"
                 >

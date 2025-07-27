@@ -33,6 +33,13 @@ const submit = () => {
     },
     });
 };
+
+function passwordToggle(){
+    let pass = document.getElementById('password')
+    pass.type === 'text' ? pass.type = 'password' : pass.type = 'text'
+}
+
+
 </script>
 
 <template>
@@ -61,7 +68,7 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div class="mt-4">
+            <div class="mt-4 relative">
                 <InputLabel for="password" value="Пароль" />
 
                 <TextInput
@@ -72,7 +79,7 @@ const submit = () => {
                     required
                     autocomplete="current-password"
                 />
-
+                <div @click.prevent="passwordToggle" class="absolute right-3 text-xl text-gray-400 bottom-1.5 "><i class="ri-eye-line"></i></div>
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 

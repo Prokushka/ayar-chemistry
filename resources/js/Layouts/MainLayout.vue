@@ -1,6 +1,6 @@
 <script setup>
 
-import {Link, router, useForm} from "@inertiajs/vue3";
+import {Link, router} from "@inertiajs/vue3";
 
 import PhonePartLayout from "@/Components/PhonePartLayout.vue";
 import {useLayoutStore} from "@/stores/layout.js";
@@ -12,9 +12,10 @@ const user = useUserStore()
 
 const logout = () => {
 
-    router.visit(route('logout'), {
-        onFinish: () => user.setUser(false)
-
+    router.post(route('logout'), {}, {
+        onSuccess: function (){
+            user.setUser(false)
+        }
     });
 };
 </script>
@@ -54,7 +55,7 @@ const logout = () => {
                     Мои заказы
                 </Link>
                 <Link
-                    :href="route('logout')"
+                    @click.prevent="logout"
                     method="post"
                     class="rounded-md px-3 py-2"
                 >

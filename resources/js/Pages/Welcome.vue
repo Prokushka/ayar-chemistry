@@ -5,6 +5,7 @@ import {animate, createTimeline, onScroll} from "animejs";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import {useLayoutStore} from "@/stores/layout.js";
 import FooterComponent from "@/Components/FooterComponent.vue";
+import {useUserStore} from "@/stores/user.js";
 
 
 function animation(entries, toggle){
@@ -277,6 +278,7 @@ onMounted(() => {
 
     });
 })
+const userStore = useUserStore()
 </script>
 
 <template>
@@ -558,9 +560,9 @@ onMounted(() => {
                 </div>
             </div>
             <!-- REGISTER           -->
-            <div class="pb-8 relative z-40 flex items-center justify-center  text-white font-lobster ">
+            <div  class="pb-8 relative z-40 flex items-center justify-center  text-white font-lobster ">
 
-                <div class="flex flex-col items-center space-y-12 text-gray-800 ">
+                <div v-if="userStore.isAuth === false" class="flex flex-col items-center space-y-12 text-gray-800 ">
                     <span class="text-white xs:text-3xl w-11/12 md:text-5xl lg:text-7xl text-center font-lobster  py-10 "><span class="text-yellow-600">Зарегистрируйтесь </span> - и мы с вами свяжемся</span>
                     <div class="items-center text-white text-lobster xs:text-2xl xs:text-3xl md:text-4xl text-center flex flex-col space-y-8 text-center xs:p-8 xs:p-10 md:p-16 ">
                         <Link :href="route('register')">
