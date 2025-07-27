@@ -21,16 +21,6 @@ services:
        condition: service_healthy
     networks:
       - app-network
-  horizon:
-    build:
-      context: .
-      dockerfile: ./Docker/production/Dockerfile
-      target: php
-    container_name: laravel-horizon
-    command: php artisan horizon
-    depends_on:
-      redis:
-        condition: service_healthy
   nginx:
     build:
       context: .
