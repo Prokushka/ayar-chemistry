@@ -39,7 +39,7 @@ class AvitoSendMessage
                 $price = false;
                 $lastMessage = $col['chats'][$i]['last_message']['content']['text'];
                 if (mb_strtolower($lastMessage) === 'прайс'){
-                    $message = 'прайс';
+                    $message = 'https://drive.google.com/file/d/1_aPD5pxwKAUyJxyDejoMK5X3whbSlu54/view?usp=drive_link';
                     $price = true;
                 }
                 else{

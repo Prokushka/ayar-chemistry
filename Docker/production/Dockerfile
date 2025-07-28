@@ -59,6 +59,7 @@ RUN docker-php-ext-install pcntl
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
+    supervisor \
     libicu-dev \
     libzip-dev \
     libfcgi-bin \
@@ -71,6 +72,9 @@ RUN curl -o /usr/local/bin/php-fpm-healthcheck \
     && chmod +x /usr/local/bin/php-fpm-healthcheck
 
 # Copy the initialization script
+COPY ./Docker/production/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+COPY ./Docker/production/supervisor/horizon.conf /etc/supervisor/conf.d/horizon.conf
+
 COPY ./Docker/production/php-fpm/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
