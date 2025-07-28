@@ -22,7 +22,7 @@
         <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
         <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
         <meta name="theme-color" content="#ffffff">
-
+        <meta name="description" content="Оптовые поставки бытовой химии с гарантией качества, быстрой доставкой и выгодными ценами.">
         <link
             href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
             rel="stylesheet"
