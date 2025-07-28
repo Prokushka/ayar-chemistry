@@ -74,6 +74,7 @@ RUN curl -o /usr/local/bin/php-fpm-healthcheck \
 # Copy the initialization script
 COPY ./Docker/production/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 COPY ./Docker/production/supervisor/horizon.conf /etc/supervisor/conf.d/horizon.conf
+COPY ./Docker/production/supervisor/php-fpm.conf /etc/supervisor/conf.d/php-fpm.conf
 
 COPY ./Docker/production/php-fpm/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
