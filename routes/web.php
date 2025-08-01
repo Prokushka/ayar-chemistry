@@ -33,7 +33,7 @@ Route::get('/info', function () {
     Log::info('Phpinfo page visited');
     return phpinfo();
 });
-Route::post('/profile', [ProfileController::class, 'store'])->name('profile.store');
+
 Route::group(['middleware' => \App\Http\Middleware\BreadCrumbsMiddleware::class], function (){
     Route::group(['prefix' => 'category'], function () {
         Route::get('{category}', [\App\Http\Controllers\CategoryController::class, 'categoryProductShow'])->name('product.category.show');
@@ -41,7 +41,6 @@ Route::group(['middleware' => \App\Http\Middleware\BreadCrumbsMiddleware::class]
     Route::group(['prefix' => 'product'], function () {
         Route::get('/', [\App\Http\Controllers\ProductController::class, 'index'])->name('product.index');
         Route::get('/{product}', [\App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
-        Route::get('/category/{category}', [\App\Http\Controllers\ProductController::class, 'categoryProductShow'])->name('product.category.show');
         Route::get('/search/{query_string}', [\App\Http\Controllers\ProductController::class, 'search'])->name('product.search');
     });
     Route::group(['prefix' => 'orders'], function () {
