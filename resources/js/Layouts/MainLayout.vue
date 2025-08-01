@@ -114,23 +114,26 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
                 <div>
 
                 <template v-if="$page.props.auth.user">
-                <Link
-                    v-if="$page.props.auth.user"
-                    :href="route('order.index')"
-                    class="rounded-md px-3 py-2 "
-                >
-                    Мои заказы
-                </Link>
-                <Link
-                    @click.prevent="logout"
-                    method="post"
-                    class="rounded-md px-3 py-2"
-                >
-                    Выйти
-                </Link>
+
+                        <Link
+                            v-if="$page.props.auth.user"
+                            :href="route('order.index')"
+                            class="rounded-md px-3 py-2 "
+                        >
+                            Мои заказы
+                        </Link>
+                        <Link
+                            @click.prevent="logout"
+                            method="post"
+                            class="rounded-md px-3 py-2"
+                        >
+                            Выйти
+                        </Link>
+
+
                 </template>
                 <template v-else>
-
+                    <div class="pt-2">
                     <Link
                         :href="route('login')"
                         class="rounded-md px-3 py-2"
@@ -145,6 +148,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
                     >
                         Регистрация
                     </Link>
+                    </div>
                 </template>
                 </div>
             </nav>
