@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('sale_price', 10);
             $table->integer('quantity')->default(0);
             $table->boolean('is_active')->default(true);
+
             $table->string('slug');
             $table->timestamps();
         });

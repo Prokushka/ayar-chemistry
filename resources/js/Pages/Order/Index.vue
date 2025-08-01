@@ -14,7 +14,7 @@ const props = defineProps({
     }
 })
 
-onMounted(() => console.log(props?.orders))
+
 
 const form = useForm({
     id: 0
@@ -58,6 +58,22 @@ const swalWithBootstrapButtons = Swal.mixin({
 
 }
 
+function statusColor(status){
+    switch (status){
+        case 'Новый':
+            return 'bg-yellow-600'
+        case 'В обработке':
+            return 'bg-orange-400'
+        case 'Подтверждён':
+            return 'bg-green-700'
+        case 'Отменён':
+            return 'bg-red-600'
+    }
+}
+function orderComplete(id){
+    form.id = id
+    form.post(route('order.create', id))
+}
 </script>
 
 <template>
@@ -73,7 +89,7 @@ const swalWithBootstrapButtons = Swal.mixin({
                 <div class="overflow-x-auto rounded-lg shadow">
                     <table class="w-full bg-green-950">
                         <thead>
-                        <tr class=" text-left text-sm font-semibold ">
+                        <tr class=" text-left text-sm font-rubick font-semibold ">
                             <th class="px-4 ring-white text-center ring-2 py-3">Номер</th>
 
                             <th class="px-4 ring-white text-center ring-2 py-3">Статус</th>
@@ -85,19 +101,23 @@ const swalWithBootstrapButtons = Swal.mixin({
                         <tr v-if="orders" v-for="order in orders" class="border-b ">
                             <td class="px-4 py-3 text-center font-mono">{{order.id}}</td>
                             <td class="px-4 text-center   py-3">
-                                <span class="inline-block px-2 py-1  text-xs rounded bg-orange-500 text-white">{{ order.status }}</span>
+                                <span :class="statusColor(order.status)" class="inline-block px-2 py-1  text-xs rounded bg-orange-500 text-white">{{ order.status }}</span>
                             </td>
-                            <td class="px-4 flex justify-center py-3">
+                            <td class=" flex justify-center py-3">
 
-                                <Link v-if="order && order.id" :href="route('order.check',{id: order.id})">
-                                    <button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg hover:text-yellow-500 hover:bg-gray-200
+                                <Link v-if="order && order.status === 'Новый'" @click.prevent="orderComplete(order.id)">
+                                    <button class="bg-green-700 xs:py-1 xs:px-2 hover:bg-white hover:text-green-700  rounded-lg border border-green-800 text-lg transform duration-500 ease-out"> <i class="ri-check-line"></i>
+                                    </button>
+                                </Link>
+                                <Link v-if="order && order.id" class="mx-1" :href="route('order.check',{id: order.id})">
+                                    <button class="bg-yellow-500 xs:py-1 xs:px-2 rounded-lg border border-yellow-500 text-lg hover:text-yellow-500 hover:bg-gray-200
                          hover:border-white transform duration-500 ease-out"> <i class="ri-eye-fill"></i>
                                     </button>
                                 </Link>
 
-                                <div  @click.prevent="deleteOrder(order.id)" class="mx-3" v-if="order && order.id" >
-                                    <button class="bg-red-600 py-2 px-3 rounded-lg border hover:border-red-500 text-lg hover:text-red-500 hover:bg-gray-200
-                         border-white transform duration-500 ease-out"> <i class="ri-delete-bin-line"></i>
+                                <div  @click.prevent="deleteOrder(order.id)"  v-if="order && order.id" >
+                                    <button class="bg-red-600 xs:py-1 xs:px-2 rounded-lg border border-red-800 text-lg hover:text-red-500 hover:bg-gray-200
+                          transform duration-500 ease-out"> <i class="ri-delete-bin-line"></i>
                                     </button>
                                 </div>
                             </td>

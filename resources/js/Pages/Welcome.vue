@@ -176,9 +176,12 @@ function scrollToBottom() {
 const props = defineProps({
     products:{
         type: Object
+    },
+    breadcrumbs: {
+        type: Object
     }
 })
-
+onMounted(() => console.log(props?.breadcrumbs))
 function mapPageAnimate(){
 
 
@@ -207,24 +210,25 @@ const form = useForm({
 
 const layout = useLayoutStore()
 function animatePopular(){
-    for (let i = 1; ; i++){
-        let el = document.getElementById(`popular-${i}`)
-        let yPos = '-100px';
-        let xPos = 0;
-        if (!el){
-            break;
+
+    if (!layout.isMobile) {
+
+
+        for (let i = 1; ; i++) {
+            let el = document.getElementById(`popular-${i}`)
+            let yPos = '-100px';
+            let xPos = 0;
+            if (!el) {
+                break;
+            }
+            animate(el, {
+                translateY: [yPos, 0],
+                translateX: [xPos, 0],
+                ease: 'out',
+                duration: (i * 350) + 200,
+                autoplay: onScroll()
+            })
         }
-        if (layout.isMobile){
-             yPos = 0;
-             xPos = '-100px';
-        }
-        animate(el, {
-            translateY: [yPos, 0],
-            translateX: [xPos, 0],
-            ease: 'out',
-            duration: (i * 350) + 200,
-            autoplay: onScroll()
-        })
     }
 
 }
@@ -282,7 +286,7 @@ const userStore = useUserStore()
 
 const isAuth = computed(() => userStore.isAuth)
 
-onMounted(() => console.log($page.props.auth.user))
+
 </script>
 
 <template>
@@ -292,13 +296,14 @@ onMounted(() => console.log($page.props.auth.user))
         <div class=" bg-gradient-to-br from-green-950/95 via-green-900 to-green-950/90 xs:space-y-[155px] lg:space-y-[240px] overflow-hidden relative">
             <div  class="absolute overflow-hidden z-10 -right-[100px] -top-[20dvh] size-[66dvh] bg-green-950/90 animate-up-size rounded-[100%]"></div>
 <!--    start        -->
-            <div class="relative z-10 flex items-center justify-center  text-white  ">
-                <div class="flex flex-col items-center  ">
-                    <img class="py-[2%] xs:w-5/6 lg:w-2/5"  src="/stickers/main_text.png"/>
-                    <p class=" animate-move-y -translate-y-2   lg:text-[28px] font-comic xs:w-11/12  md:w-3/4 text-center text-gray-100 text-pretty tracking-[80%] " >
+            <div class="relative z-10 flex items-center justify-center text-white">
+                <div class="flex flex-col items-center">
+                    <img class="py-[2%] w-5/6 lg:w-2/5" src="/stickers/main_text.png" />
+                    <p class="animate-move-y mt-12 -translate-y-2 leading-relaxed lg:text-[28px] font-comic w-11/12 md:w-3/4 text-center text-gray-100 tracking-normal">
                         Наша оптовая компания предлагает широкий ассортимент бытовой химии по выгодным ценам.
                         Мы гарантируем качественные товары, быструю доставку и индивидуальный подход к каждому клиенту.
-                        Выбирайте надежного партнера для стабильных поставок и экономьте с нами!</p>
+                        Выбирайте надёжного партнёра для стабильных поставок и экономьте с нами!
+                    </p>
                 </div>
             </div>
 <!--    classic containers        -->
@@ -306,8 +311,8 @@ onMounted(() => console.log($page.props.auth.user))
                 <div id="text2" :class="{'animate-text-up': firstAnimation}" class="container xs:text-[32px] xs:text-4xl text-center md:text-5xl lg:text-7xl xs:pb-12 xs:pb-16 md:pb-24 lg:pb-32 items-center lg:text-center">
                     Почему стоит брать у наc?
                 </div>
-                <img :class="{'animate-roll-right ': firstAnimation}" id="cleaning_logo" @click.prevent="rotateFirstLogo($event)" src="/stickers/cleaning_logo.png" class="absolute xs:hidden md:block overflow-hidden xs:opacity-25 lg:opacity-75 z-30 xs:-left-[38%] lg:-left-[32%]  xs:top-[15%] md:top-[20%]  rounded-[100%]">
-                <img id="cleaning_more_logo" src="/stickers/more_cleaning_logo.png" :class="{'animate-roll-left': secondAnimation}" @click.prevent="rotateSecondLogo($event)" class=" overflow-hidden absolute xs:hidden md:block xs:opacity-25 z-50 lg:opacity-75 xs:top-[50%] lg:top-[35%] xs:-right-[48%] lg:-right-[34%] bottom-[35%]  rounded-[100%]">
+                <img :class="{'animate-roll-right ': firstAnimation}" id="cleaning_logo" @click.prevent="rotateFirstLogo($event)" src="/stickers/cleaning_logo.png" class="absolute xs:hidden lg:block overflow-hidden xs:opacity-25 lg:opacity-75 z-30 xs:-left-[38%] lg:-left-[32%]  xs:top-[15%] md:top-[20%]  rounded-[100%]">
+                <img id="cleaning_more_logo" src="/stickers/more_cleaning_logo.png" :class="{'animate-roll-left': secondAnimation}" @click.prevent="rotateSecondLogo($event)" class=" overflow-hidden absolute xs:hidden lg:block xs:opacity-25 z-50 lg:opacity-75 xs:top-[50%] lg:top-[35%] xs:-right-[48%] lg:-right-[34%] bottom-[35%]  rounded-[100%]">
                 <div class="grid grid-rows-3 gap-y-10 justify-items-center  ">
                     <div id="container-1" :class="{'animate-slide-left': container1}" class="bg-green-950 xs:w-11/12 md:w-5/6 lg:w-1/3 xs:p-4 xs:p-5 xs:text-center lg:p-10 rounded-lg ">
                         <p class="xs:text-2xl  lg:text-4xl text-center mb-7 font-semibold font-lobster">Доступные цены и выгодные условия поставки</p>
@@ -337,11 +342,11 @@ onMounted(() => console.log($page.props.auth.user))
             </div>
 
             <div v-if="products.length > 3" >
-                <div class="container text-white font-lobster xs:text-[32px] xs:text-4xl place-content-center text-center md:text-5xl lg:text-7xl xs:pb-28 xs:pb-32 md:pb-48 lg:pb-52  items-center lg:text-7xl">
+                <div class=" w-full text text-white font-lobster xs:text-[32px] xs:text-4xl place-content-center text-center md:text-5xl lg:text-7xl xs:pb-28 xs:pb-32 md:pb-48 lg:pb-52  items-center lg:text-7xl">
                     Популярные товары
                 </div>
-                <div  class="container place-self-center bg-green-950/70 py-10 rounded-md shadow-xl shadow-green-90/70 ring-2 ring-green-950 w-11/12 grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-36 items-center justify-items-center  ">
-                    <div id="popular-1"  class="rounded-md shadow-md border border-gray-100 w-[98%] min-h-[370px]    p-10 pt-24 shadow-green-950 h-auto relative space-y-3 bg-green-950 flex place-content-center item-center flex-col">
+                <div  class="flex justify-center place-self-center bg-green-950/70 py-10 rounded-md shadow-xl shadow-green-90/70 ring-2 ring-green-950 w-11/12 grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-36 items-center justify-items-center  ">
+                    <div id="popular-1"  class="rounded-md shadow-md border border-gray-100 w-[98%] min-h-[370px]    p-10 pt-24 shadow-green-950 h-auto relative space-y-3 bg-green-950 flex place-content-center items-center flex-col">
 
                         <img :src="`/storage/${ products[0].image_url ?? ''}`" class="absolute w-48 -top-4 left-1/2   -translate-y-1/2 -translate-x-1/2 transform hover:-top-8 duration-500 ease-in-out   items-center" >
 
@@ -358,7 +363,7 @@ onMounted(() => console.log($page.props.auth.user))
                             </div>
 
                     </div>
-                    <div id="popular-2"  class="rounded-md shadow-md border border-gray-100 w-[98%] min-h-[370px]    p-10 pt-24 shadow-green-950 h-auto relative space-y-3 bg-green-950 flex place-content-center item-center flex-col">
+                    <div id="popular-2"  class="rounded-md shadow-md border border-gray-100 w-[98%] min-h-[370px]    p-10 pt-24 shadow-green-950 h-auto relative space-y-3 bg-green-950 flex place-content-center items-center flex-col">
 
                         <img :src="`/storage/${ products[1].image_url}`" class="absolute w-48 -top-4 left-1/2   -translate-y-1/2 -translate-x-1/2 transform hover:-top-8 duration-500 ease-in-out   items-center" >
 
@@ -375,7 +380,7 @@ onMounted(() => console.log($page.props.auth.user))
                         </div>
 
                     </div>
-                    <div id="popular-3"  class="rounded-md shadow-md border border-gray-100 w-[98%] min-h-[370px]    p-10 pt-24 shadow-green-950 h-auto relative space-y-3 bg-green-950 flex place-content-center item-center flex-col">
+                    <div id="popular-3"  class="rounded-md shadow-md border border-gray-100 w-[98%] min-h-[370px]    p-10 pt-24 shadow-green-950 h-auto relative space-y-3 bg-green-950 flex place-content-center items-center flex-col">
 
                         <img :src="`/storage/${ products[2].image_url}`" class="absolute w-48 -top-4 left-1/2   -translate-y-1/2 -translate-x-1/2 transform hover:-top-8 duration-500 ease-in-out   items-center" >
 
@@ -392,7 +397,7 @@ onMounted(() => console.log($page.props.auth.user))
                         </div>
 
                     </div>
-                    <div id="popular-4"  class="rounded-md shadow-md border border-gray-100 w-[98%] min-h-[370px]    p-10 pt-24 shadow-green-950 h-auto relative space-y-3 bg-green-950 flex place-content-center item-center flex-col">
+                    <div id="popular-4"  class="rounded-md shadow-md border border-gray-100 w-[98%] min-h-[370px]    p-10 pt-24 shadow-green-950 h-auto relative space-y-3 bg-green-950 flex place-content-center items-center flex-col">
 
                         <img :src="`/storage/${ products[3].image_url}`" class="absolute w-48 -top-4 left-1/2   -translate-y-1/2 -translate-x-1/2 transform hover:-top-8 duration-500 ease-in-out   items-center" >
 
@@ -421,8 +426,8 @@ onMounted(() => console.log($page.props.auth.user))
             </div>
             <div id="text1" class="z-40 bg-green-950 text-white font-lobster py-10 space-y-6  ">
 
-                <div  :class="{'animate-slide-right': doverie}" class="container lg:pl-24 md:pl-16 xs:pl-8 w-11/12  xs:text-center md:text-start
-                 xs:text-3xl md:text-5xl lg:text-7xl font-lobster pt-2 ">Эти клиенты доверились нам</div>
+                <div  :class="{'animate-slide-right': doverie}" class=" lg:pl-24 xs:text-center  w-11/12  xs:text-center lg:text-start
+                 xs:text-3xl md:text-5xl lg:text-7xl font-lobster pt-2 ">Эти клиенты <p v-if="layout.isMobile">доверились нам</p><span  v-if="!layout.isMobile">доверились нам</span> </div>
 
                 <div class="swiper">
                     <!-- Additional required wrapper -->
@@ -546,7 +551,7 @@ onMounted(() => console.log($page.props.auth.user))
                     <!-- If we need scrollbar -->
                     <div class="swiper-scrollbar"></div>
                 </div>
-                <div id="dovolny" :class="{'animate-slide-left': dovolny}" class="container  w-11/12    xs:text-center  xs:text-3xl lg:text-end md:text-5xl pb-2 lg:text-7xl font-lobster ">
+                <div id="dovolny" :class="{'animate-slide-left': dovolny}" class="  w-11/12  xs:text-center  xs:text-3xl lg:text-end md:text-5xl pb-2 lg:text-7xl font-lobster ">
                     И остались <span class="text-yellow-500">довольны</span>
                 </div>
             </div>

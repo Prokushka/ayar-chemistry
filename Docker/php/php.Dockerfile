@@ -11,9 +11,6 @@ RUN apt-get -o Acquire::Check-Valid-Until=false update && apt-get install -y \
 # Настраиваем рабочую директорию
 WORKDIR /var/www/laravel
 
-# Назначаем права на нужные директории
-RUN chown -R www-data:www-data /var/www/laravel/storage /var/www/laravel/bootstrap/cache \
-    && chmod -R 775 /var/www/laravel/storage /var/www/laravel/bootstrap/cache
 
 # По умолчанию запускаем PHP-FPM
 CMD ["php-fpm"]

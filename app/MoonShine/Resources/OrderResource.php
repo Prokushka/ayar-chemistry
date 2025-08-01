@@ -112,12 +112,29 @@ class OrderResource extends ModelResource
     public function afterUpdated($item): mixed
     {
         if ($item->status === 'Подтверждён'){
-            foreach ($item->products as $product) {
-                $qty = $product->pivot->quantity;
+            try {
+                $profit = 0;
+                $sale_price = 0;
+                foreach ($item->products as $product) {
+                    $qty = $product->pivot->quantity;
+                    $profit += $product->pivot->profit;
+                    $sale_price += $product->pivot->sale_price  * $qty;
+                    $newQty = $product->quantity - $qty;
+                    if ($newQty < 0) {
+                        $product->update(['quantity' => 0]);
+                    } else {
+                        $product->decrement('quantity', $qty);
+                    }
 
-
-                $product->decrement('quantity', $qty);
+                }
+                $item->update([
+                    'total_profit' => $profit,
+                    'total_cost' => $sale_price
+                ]);
+            }catch (\Exception $exception){
+                return  $exception->getMessage();
             }
+
         }
         return $item;
 

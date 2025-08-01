@@ -24,7 +24,8 @@ Route::get('/', function (?Request $request) {
         Log::info('token placed');
     }
     return Inertia::render('Welcome', [
-        'products' => \App\Models\Product::query()->limit(4)->get()
+        'products' => \App\Models\Product::query()->limit(4)->get(),
+        'breadcrumbs' => Breadcrumbs::generate('main'),
     ]);
 })->name('main');
 
@@ -33,27 +34,33 @@ Route::get('/info', function () {
     return phpinfo();
 });
 Route::post('/profile', [ProfileController::class, 'store'])->name('profile.store');
+Route::group(['middleware' => \App\Http\Middleware\BreadCrumbsMiddleware::class], function (){
+    Route::group(['prefix' => 'category'], function () {
+        Route::get('{category}', [\App\Http\Controllers\CategoryController::class, 'categoryProductShow'])->name('product.category.show');
+    });
+    Route::group(['prefix' => 'product'], function () {
+        Route::get('/', [\App\Http\Controllers\ProductController::class, 'index'])->name('product.index');
+        Route::get('/{product}', [\App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
+        Route::get('/category/{category}', [\App\Http\Controllers\ProductController::class, 'categoryProductShow'])->name('product.category.show');
+        Route::get('/search/{query_string}', [\App\Http\Controllers\ProductController::class, 'search'])->name('product.search');
+    });
+    Route::group(['prefix' => 'orders'], function () {
+        Route::get('/', [\App\Http\Controllers\OrderController::class, 'index'])->name('order.index');
+        Route::post('/convertion', [\App\Http\Controllers\OrderController::class, 'convertion'])->name('order.convertion');
+        Route::post('/', [\App\Http\Controllers\OrderController::class, 'store'])->name('order.store');
+        Route::delete('/{id}', [\App\Http\Controllers\OrderController::class, 'destroy'])->name('order.delete');
+        Route::delete('/product/{id}', [\App\Http\Controllers\OrderController::class, 'productDelete'])->name('order.product.delete');
+        Route::get('/check/{id}', [\App\Http\Controllers\OrderController::class, 'check'])->name('order.check');
+        Route::post('/order-create', [\App\Http\Controllers\OrderController::class, 'create'])->name('order.create');
+        Route::get('/{id}', [\App\Http\Controllers\OrderController::class, 'show'])->name('order.show');
+    });
 
-
-Route::group(['prefix' => 'product'], function () {
-    Route::get('/', [\App\Http\Controllers\ProductController::class, 'index'])->name('product.index');
-    Route::get('/{product}', [\App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
-});
-Route::group(['prefix' => 'orders'], function () {
-    Route::get('/', [\App\Http\Controllers\OrderController::class, 'index'])->name('order.index');
-    Route::post('/convertion', [\App\Http\Controllers\OrderController::class, 'convertion'])->name('order.convertion');
-    Route::post('/', [\App\Http\Controllers\OrderController::class, 'store'])->name('order.store');
-    Route::delete('/{id}', [\App\Http\Controllers\OrderController::class, 'destroy'])->name('order.delete');
-    Route::delete('/product/{id}', [\App\Http\Controllers\OrderController::class, 'productDelete'])->name('order.product.delete');
-    Route::get('/check/{id}', [\App\Http\Controllers\OrderController::class, 'check'])->name('order.check');
-    Route::post('/order-create', [\App\Http\Controllers\OrderController::class, 'create'])->name('order.create');
-    Route::get('/{id}', [\App\Http\Controllers\OrderController::class, 'show'])->name('order.show');
+    Route::middleware('auth')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 require __DIR__.'/auth.php';

@@ -7,6 +7,7 @@ namespace App\MoonShine\Resources;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
 
+use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Fields\Slug;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\Attributes\SearchUsingFullText;
@@ -62,6 +63,8 @@ class ProductResource extends ModelResource
                        Number::make('цена продажи', 'sale_price')->buttons()->min(0)->step(0.01),
                        Image::make('Фото', 'image_url'),
                        Number::make('кол-во товара', 'quantity'),
+                       BelongsTo::make('Категория', 'category',
+                           formatted: fn($item) => "$item->title" , resource: CategoryResource::class),
                        Slug::make('Slug')
                            ->from('title')
                    ])

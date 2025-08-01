@@ -39,20 +39,19 @@ watch(quantity, async (newQuantity) => {
 })
 const procent = ref(1)
 const totalPrice = computed(() => parseInt(procent.value * props?.product?.sale_price ))
-const form = useForm({
-    totalPrice: '',
-    id: props.product ? props.product.id : null
-})
 
+const form = useForm({
+    id: props?.product?.id,
+    total_price: null
+})
 const user = useUserStore()
 
 function convertion(){
-    console.log(user.isAuth)
     if (user.isAuth === false){
        return  router.visit(route('login'))
     }else {
         order.setOrder(procent.value, props.product.sale_price, totalPrice.value, quantity.value)
-        form.totalPrice = totalPrice.value
+        form.total_price = totalPrice.value
         form.post(route('order.convertion'))
     }
 
@@ -67,7 +66,7 @@ function convertion(){
     <Head title="Product-Show" />
     <MainLayout></MainLayout>
     <div class="z-10 absolute w-full h-full bg-gradient-to-br from-green-950/95 via-green-900 to-green-950/90">
-        <div class="z-20 max-w-4xl mx-auto xs:p-6 rounded-lg md:mt-44 bg-green-950  shadow-md mt-8 text-white ">
+        <div class="z-20 max-w-4xl mx-auto xs:p-6 rounded-lg md:mt-44 bg-green-950  shadow-md md:mt-12 text-white ">
             <div class="grid grid-cols-1 md:grid-cols-2  gap-8">
                 <!-- Фото товара -->
                 <div class="py-12">
@@ -79,23 +78,23 @@ function convertion(){
                 <div class="flex flex-col  justify-between">
                     <div class="">
                         <h1 v-if="product && product.title"  class="text-2xl font-bold mb-2">{{ product.title }}</h1>
-                        <div v-if="product && product.sku" class="text-white mb-4">Артикул: <span class="font-mono">{{ product.sku }}</span></div>
-                        <p v-if="product && product.description" class=" mb-6">
+                        <div v-if="product && product.sku" class="text-white">Артикул: <span class="font-mono">{{ product.sku }}</span></div>
+                        <p v-if="product && product.description" class=" my-6">
                             {{product.description}}
                         </p>
                         <!-- Dropdown с ценами -->
                         <div class="flex  flex-col justify-between">
                             <div>
                                 <label for="quantity" class="block text-sm font-medium mb-1">Выберите количество:</label>
-                                <select v-model="quantity" id="quantity" class="w-full border rounded text-gray-800 px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                                    <option value="1">от 1</option>
+                                <select v-model="quantity" id="quantity" class="w-11/12 border rounded text-gray-800 px-3 py-2 mb-4  focus:ring-2 border-yellow-600 border-4 ring-yellow-600 ">
+                                    <option class="" value="1">от 1</option>
                                     <option value="10">от 10</option>
                                     <option value="25">от 25</option>
                                     <option value="100">от 100</option>
                                     <option value="250">от 250</option>
                                 </select>
-                                <div class="text-xl pb-2 pt-1 ">
-                                    {{totalPrice}} за шт
+                                <div class="text-xl pb-2 pt-1 font-bold ">
+                                    {{totalPrice}}₽ за шт.
                                 </div>
                             </div>
 
@@ -103,7 +102,7 @@ function convertion(){
                         </div>
                     </div>
                     <div>
-                        <div class="text-xl font-semibold text-white py-1 mb-4">Всего в наличии: <span class="text-yellow-500">{{product.quantity}}</span></div>
+                        <div class="text-xl font-semibold text-white py-1 mb-4">В наличии: <span class="text-yellow-500">{{product?.quantity}} </span> шт.</div>
 
                         <button @click.prevent="convertion" class="w-full bg-green-900/60 hover:bg-green-900/70 text-white ring-2 ring-white font-semibold py-3 rounded transition">
                             Добавить в корзину

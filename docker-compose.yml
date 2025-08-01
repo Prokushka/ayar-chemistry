@@ -37,6 +37,7 @@ services:
             - ./:/var/www/laravel
         networks:
             - ayar_network
+        user: "${UID:-1000}:${GID:-1000}"
     artisan:
         volumes:
             - ./:/var/www/laravel

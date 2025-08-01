@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class OrderController extends Controller
@@ -16,14 +17,18 @@ class OrderController extends Controller
     public function index()
     {
 
-        $order = Order::query()->where('user_id', auth()->id())->first();
+        $order = Order::query()->where('user_id', auth()->id())->latest()->first();
         if ($order){
-            $idsToDetach = $order->products
-                ->filter(fn($product) => $product->pivot->quantity <= 0)
-                ->pluck('id')
+            $idsToDetach = $order->products()
+                ->WherePivot('quantity')
+                ->orwherePivot('quantity', '<=', 0)
+                ->pluck('products.id')
                 ->all();
             if ($idsToDetach) {
                 $order->products()->detach($idsToDetach);
+            }
+            if ($order->products()->count() === 0) {
+                $order->delete();
             }
         }
 
@@ -81,25 +86,33 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $order = Order::query()->find($request->order_id);
-
+        /*quantity
+        product_id
+        total_sum
+        sale_price
+        */
         $product = Product::query()->find($request->product_id);
-
-        $pivot = $product->orders()->where('orders.id', $order->id)->first();
-
-        $profit = ((int) $pivot->pivot->sale_price * $request->quantity)
-            - ((int) $pivot->pivot->purchase_price * $request->quantity);
-        if ($profit < 0){
-            $profit = 0;
+        $order = Order::query()
+            ->where('user_id', auth()->id())
+            ->where('status', 'Новый')->first();
+        if ($order){
+             $order->products()->wherePivot('product_id', $request->product_id)->detach();
+        }else{
+            $order = Order::query()->create([
+                'status' => 'Новый',
+                'user_id' => auth()->id(),
+            ]);
         }
-        $order->products()->updateExistingPivot($request->product_id,[
+        $profit = ($request->sale_price * $request->quantity) - ($product->purchase_price * $request->quantity);
+        $order->products()->attach($request->product_id, [
+            'purchase_price' => $product->purchase_price,
+            'sale_price' => $request->sale_price,
             'quantity' => $request->quantity,
             'profit' => $profit
         ]);
-        $order->update([
-            'total_cost' => $order->total_cost += $request->total_sum,
-            'total_profit' => $order->total_profit += $profit
-        ]);
+
+
+
         return Inertia::render('Order/Index', [
            'orders' => Order::query()->where('user_id', auth()->id())
                ->where('status', '!=', 'Отменён')->get()
@@ -121,41 +134,21 @@ class OrderController extends Controller
 
     public function convertion(Request $request)
     {
-        $user = User::query()->find(auth()->id());
-        $order = $user->orders()->where('orders.status', 'Новый');
-        if($order->exists()){
-            $order = $order->first();
+
+        if (!$request->total_price){
+            return redirect()->back();
         }
-        else{
-            $order = $user->orders()->create([
-                'status' => 'Новый',
-            ]);
-            assert($order instanceof Order);
-        }
-        $product = Product::query()->find($request->id);
-        if (!$product) {
-            abort(404, 'Product not found');
-        }
-        $order->products()
-            ->attach($product->id,
-                [
-                    'purchase_price' => $product->purchase_price,
-                    'sale_price' => $request->totalPrice
-                ]);
-        $order->load('products');
-        $addedProduct = $order->products->find($product->id);
+        $product = Product::find($request->id);
+
         return Inertia::render('Order/Convertion',[
-            'order' => $order,
             'product' => [
-                'id' => $addedProduct->id,
-                'title' => $addedProduct->title,
-                'image_url' => $addedProduct->image_url,
-                'pivot' => [
-                    'id' => $addedProduct->pivot->id,
-                    'sale_price' => $addedProduct->pivot->sale_price,
-                ]
+                'id' => $product->id,
+                'title' => $product->title,
+                'image_url' => $product->image_url,
             ],
-            'salePrice' => $request->totalPrice
+            'salePrice' => $request->total_price
+        ])->with([
+            'message' => 'Продукт успешно загружен',
         ]);
     }
 
@@ -187,31 +180,18 @@ class OrderController extends Controller
         return redirect()->route('order.index');
     }
 
-    public function productDelete(string $id)
+    public function productDelete(string $id): RedirectResponse
     {
-        /*$user = User::query()->find(auth()->id());
-        $order = $user->orders()->where('status', 'Новый');
-        if($order->exists()){
-        $order = $order->first();
+        $order = Order::query()
+            ->where('user_id', auth()->id())
+            ->where('status', 'Новый')->first();
+        if ($order){
+            $order->products()->detach($id);
         }
-        assert($order instanceof Order);*/
-        $product = Product::query()->whereHas('orders', function($q) use ($id) {
-            $q->where('order_product.id', $id);
-        })->with(['orders' => function($q) use ($id) {
-            $q->where('order_product.id', $id);
-        }])->first();
-        $order = $product->orders->first();
-
-        $newTotalCost = $order->total_cost - ($order->pivot->sale_price * $order->pivot->quantity);
-        $newTotalProfit = $order->total_profit - $order->pivot->profit;
-
-        if (!empty($newTotalCost)){
-            $order->update([
-                'total_cost' => $newTotalCost,
-                'total_profit' => $newTotalProfit,
-            ]);
+        if ($order->products()->count()  == 0){
+            return redirect()->route('order.index');
         }
-        $order->products()->detach($product->id);
-        return redirect()->route('order.index');
+
+        return redirect()->route('order.check', $order->id);
     }
 }
