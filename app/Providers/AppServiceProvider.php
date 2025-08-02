@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -28,7 +29,9 @@ class AppServiceProvider extends ServiceProvider
             'auth' => fn () => [
                 'user' => auth()->user(),
             ],
-            'categories' => fn () => \App\Models\Category::all(),
+            'categories' => fn () => Category::with('children', 'products')
+                ->whereNull('parent_id')
+                ->get(),
         ]);
 
     }

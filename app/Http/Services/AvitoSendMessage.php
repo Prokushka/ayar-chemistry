@@ -14,7 +14,7 @@ class AvitoSendMessage
         $token = Cache::get('access_token');
 
         $userId = config('services.avito.my_id');
-        $response = Http::withHeader('Authorization',"Bearer $token")
+        $response = Http::timeout(30)->retry(3, 500)->withHeader('Authorization',"Bearer $token")
             ->withUrlParameters([
                 'domen' => 'https://api.avito.ru',
                 'user_id' => $userId
@@ -54,7 +54,7 @@ class AvitoSendMessage
 
         ';
                 }
-                Http::withHeaders([
+                Http::timeout(30)->retry(3, 500)->withHeaders([
                     'Authorization' => "Bearer $token",
                 ])
                     ->withUrlParameters([
@@ -78,7 +78,7 @@ class AvitoSendMessage
                         'type' => 'text',
                     ]);
                 if ($price === false){
-                    Http::withHeaders([
+                    Http::timeout(30)->retry(3, 500)->withHeaders([
                         'Authorization' => "Bearer $token",
                     ])
                         ->withUrlParameters([
@@ -107,7 +107,7 @@ class AvitoSendMessage
         $secret = config('services.avito.secret');
         $refresh = Cache::get('refresh_token');
         if (!$refresh) {
-            $token = Http::asForm()->withUrlParameters([
+            $token = Http::timeout(30)->retry(3, 500)->asForm()->withUrlParameters([
                 'domen' => 'https://api.avito.ru',
             ])
                 ->post('{+domen}/token',[
@@ -127,7 +127,7 @@ class AvitoSendMessage
         }
 
         else{
-            $token = Http::asForm()->withUrlParameters([
+            $token = Http::timeout(30)->retry(3, 500)->asForm()->withUrlParameters([
                 'domen' => 'https://api.avito.ru',
             ])
                 ->post('{+domen}/token',[

@@ -24,16 +24,6 @@ class ProductController extends Controller
         ]);
     }
 
-    public function categoryProductShow(Category $category)
-    {
-        $product = $category->products();
-        return Inertia::render('Product/Index', [
-            'products' => $product->select(['id','title', 'image_url', 'sale_price', 'slug'])->get(),
-            'categories' => Category::all(),
-            'breadcrumbs' => Breadcrumbs::generate('product.category.show', $category),
-        ]);
-    }
-
     /**
      * Show the form for creating a new resource.
      */

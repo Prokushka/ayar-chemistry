@@ -48,7 +48,7 @@ onBeforeUnmount(() => {
 <template>
 
     <div
-        class="flex overflow-hidden min-h-screen relative  flex-col items-center bg-gradient-to-r from-green-950/95 via-green-900 to-green-950/90 pt-6 sm:justify-center sm:pt-0"
+        class="flex overflow-hidden min-h-screen relative  flex-col items-center  bg-gradient-to-r from-green-950/95 via-green-900 to-green-950/90 pt-24 sm:justify-center sm:pt-0"
     >
         <div v-if="!isMobile" class="  absolute  z-10  w-[50dvw]   h-[50dvw] rounded-[100%] -top-[18dvw] -left-[20dvw] bg-green-950  animate-up-size"></div>
         <div v-if="!isMobile" class=" absolute  z-10  w-[50dvw]   h-[50dvw] rounded-[100%] -bottom-[18dvw] -right-[20dvw] bg-green-950  animate-up-size"></div>

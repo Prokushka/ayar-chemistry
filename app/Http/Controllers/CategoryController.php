@@ -20,7 +20,6 @@ class CategoryController extends Controller
         return Inertia::render('Product/Index', [
             'products' => $product->select(['id','title', 'image_url', 'sale_price', 'slug'])->get(),
             'categories' => Category::all(),
-            'breadcrumbs' => Breadcrumbs::generate('product.category.index'),
         ]);
     }
 

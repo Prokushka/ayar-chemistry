@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources;
 
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
 
+use MoonShine\Laravel\Fields\Relationships\BelongsTo;
+use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Fields\Slug;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
@@ -33,7 +34,9 @@ class CategoryResource extends ModelResource
         return [
             ID::make()->sortable(),
             Text::make('Наименование', 'title'),
-            Slug::make('Slug', 'slug')
+            Slug::make('Slug', 'slug'),
+            BelongsTo::make('Родитель', 'parent', 'title' , CategoryResource::class),
+            HasMany::make('Дети', 'children', 'title' , CategoryResource::class)
         ];
     }
 
@@ -46,7 +49,9 @@ class CategoryResource extends ModelResource
             Box::make([
                 ID::make(),
                 Text::make('Наименование', 'title'),
-                Slug::make('Slug', 'slug')
+                Slug::make('Slug', 'slug'),
+                BelongsTo::make('Родитель', 'parent', 'title' , CategoryResource::class),
+                HasMany::make('Дети', 'children', 'title' , CategoryResource::class)
             ])
         ];
     }
@@ -59,7 +64,9 @@ class CategoryResource extends ModelResource
         return [
             ID::make(),
             Text::make('Наименование', 'title'),
-            Slug::make('Slug', 'slug')
+            Slug::make('Slug', 'slug'),
+            BelongsTo::make('Родитель', 'parent', 'title' , CategoryResource::class),
+            HasMany::make('Дети', 'children', 'title' , CategoryResource::class)
         ];
     }
 
