@@ -34,9 +34,7 @@ class CategoryResource extends ModelResource
         return [
             ID::make()->sortable(),
             Text::make('Наименование', 'title'),
-            Slug::make('Slug', 'slug'),
-            BelongsTo::make('Родитель', 'parent', 'title' , CategoryResource::class),
-            HasMany::make('Дети', 'children', 'title' , CategoryResource::class)
+            Slug::make('Slug', 'slug')->from('title'),
         ];
     }
 
@@ -49,9 +47,8 @@ class CategoryResource extends ModelResource
             Box::make([
                 ID::make(),
                 Text::make('Наименование', 'title'),
-                Slug::make('Slug', 'slug'),
-                BelongsTo::make('Родитель', 'parent', 'title' , CategoryResource::class),
-                HasMany::make('Дети', 'children', 'title' , CategoryResource::class)
+                Slug::make('Slug', 'slug')->from('title'),
+                BelongsTo::make('Родитель', 'parent', 'title' , CategoryResource::class)->nullable(),
             ])
         ];
     }
@@ -64,9 +61,9 @@ class CategoryResource extends ModelResource
         return [
             ID::make(),
             Text::make('Наименование', 'title'),
-            Slug::make('Slug', 'slug'),
-            BelongsTo::make('Родитель', 'parent', 'title' , CategoryResource::class),
-            HasMany::make('Дети', 'children', 'title' , CategoryResource::class)
+            Slug::make('Slug', 'slug')->from('title'),
+            BelongsTo::make('Родитель', 'parent', 'title' , CategoryResource::class)->nullable(),
+            HasMany::make('Дети', 'children', 'title' , CategoryResource::class)->nullable()
         ];
     }
 

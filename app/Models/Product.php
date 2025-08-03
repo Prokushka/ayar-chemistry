@@ -35,6 +35,20 @@ class Product extends Model
     {
         return 'slug';
     }
+    public function priceTiers()
+    {
+        return $this->hasMany(PriceTier::class)->orderByDesc('from_quantity');
+    }
+
+    public function priceForQuantity($quantity)
+    {
+        return $this->priceTiers()
+            ->where('from_quantity', '<=', $quantity)
+            ->orderByDesc('from_quantity')
+            ->first()
+            ?->price ?? $this->base_price;
+    }
+
 
     public function category(): BelongsTo
     {

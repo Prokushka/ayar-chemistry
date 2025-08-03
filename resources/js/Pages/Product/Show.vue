@@ -66,10 +66,10 @@ function convertion(){
     <Head title="Product-Show" />
     <MainLayout></MainLayout>
     <div class="z-10 absolute w-full h-full bg-gradient-to-br from-green-950/95 via-green-900 to-green-950/90">
-        <div class="z-20 max-w-4xl mx-auto xs:p-6 rounded-lg md:mt-44 bg-green-950  shadow-md md:mt-12 text-white ">
+        <div class="z-20 max-w-4xl mx-auto xs:p-6 rounded-lg  bg-green-950   shadow-md text-white ">
             <div class="grid grid-cols-1 md:grid-cols-2  gap-8">
                 <!-- Фото товара -->
-                <div class="py-12">
+                <div class="py-12 mt-36">
                     <img v-if="product && product.image_url" :src="`/storage/${product.image_url}`"
                          alt="Фото товара"
                          class="w-full xs:h-96 object-cover rounded-lg " />

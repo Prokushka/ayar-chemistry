@@ -5,7 +5,7 @@ import {Link, router} from "@inertiajs/vue3";
 import PhonePartLayout from "@/Components/PhonePartLayout.vue";
 import {useLayoutStore} from "@/stores/layout.js";
 import {useUserStore} from "@/stores/user.js";
-import {computed, ref, watch} from 'vue'
+import {computed, onMounted, ref, watch} from 'vue'
 import { usePage } from '@inertiajs/vue3'
 import {animate} from "animejs";
 
@@ -67,9 +67,11 @@ function getCategories(event){
 function categoryShow(slug){
     router.visit(route('product.category.show', slug))
 }
-const categories = computed(() => usePage().props.categories)
 const page = usePage()
+const categories = computed(() => page.props.categories)
 const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
+
+onMounted(() => console.log(categories.value))
 </script>
 
 <template>
@@ -173,18 +175,30 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
 
 
     </div>
-    <div v-if="breadcrumbs.length > 1" class="z-20 absolute  flex  md:pt-3 font-rubick lg:left-0 xs:right-0 top-[73px] pr-2 -indent-[0.01rem] md:-indent-0">
-        <div class="flex text-white space-x-1 font-semibold" >
-            <div   v-for="(crumb, i) in breadcrumbs" :key="crumb.title" class="flex-col text-xs md:text-md md:text-lg md:mx-2 md:space-x-2 space-x-0.5">
-                <Link :href="crumb.url">{{ crumb.title }}</Link>
-                <span v-if="i < breadcrumbs.length - 1" class="tracking-[-.28em] md:px-1 text-yellow-400  md:tracking-0 ">
-                         >>
-                    </span>
-
-
-            </div>
-        </div>
-    </div>
+    <nav
+        v-if="breadcrumbs.length > 1"
+        aria-label="Breadcrumb"
+        class="z-20 absolute top-[73px] left-0 md:pt-3 px-4"
+    >
+        <ol class="flex flex-wrap text-white text-sm md:text-base font-rubick font-semibold space-x-1 md:space-x-2">
+            <li
+                v-for="(crumb, i) in breadcrumbs"
+                :key="crumb.title"
+                class="flex items-center"
+            >
+                <Link :href="crumb.url" class="hover:underline">
+                    {{ crumb.title }}
+                </Link>
+                <span
+                    v-if="i < breadcrumbs.length - 1"
+                    class="px-1 text-yellow-400 select-none"
+                    aria-hidden="true"
+                >
+        &rsaquo;
+      </span>
+            </li>
+        </ol>
+    </nav>
 
 </template>
 

@@ -20,7 +20,8 @@ class AvitoSendMessage
                 'user_id' => $userId
             ])
             ->get('{+domen}/messenger/v2/accounts/{user_id}/chats',[
-                'unread_only' => 'true'
+                'unread_only' => 'true',
+                'chat_types' => 'u2i,u2u'
             ]);
 
         if ($response->failed()) {

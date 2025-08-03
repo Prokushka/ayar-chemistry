@@ -417,7 +417,7 @@ const isAuth = computed(() => userStore.isAuth)
 
                 </div>
                 <div class="bg-green-950
-                text-white xl:text-5xl lg:text-4xl font-lobster p-5 mt-12 xs:text-xl md:text-3xl w-auto ring-2  place-self-center ring-yellow-500 rounded-full">
+                text-white xl:text-5xl lg:text-4xl font-lobster p-5 mt-12 xs:text-xl md:text-3xl w-auto ring-2 text-center  place-self-center ring-yellow-500 rounded-full">
                     <Link :href="route('product.index')" >
                         Посмотреть все товары
                     </Link>
@@ -426,7 +426,7 @@ const isAuth = computed(() => userStore.isAuth)
             </div>
             <div id="text1" class="z-40 bg-green-950 text-white font-lobster py-10 space-y-6  ">
 
-                <div  :class="{'animate-slide-right': doverie}" class=" lg:pl-24 xs:text-center  w-11/12  xs:text-center lg:text-start
+                <div  :class="{'animate-slide-right': doverie}" class=" lg:pl-24 xs:text-center  w-full  xs:text-center lg:text-start
                  xs:text-3xl md:text-5xl lg:text-7xl font-lobster pt-2 ">Эти клиенты <p v-if="layout.isMobile">доверились нам</p><span  v-if="!layout.isMobile">доверились нам</span> </div>
 
                 <div class="swiper">
@@ -551,7 +551,7 @@ const isAuth = computed(() => userStore.isAuth)
                     <!-- If we need scrollbar -->
                     <div class="swiper-scrollbar"></div>
                 </div>
-                <div id="dovolny" :class="{'animate-slide-left': dovolny}" class="  w-11/12  xs:text-center  xs:text-3xl lg:text-end md:text-5xl pb-2 lg:text-7xl font-lobster ">
+                <div id="dovolny" :class="{'animate-slide-left': dovolny}" class="  w-full  xs:text-center  xs:text-3xl lg:text-end md:text-5xl pb-2 lg:text-7xl font-lobster ">
                     И остались <span class="text-yellow-500">довольны</span>
                 </div>
             </div>
