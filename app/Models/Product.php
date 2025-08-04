@@ -49,6 +49,19 @@ class Product extends Model
             ?->price ?? $this->base_price;
     }
 
+    public function price(...$values)
+    {
+        return $this->priceTiers()
+        ->get()
+        ->map(function ($item) use ($values){
+            $arr = [];
+            foreach ($values as $attr){
+               $arr[$attr] = $item->$attr;
+            }
+            return $arr;
+        });
+    }
+
 
     public function category(): BelongsTo
     {

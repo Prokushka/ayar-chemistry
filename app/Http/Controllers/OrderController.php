@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\PriceTier;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -135,21 +136,27 @@ class OrderController extends Controller
     public function convertion(Request $request)
     {
 
-        if (!$request->total_price){
+        $product = Product::query()->find($request->id);
+
+        $containsPrice = $product?->priceTiers()->get()->first(function (PriceTier $priceTier) use ($request){
+            return $priceTier->price == $request->total_price;
+        });
+
+        if (isset($containsPrice)){
+            return Inertia::render('Order/Convertion',[
+                'product' => [
+                    'id' => $product->id,
+                    'title' => $product->title,
+                    'image_url' => $product->image_url,
+                    'salePrice' => $request->total_price,
+                    'min_quantity' => $containsPrice->from_quantity
+                ],
+            ]);
+        }
+        else{
             return redirect()->back();
         }
-        $product = Product::find($request->id);
 
-        return Inertia::render('Order/Convertion',[
-            'product' => [
-                'id' => $product->id,
-                'title' => $product->title,
-                'image_url' => $product->image_url,
-            ],
-            'salePrice' => $request->total_price
-        ])->with([
-            'message' => 'Продукт успешно загружен',
-        ]);
     }
 
     /**

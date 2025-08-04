@@ -25,7 +25,7 @@ Route::get('/', function (?Request $request) {
     }
     return Inertia::render('Welcome', [
         'products' => \App\Models\Product::query()->limit(4)->get(),
-        'breadcrumbs' => Breadcrumbs::generate('main'),
+
     ]);
 })->name('main');
 
@@ -45,7 +45,7 @@ Route::group(['middleware' => \App\Http\Middleware\BreadCrumbsMiddleware::class]
     });
     Route::group(['prefix' => 'orders'], function () {
         Route::get('/', [\App\Http\Controllers\OrderController::class, 'index'])->name('order.index');
-        Route::post('/convertion', [\App\Http\Controllers\OrderController::class, 'convertion'])->name('order.convertion');
+        Route::get('/convertion', [\App\Http\Controllers\OrderController::class, 'convertion'])->name('order.convertion');
         Route::post('/', [\App\Http\Controllers\OrderController::class, 'store'])->name('order.store');
         Route::delete('/{id}', [\App\Http\Controllers\OrderController::class, 'destroy'])->name('order.delete');
         Route::delete('/product/{id}', [\App\Http\Controllers\OrderController::class, 'productDelete'])->name('order.product.delete');

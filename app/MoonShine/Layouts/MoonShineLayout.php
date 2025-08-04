@@ -35,6 +35,7 @@ use MoonShine\MenuManager\MenuItem;
 use App\MoonShine\Resources\UserResource;
 use App\MoonShine\Resources\OrderResource;
 use App\MoonShine\Resources\CategoryResource;
+use App\MoonShine\Resources\PriceTierResource;
 
 final class MoonShineLayout extends AppLayout
 {
@@ -54,6 +55,7 @@ final class MoonShineLayout extends AppLayout
             MenuItem::make('Заказы', OrderResource::class),
 
             MenuItem::make('Категории', CategoryResource::class),
+            MenuItem::make('Cкидки на товары', PriceTierResource::class),
         ];
     }
 

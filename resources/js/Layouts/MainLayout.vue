@@ -178,7 +178,7 @@ onMounted(() => console.log(categories.value))
     <nav
         v-if="breadcrumbs.length > 1"
         aria-label="Breadcrumb"
-        class="z-20 absolute top-[73px] left-0 md:pt-3 px-4"
+        class="z-20 absolute top-[73px] left-0 md:pt-3 lg:pt-6 px-4"
     >
         <ol class="flex flex-wrap text-white text-sm md:text-base font-rubick font-semibold space-x-1 md:space-x-2">
             <li

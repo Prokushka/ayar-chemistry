@@ -77,8 +77,8 @@ function orderComplete(id){
                          border-white transform duration-500 ease-out"> <i class="ri-close-fill"></i>
                         </button>
                     </div>
-                    <div class=" w-[50%]">
-                        <img class="w-2/3  " :src="`/storage/${product.image_url}`" alt="">
+                    <div class=" p-6">
+                        <img width="" class="h-96 w-full object-contain rounded-lg " :src="`/storage/${product.image_url}`" alt="">
                     </div>
                     <div class=" w-[50%] flex-col space-y-5 justify-between pr-4 ">
                         <div class="text-white  md:text-lg lg:text-xl xl:text-2xl line-clamp-3 text-unwrap text-top font-comic font-medium">

@@ -7,7 +7,9 @@ namespace App\MoonShine\Resources;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
 
+
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
+use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Fields\Slug;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\Attributes\SearchUsingFullText;
@@ -44,6 +46,7 @@ class ProductResource extends ModelResource
             Text::make('Наименование товара', 'title'),
             Number::make('цена продажи', 'sale_price'),
             Number::make('кол-во товара', 'quantity'),
+
         ];
     }
 
@@ -60,17 +63,21 @@ class ProductResource extends ModelResource
                    Box::make('Обязательные поля',[
                        ID::make(),
                        Text::make('Наименование товара', 'title'),
-                       Number::make('цена продажи', 'sale_price')->buttons()->min(0)->step(0.01),
                        Image::make('Фото', 'image_url'),
                        Number::make('кол-во товара', 'quantity'),
                        BelongsTo::make('Категория', 'category',
                            formatted: fn($item) => "$item->title" , resource: CategoryResource::class),
-                       Slug::make('Slug')
-                           ->from('title')
+                       Text::make('Вес/объём', 'size'),
+                       HasMany::make('Оптовые цены', 'priceTiers', resource: PriceTierResource::class)->relatedLink()->creatable()
+
+
+
                    ])
                 ]),
                 Column::make([
                     Box::make('Необязательные поля', [
+                        Slug::make('Slug')
+                            ->from('title'),
                         Number::make('цена закупа', 'purchase_price')->buttons()->min(0)->step(0.01),
                         Text::make('описание', 'description'),
                         Text::make('sku', 'sku'),
@@ -78,7 +85,6 @@ class ProductResource extends ModelResource
                 ])
 
             ]),
-
         ];
     }
 
@@ -97,6 +103,7 @@ class ProductResource extends ModelResource
                         Image::make('Фото', 'image_url')->extraAttributes(
                             fn(string $filename, int $index): ?FileItemExtra => new FileItemExtra(wide: false, auto: true, styles: 'width: 250px;')
                         ),
+                         HasMany::make('Оптовые цены', 'priceTiers', resource: PriceTierResource::class)->relatedLink()->creatable(),
                         Number::make('кол-во товара', 'quantity'),
                         Slug::make('Slug')
                             ->from('title')->live(),

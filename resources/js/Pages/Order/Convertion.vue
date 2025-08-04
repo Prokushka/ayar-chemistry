@@ -11,49 +11,40 @@ const props = defineProps({
     product: {
         type: Object
     },
-    salePrice:{
-        type: Number,
-        required: false
-    }
+
 
 })
 const order = useOrderStore()
 
 const err = ref('')
-const minValue = order.min_value
-const count = ref(minValue)
+
+
 const form = useForm({
     quantity: '',
     product_id: '',
     total_sum: 0,
     sale_price: null
 })
-
-const totalSum = computed(() => props.salePrice * count.value)
-
-
-onMounted(() => {
-    console.log('salePrice:', props.salePrice)
-
-    if (props.salePrice === undefined || props.salePrice === null) {
-        window.history.back() // вернёт на предыдущую страницу
-    }
-})
+const quantity = ref(props.product.min_quantity)
+const totalSum = computed(() => props.product.salePrice * quantity.value)
 
 
 
-const salePrice = props.salePrice
+
+
+
+
 
 function addOrder(){
     ready.value = true
     try {
-        if (count.value < minValue) {
+        if (quantity.value < props.product.min_quantity) {
             throw new Error('Должно быть больше минимального количества');
         }
-        form.quantity = count.value
+        form.quantity = quantity.value
         form.product_id = props.product.id
         form.total_sum = totalSum.value
-        form.sale_price = salePrice
+        form.sale_price = props.product.salePrice
         form.post(route('order.store'))
     } catch (error) {
         err.value = error.message; // Показывает ошибку пользователю
@@ -79,19 +70,19 @@ onUnmounted(() => order.$reset())
                 <!-- Описание и детали -->
                 <div class="flex flex-col  ">
                     <div class="">
-                        <div  class="text-md font-bold mb-2">{{ product.title }}</div>
+                        <div  class="text-5xl mb-16 text-center font-bold mb-2">{{ product.title }}</div>
                         <div class=" justify-center">
-                            <div class="flex-row justify-center">
+                            <div class="flex-col flex justify-center">
                                 <div class="py-2 text-xl">Укажите точное количество товара: </div>
-                                <input class="text-gray-800  font-bold w-2/5 py-2 rounded-full ring-2 ring-yellow-500" type="text" v-model="count" name="" id="count">
-                                <div class="text-red-500 font-medium">{{err}}</div>
+                                <input class="text-gray-800  font-bold w-2/5 py-2 rounded-full ring-2 ring-yellow-500" type="text" v-model="quantity" name="" id="count">
+                                <div class="text-red-500 font-medium py-1">{{err}}</div>
                                 <div class="text-xl pb-2 pt-2 ">
-                                    <span class="text-yellow-500">{{salePrice}}</span> руб. за шт.
+                                    <span class="text-yellow-400">{{product.salePrice}}</span> ₽ за шт.
                                 </div>
                             </div>
                         </div>
-                        <div class="py-2 text-white font-lobster">Итого: <span class="text-yellow-500">{{totalSum}}</span></div>
-                        <!-- Цена за выбранное количество (можно динамически менять через JS/Vue) -->
+                        <div class="py-2 text-white font-lobster">Итого: <span class="text-yellow-400">{{totalSum}}</span></div>
+
                         <div class="flex flex-row font-comic justify-between">
                             <div>
                                 <button @click.prevent="addOrder" class="w-full  bg-green-900/60 hover:bg-green-900/70 text-white ring-2 ring-white font-semibold px-2 py-3 rounded transition">

@@ -16,12 +16,21 @@ class CategoryController extends Controller
 
     public function categoryProductShow(Category $category)
     {
-        $categories = Category::query()->whereNull('parent_id')->with('children')->get();
 
         $product = $category->products();
+        $products = $product->with('priceTiers')->get()->map(function ($product) {
+            $minPrice = $product->priceTiers->sortBy('price')->first()?->price;
+
+            return [
+                'title' => $product->title,
+                'image_url' => $product->image_url,
+                'slug' => $product->slug,
+                'size' => $product->size,
+                'min_price' => $minPrice,
+            ];
+        });
         return Inertia::render('Product/Index', [
-            'products' => $product->select(['id','title', 'image_url', 'sale_price', 'slug'])->get(),
-            'categories' => $categories
+            'products' => $products,
         ]);
     }
 

@@ -17,10 +17,20 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $products = Product::with('priceTiers')->get()->map(function ($product) {
+            $minPrice = $product->priceTiers->sortBy('price')->first()?->price;
+
+            return [
+                'title' => $product->title,
+                'image_url' => $product->image_url,
+                'slug' => $product->slug,
+                'size' => $product->size,
+                'min_price' => $minPrice,
+            ];
+        });
+
         return Inertia::render('Product/Index', [
-            'products' => Product::query()->select(['id','title', 'image_url', 'sale_price', 'slug'])->get(),
-            'categories' => Category::all(),
-            'breadcrumbs' => Breadcrumbs::generate('product.index'),
+            'products' => $products,
         ]);
     }
 
@@ -45,9 +55,10 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+
         return Inertia::render('Product/Show', [
             'product' => $product,
-            'breadcrumbs' => Breadcrumbs::generate('product.show', $product)
+            'priceTiers' => $product->price('price', 'from_quantity')
         ]);
     }
 
@@ -55,15 +66,25 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         $query = $request->query_string;
-        $products = DB::table('products')
+        $products = Product::with('priceTiers')
             ->where('title', 'LIKE', "%$query%")
-            ->get();;
+            ->get()
+            ->map(function ($product) {
+                $minPrice = $product->priceTiers->sortBy('price')->first()?->price;
 
-       return Inertia::render('Product/Index', [
-           'products' => $products,
-           'categories' => Category::all(),
-           'breadcrumbs' => Breadcrumbs::generate('product.index')
-       ]);
+                return [
+                    'title' => $product->title,
+                    'image_url' => $product->image_url,
+                    'slug' => $product->slug,
+                    'size' => $product->size,
+                    'min_price' => $minPrice,
+                ];
+            });;
+
+        return Inertia::render('Product/Index', [
+            'products' => $products,
+
+        ]);
     }
 
 
