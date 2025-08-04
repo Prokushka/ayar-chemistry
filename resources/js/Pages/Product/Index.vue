@@ -52,7 +52,7 @@ export default {
                 </p>
                 <div class="text-white text-xl text-center w-full line-clamp-3 font-lobster flex justify-between  pt-2" >
                             <span class="text-xl  font-bold place-content-center">
-                               от <span class="text-yellow-500 text-[1.2em]"> {{ product.min_price }}</span> руб.
+                               от <span class="text-yellow-500 text-[1.2em]"> {{ product.min_price }}</span> ₽
                             </span>
                     <div >
                         <span class="text-white text-2xl font-semibold mr-3">{{product.size}} </span>

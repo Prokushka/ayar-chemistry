@@ -1,10 +1,11 @@
 <script setup xmlns="http://www.w3.org/1999/html">
 
 import {Link, router, usePage} from "@inertiajs/vue3";
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, useTemplateRef} from "vue";
 import {animate} from "animejs";
 import {useLayoutStore} from "@/stores/layout.js";
 import {useUserStore} from "@/stores/user.js";
+import Categories from "@/Components/Categories.vue";
 
 const layout = useLayoutStore()
 
@@ -114,8 +115,11 @@ function searchProduct(){
 }
 const categories = computed(() => usePage().props.categories)
 
+function createCategoryLayout(){
+    const list = useTemplateRef('categoryList')
 
-
+}
+onMounted(() => createCategoryLayout())
 function categoryShow(slug){
     router.visit(route('product.category.show', slug))
 }
@@ -173,17 +177,12 @@ function categoryShow(slug){
 
         </div>
         <div v-if="!visionMenu" class="z-60" >
-            <div class="flex space-y-4 flex-col font-rubick text-xl font-semibold justify-center">
-                <div v-for="category in categories" class="flex   flex-col text-center text-white">
-                    <div @click.prevent="categoryShow(category.slug)">
-                        {{ category.title }}
-                        <div class="h-0.5 bg-yellow-400 w-full my-2">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+            <Categories
+                v-for="category in categories"
+                :key="category.id"
+                :category="category"
+            />
+        </div><!--break-words whitespace-normal-->
     </div>
     <div class="w-full bg-green-950 py-2">
         <div  v-if="layout.isMobile && visionMenu" class="z-50 absolute top-1 left-0 rounded-md z-50 text-white text-3xl  transform bg-green-950 p-2 ">

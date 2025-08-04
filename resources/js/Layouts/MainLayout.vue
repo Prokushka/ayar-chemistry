@@ -8,6 +8,7 @@ import {useUserStore} from "@/stores/user.js";
 import {computed, onMounted, ref, watch} from 'vue'
 import { usePage } from '@inertiajs/vue3'
 import {animate} from "animejs";
+import Categories from "@/Components/Categories.vue";
 
 const layout = useLayoutStore()
 const user = useUserStore()
@@ -154,17 +155,15 @@ onMounted(() => console.log(categories.value))
                 </template>
                 </div>
             </nav>
-            <div id="right-cat-menu" v-if="openCategoryMenu" class="absolute rounded-l-xl h-screen bg-green-950 right-0 top-0 w-1/5 ">
-                <div class="pt-24 text-white font-rubick font-bold space-y-4 ">
-                    <div v-for="category in categories" class="flex flex-row justify-center ">
-                        <div class="" @click.prevent="categoryShow(category.slug)">
-                            {{ category.title }}
-                            <div class="h-0.5 bg-yellow-400 w-full my-1">
+            <div id="right-cat-menu" v-if="openCategoryMenu" class="absolute text-white font-rubick font-bold rounded-l-xl h-screen bg-green-950 right-0 top-0 w-1/5 ">
+                <div class="text-4xl  text-center pt-12">Категории</div>
+                <div class="pt-12  space-y-4 ">
 
-                            </div>
-                        </div>
-
-                    </div>
+                    <Categories
+                        v-for="category in categories"
+                        :key="category.id"
+                        :category="category"
+                    />
                 </div>
             </div>
         </header>
