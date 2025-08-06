@@ -76,6 +76,7 @@ class ProductController extends Controller
         $query = $request->query_string;
         $products = Product::with('priceTiers')
             ->where('title', 'LIKE', "%$query%")
+            ->where('is_active', 1)
             ->get()
             ->map(function ($product) {
                 $minPrice = $product->priceTiers->sortBy('price')->first()?->price;

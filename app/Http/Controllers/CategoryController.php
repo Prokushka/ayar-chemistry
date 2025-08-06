@@ -18,7 +18,7 @@ class CategoryController extends Controller
     {
 
         $product = $category->products();
-        $products = $product->with(['priceTiers', 'priceEvent'])->get()->map(function ($product) {
+        $products = $product->where('is_active', 1)->with(['priceTiers', 'priceEvent'])->get()->map(function ($product) {
             $minPrice = $product->priceTiers->sortBy('price')->first()?->price;
 
             return [
