@@ -74,7 +74,7 @@ function getCategories(event){
         },
         x: {
             from: '0px',
-            to: '-55dvw',
+            to: '-57dvw',
             ease: 'outCubic',
         },
         rotate: {
@@ -196,7 +196,7 @@ function categoryShow(slug){
             </div>
 
         </div>
-        <div id="cat-list" v-if="layout.isMobile && visionCat" class="z-50 absolute top-0 right-1 rounded-md z-50 text-white text-3xl mt-1 transform bg-green-950 p-2 ">
+        <div id="cat-list" :class="{'bg-green-950' : visionCat}" v-if="layout.isMobile && visionCat" class="z-50 absolute top-0 right-1 rounded-md z-50 text-white text-3xl mt-1 transform  p-2 ">
             <i @click.prevent="getCategories($event)" class="ri-equalizer-3-fill "></i>
         </div>
     </div>
