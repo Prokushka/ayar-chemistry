@@ -63,7 +63,7 @@ function statusColor(status){
         case 'Новый':
             return 'bg-yellow-600'
         case 'В обработке':
-            return 'bg-orange-400'
+            return 'bg-orange-500'
         case 'Подтверждён':
             return 'bg-green-700'
         case 'Отменён':
@@ -101,7 +101,7 @@ function orderComplete(id){
                         <tr v-if="orders" v-for="order in orders" class="border-b ">
                             <td class="px-4 py-3 text-center font-mono">{{order.id}}</td>
                             <td class="px-4 text-center   py-3">
-                                <span :class="statusColor(order.status)" class="inline-block px-2 py-1  text-xs rounded bg-orange-500 text-white">{{ order.status }}</span>
+                                <span :class="statusColor(order.status)" class="inline-block px-2 py-1  text-xs rounded text-white">{{ order.status }}</span>
                             </td>
                             <td class=" flex justify-center py-3">
 

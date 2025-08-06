@@ -35,10 +35,16 @@ class Product extends Model
     {
         return 'slug';
     }
-    public function priceTiers()
+    public function priceTiers(): BelongsToMany
     {
-        return $this->hasMany(PriceTier::class)->orderByDesc('from_quantity');
+        return $this->belongsToMany(PriceTier::class, 'price_tier_product', 'product_id')->orderByDesc('from_quantity');
     }
+
+    public function priceEvent(): BelongsTo
+    {
+        return $this->BelongsTo(PriceEvent::class, 'price_event_id');
+    }
+
 
     public function priceForQuantity($quantity)
     {

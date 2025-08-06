@@ -9,6 +9,7 @@ use App\Models\Product;
 
 
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
+use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Fields\Slug;
 use MoonShine\Laravel\Resources\ModelResource;
@@ -44,9 +45,8 @@ class ProductResource extends ModelResource
         return [
             ID::make()->sortable(),
             Text::make('Наименование товара', 'title'),
-            Number::make('цена продажи', 'sale_price'),
             Number::make('кол-во товара', 'quantity'),
-
+            BelongsTo::make('Ивент','priceEvent', resource: PriceEventResource::class, formatted: 'title')
         ];
     }
 
@@ -68,8 +68,10 @@ class ProductResource extends ModelResource
                        BelongsTo::make('Категория', 'category',
                            formatted: fn($item) => "$item->title" , resource: CategoryResource::class),
                        Text::make('Вес/объём', 'size'),
-                       HasMany::make('Оптовые цены', 'priceTiers', resource: PriceTierResource::class)->relatedLink()->creatable()
-
+                       BelongsToMany::make('Оптовые цены', 'priceTiers',
+                           resource: PriceTierResource::class, formatted: fn($item) => "от $item->from_quantity шт. - $item->price руб.")
+                          ->asyncSearch('from_quantity')->selectMode()
+                           ->placeholder('Поиск по кол-ву товара')
 
 
                    ])
@@ -78,6 +80,7 @@ class ProductResource extends ModelResource
                     Box::make('Необязательные поля', [
                         Slug::make('Slug')
                             ->from('title'),
+                        BelongsTo::make('Ивент','priceEvent', resource: PriceEventResource::class, formatted: 'title')->nullable()->creatable(),
                         Number::make('цена закупа', 'purchase_price')->buttons()->min(0)->step(0.01),
                         Text::make('описание', 'description'),
                         Text::make('sku', 'sku'),
@@ -99,7 +102,6 @@ class ProductResource extends ModelResource
 
                         ID::make(),
                         Text::make('Наименование товара', 'title')->reactive(),
-                        Number::make('цена продажи', 'sale_price'),
                         Image::make('Фото', 'image_url')->extraAttributes(
                             fn(string $filename, int $index): ?FileItemExtra => new FileItemExtra(wide: false, auto: true, styles: 'width: 250px;')
                         ),

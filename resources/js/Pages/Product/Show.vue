@@ -13,6 +13,9 @@ const props = defineProps({
     },
     priceTiers:{
         type: Object
+    },
+    event:{
+        type: Object
     }
 })
 
@@ -52,7 +55,9 @@ function convertion(){
         <div class="z-20 max-w-4xl mx-auto xs:p-6  rounded-lg  bg-green-950   shadow-md text-white ">
             <div class="grid grid-cols-1 md:grid-cols-2  gap-8">
                 <!-- Фото товара -->
-                <div class="py-12 lg:mt-0">
+                <div class="py-12 lg:mt-0 relative overflow-hidden">
+                    <div v-if="event.color" :style="`background-color: ${event.color};`" class="absolute bg-red-700 text-white transform rotate-45 h-6 w-[180px] z-30 text-center font-semibold font-rubick top-8 -right-10">
+                        {{ event.title }}</div>
                     <img v-if="product && product.image_url" :src="`/storage/${product.image_url}`"
                          alt="Фото товара"
                          class="w-full xs:h-96 object-contain rounded-lg " />

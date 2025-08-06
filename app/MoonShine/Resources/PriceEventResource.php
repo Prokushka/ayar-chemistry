@@ -5,25 +5,25 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\PriceTier;
+use App\Models\PriceEvent;
 
-use MoonShine\Laravel\Fields\Relationships\BelongsTo;
-use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
+use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Fields\Color;
 use MoonShine\UI\Fields\ID;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
-use MoonShine\UI\Fields\Number;
+use MoonShine\UI\Fields\Text;
 
 /**
- * @extends ModelResource<PriceTier>
+ * @extends ModelResource<PriceEvent>
  */
-class PriceTierResource extends ModelResource
+class PriceEventResource extends ModelResource
 {
-    protected string $model = PriceTier::class;
+    protected string $model = PriceEvent::class;
 
-    protected string $title = 'PriceTiers';
+    protected string $title = 'PriceEvents';
 
     /**
      * @return list<FieldContract>
@@ -32,8 +32,8 @@ class PriceTierResource extends ModelResource
     {
         return [
             ID::make()->sortable(),
-            Number::make('От количества', 'from_quantity'),
-            Number::make('Цена', 'price'),
+            Text::make('Название', 'title'),
+            Color::make('Цвет', 'color'),
         ];
     }
 
@@ -45,8 +45,8 @@ class PriceTierResource extends ModelResource
         return [
             Box::make([
                 ID::make(),
-                Number::make('От количества', 'from_quantity'),
-                Number::make('Цена', 'price'),
+                Text::make('Название', 'title'),
+                Color::make('Цвет', 'color'),
             ])
         ];
     }
@@ -58,13 +58,14 @@ class PriceTierResource extends ModelResource
     {
         return [
             ID::make(),
-            Number::make('От количества', 'from_quantity'),
-            Number::make('Цена', 'price'),
+            Text::make('Название', 'title'),
+            Color::make('Цвет', 'color'),
+            HasMany::make('Продукты', 'products')
         ];
     }
 
     /**
-     * @param PriceTier $item
+     * @param PriceEvent $item
      *
      * @return array<string, string[]|string>
      * @see https://laravel.com/docs/validation#available-validation-rules

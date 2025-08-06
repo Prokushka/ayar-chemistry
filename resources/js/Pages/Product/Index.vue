@@ -40,17 +40,20 @@ export default {
         </div>-->
 
         <div v-if="products.length > 0"  class="flex justify-center place-self-center bg-green-950/70 py-10 rounded-md shadow-xl shadow-green-90/70 ring-2 ring-green-950 w-11/12  grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-24 items-center justify-items-center  ">
-            <div v-for="product in products" class="rounded-md shadow-md border border-gray-100 w-11/12   h-[420px]  p-4 shadow-green-950  relative  bg-green-950 flex place-content-center justify-between items-center flex-col">
-
+            <div v-for="product in products" class="rounded-md shadow-md shadow-xl overflow-hidden shadow-green-950 w-11/12  relative  h-[420px]  p-4   relative  bg-green-950 flex place-content-center justify-between items-center flex-col">
+                <div v-if="product.event_color" :style="`background-color: ${product.event_color};`" class="absolute bg-red-700 text-white transform rotate-45 h-6 w-[180px] z-30 text-center font-semibold font-rubick top-8 -right-10">
+                    {{ product?.event }}</div>
                 <img
                     :src="`/storage/${product.image_url}`"
-                    class="h-56 h-56 object-contain mb-4 rounded"
-                /><p class="text-white font-lobster font-semibold line-clamp-3 text-unwrap  text-center  text-2xl">
+                    class="h-56 h-56 object-contain mb-2 rounded"
+                /><p class="text-white  text-balance font-lobster font-semibold line-clamp-3   text-center  text-2xl">
                 <Link :href="route('product.show', product.slug)">
                     {{product.title}}
                 </Link>
                 </p>
-                <div class="text-white text-xl text-center w-full line-clamp-3 font-lobster flex justify-between  pt-2" >
+
+                <div class="text-white relative text-xl text-center w-full line-clamp-3 font-lobster flex justify-between  pt-3" >
+                    <div class="w-full absolute top-1 bg-yellow-400 h-0.5 "></div>
                             <span class="text-xl  font-bold place-content-center">
                                от <span class="text-yellow-500 text-[1.2em]"> {{ product.min_price }}</span> ₽
                             </span>

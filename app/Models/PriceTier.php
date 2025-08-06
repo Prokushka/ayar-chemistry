@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class PriceTier extends Model
 {
@@ -12,8 +13,8 @@ class PriceTier extends Model
     protected $guarded = [];
 
 
-    public function product(): BelongsTo
+    public function product(): BelongsToMany
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsToMany(Product::class, 'price_tier_product');
     }
 }

@@ -16,6 +16,7 @@ use App\MoonShine\Resources\UserResource;
 use App\MoonShine\Resources\OrderResource;
 use App\MoonShine\Resources\CategoryResource;
 use App\MoonShine\Resources\PriceTierResource;
+use App\MoonShine\Resources\PriceEventResource;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -35,6 +36,7 @@ class MoonShineServiceProvider extends ServiceProvider
                 OrderResource::class,
                 CategoryResource::class,
                 PriceTierResource::class,
+                PriceEventResource::class,
             ])
             ->pages([
                 ...$config->getPages(),

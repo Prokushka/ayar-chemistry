@@ -17,7 +17,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('priceTiers')->get()->map(function ($product) {
+        $products = Product::with(['priceTiers', 'priceEvent'])->where('is_active', 1)->get()->map(function ($product) {
             $minPrice = $product->priceTiers->sortBy('price')->first()?->price;
 
             return [
@@ -26,6 +26,8 @@ class ProductController extends Controller
                 'slug' => $product->slug,
                 'size' => $product->size,
                 'min_price' => $minPrice,
+                'event' => $product->priceEvent?->title,
+                'event_color' => $product->priceEvent?->color
             ];
         });
 
@@ -56,9 +58,15 @@ class ProductController extends Controller
     public function show(Product $product)
     {
 
+
         return Inertia::render('Product/Show', [
             'product' => $product,
-            'priceTiers' => $product->price('price', 'from_quantity')
+            'priceTiers' => $product->price('price', 'from_quantity'),
+            'event' => [
+               'title' => $product->priceEvent?->title,
+               'color' => $product->priceEvent?->color,
+            ]
+
         ]);
     }
 

@@ -18,7 +18,7 @@ class CategoryController extends Controller
     {
 
         $product = $category->products();
-        $products = $product->with('priceTiers')->get()->map(function ($product) {
+        $products = $product->with(['priceTiers', 'priceEvent'])->get()->map(function ($product) {
             $minPrice = $product->priceTiers->sortBy('price')->first()?->price;
 
             return [
@@ -27,6 +27,8 @@ class CategoryController extends Controller
                 'slug' => $product->slug,
                 'size' => $product->size,
                 'min_price' => $minPrice,
+                'event' => $product->priceEvent?->title,
+                'event_color' => $product->priceEvent?->color
             ];
         });
         return Inertia::render('Product/Index', [

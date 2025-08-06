@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\Product;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -23,8 +24,19 @@ Route::get('/', function (?Request $request) {
         ]);
         Log::info('token placed');
     }
+    $products = Product::with('priceTiers')->where('is_active', 1)->limit(4)->get()->map(function ($product) {
+        $minPrice = $product->priceTiers->sortBy('price')->first()?->price;
+
+        return [
+            'title' => $product->title,
+            'image_url' => $product->image_url,
+            'slug' => $product->slug,
+            'size' => $product->size,
+            'min_price' => $minPrice,
+        ];
+    });
     return Inertia::render('Welcome', [
-        'products' => \App\Models\Product::query()->limit(4)->get(),
+        'products' => $products
 
     ]);
 })->name('main');

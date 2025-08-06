@@ -308,8 +308,8 @@ const isAuth = computed(() => userStore.isAuth)
             </div>
 <!--    classic containers        -->
             <div class="relative z-10 flex flex-col items-center justify-center space-y-12  text-white font-lobster ">
-                <div id="text2" :class="{'animate-text-up': firstAnimation}" class="container xs:text-[32px] xs:text-4xl text-center md:text-5xl lg:text-7xl xs:pb-12 xs:pb-16 md:pb-24 lg:pb-32 items-center lg:text-center">
-                    Почему стоит брать у наc?
+                <div id="text2" :class="{'animate-text-up': firstAnimation}" class="xs:text-[40px] font-rubick font-semibold xs:text-4xl w-11/12 text-center md:text-5xl lg:text-7xl xs:pb-12 xs:pb-16 md:pb-24 lg:pb-32 items-center lg:text-center">
+                    Почему стоит <p v-if="layout.isMobile" >брать у наc?</p><span v-if="!layout.isMobile" >брать у наc?</span>
                 </div>
                 <img :class="{'animate-roll-right ': firstAnimation}" id="cleaning_logo" @click.prevent="rotateFirstLogo($event)" src="/stickers/cleaning_logo.png" class="absolute xs:hidden lg:block overflow-hidden xs:opacity-25 lg:opacity-75 z-30 xs:-left-[38%] lg:-left-[32%]  xs:top-[15%] md:top-[20%]  rounded-[100%]">
                 <img id="cleaning_more_logo" src="/stickers/more_cleaning_logo.png" :class="{'animate-roll-left': secondAnimation}" @click.prevent="rotateSecondLogo($event)" class=" overflow-hidden absolute xs:hidden lg:block xs:opacity-25 z-50 lg:opacity-75 xs:top-[50%] lg:top-[35%] xs:-right-[48%] lg:-right-[34%] bottom-[35%]  rounded-[100%]">
@@ -341,83 +341,123 @@ const isAuth = computed(() => userStore.isAuth)
                 </div>
             </div>
 
-            <div v-if="products.length > 3" >
-                <div class=" w-full text text-white font-lobster xs:text-[32px] xs:text-4xl place-content-center text-center md:text-5xl lg:text-7xl xs:pb-28 xs:pb-32 md:pb-48 lg:pb-52  items-center lg:text-7xl">
+            <div class="flex-row justify-center items-center" v-if="products.length > 3" >
+                <div class=" w-full text text-white font-rubick font-semibold xs:text-[32px] xs:text-4xl place-content-center text-center md:text-5xl lg:text-7xl xs:pb-28 xs:pb-32 md:pb-48 lg:pb-52  items-center lg:text-7xl">
                     Популярные товары
                 </div>
-                <div  class="flex justify-center place-self-center bg-green-950/70 py-10 rounded-md shadow-xl shadow-green-90/70 ring-2 ring-green-950 w-11/12 grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-36 items-center justify-items-center  ">
-                    <div id="popular-1"  class="rounded-md shadow-md border border-gray-100 w-[98%] min-h-[370px]    p-10 pt-24 shadow-green-950 h-auto relative space-y-3 bg-green-950 flex place-content-center items-center flex-col">
+                <div  class="flex justify-center place-self-center bg-green-950/70 py-10 rounded-md shadow-xl shadow-green-900/70 ring-2 ring-green-950 w-11/12 grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-36 items-center justify-items-center  ">
+                    <div id="popular-1"  class="rounded-md shadow-xl w-[95%] min-h-[340px]    px-10 pt-20 shadow-green-950 h-auto relative space-y-3 bg-green-950 flex justify-end items-center flex-col">
 
-                        <img :src="`/storage/${ products[0].image_url ?? ''}`" class="absolute w-48 -top-4 left-1/2   -translate-y-1/2 -translate-x-1/2 transform hover:-top-8 duration-500 ease-in-out   items-center" >
+                        <img :src="`/storage/${ products[0].image_url}`" class="absolute w-48 -top-4 left-1/2   -translate-y-1/2 -translate-x-1/2 transform hover:-top-8 duration-500 ease-in-out   items-center" >
 
-                            <p class="text-white line-clamp-3   font-lobster font-semibold  text-center  text-3xl">
-                                {{ products[0].title }}
-                            </p>
-                            <div class="w-full bg-yellow-400 h-0.5 "></div>
-                            <div class="w-full bg-yellow-400 h-0.5"></div>
-                            <div class="text-white text-xl text-center text- line-clamp-3 font-lobster flex justify-between  pt-2" >
-                            <span class="text-xl absolute bottom-8 left-8 font-bold place-content-center">
-                                <span class="text-yellow-500 text-[1.2em]">{{ products[0].sale_price }}</span> руб.
+                        <p class=" text-balance text-white line-clamp-3   font-lobster font-semibold  text-center  text-3xl">
+                            <Link :href="route('product.show', products[0].slug)"> {{ products[0].title }} </Link>
+                        </p>
+
+                        <div class="text-white text-xl relative text-center w-full line-clamp-3 font-lobster flex justify-between pb-4  pt-2" >
+                            <div class="w-full bg-yellow-400 h-0.5 absolute top-0 "></div>
+                            <span class="text-xl  font-bold place-content-center">
+                               от <span class="text-yellow-500 text-[1.2em]"> {{ products[0].min_price }}</span> ₽
                             </span>
-                                <Link class="bottom-6 right-8 absolute" :href="route('product.show', products[0].slug)"><button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg hover:text-yellow-500  hover:border-white transform duration-500 ease-out">  <i class="ri-luggage-cart-fill"></i> </button></Link>
+                            <div >
+                                <span class="text-white text-2xl font-semibold mr-3">{{products[0].size}} </span>
+                                <Link :href="route('product.show', products[0].slug)">
+                                    <button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg
+                                hover:text-yellow-500 hover:bg-gray-200  hover:border-white transform duration-500 ease-out">
+                                        <i class="ri-luggage-cart-fill"></i>
+                                    </button>
+
+                                </Link>
                             </div>
 
+                        </div>
+
                     </div>
-                    <div id="popular-2"  class="rounded-md shadow-md border border-gray-100 w-[98%] min-h-[370px]    p-10 pt-24 shadow-green-950 h-auto relative space-y-3 bg-green-950 flex place-content-center items-center flex-col">
+                    <div id="popular-2"  class="rounded-md shadow-xl w-[95%] min-h-[340px]    px-10 pt-20 shadow-green-950 h-auto relative space-y-3 bg-green-950 flex justify-end items-center flex-col">
 
                         <img :src="`/storage/${ products[1].image_url}`" class="absolute w-48 -top-4 left-1/2   -translate-y-1/2 -translate-x-1/2 transform hover:-top-8 duration-500 ease-in-out   items-center" >
 
-                        <p class="text-white line-clamp-3   font-lobster font-semibold  text-center  text-3xl">
-                            {{ products[1].title }}
+                        <p class=" text-balance text-white line-clamp-3   font-lobster font-semibold  text-center  text-3xl">
+                            <Link :href="route('product.show', products[1].slug)"> {{ products[1].title }} </Link>
                         </p>
-                        <div class="w-full bg-yellow-400 h-0.5 "></div>
-                        <div class="w-full bg-yellow-400 h-0.5"></div>
-                        <div class="text-white text-xl text-center text- line-clamp-3 font-lobster flex justify-between  pt-2" >
-                            <span class="text-xl absolute bottom-8 left-8 font-bold place-content-center">
-                                <span class="text-yellow-500 text-[1.2em]">{{ products[1].sale_price }}</span> руб.
+
+                        <div class="text-white text-xl relative text-center w-full line-clamp-3 font-lobster flex justify-between pb-4  pt-2" >
+                            <div class="w-full bg-yellow-400 h-0.5 absolute top-0 "></div>
+                            <span class="text-xl  font-bold place-content-center">
+                               от <span class="text-yellow-500 text-[1.2em]"> {{ products[1].min_price }}</span> ₽
                             </span>
-                            <Link class="bottom-6 right-8 absolute" :href="route('product.show', products[1].slug)"><button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg hover:text-yellow-500  hover:border-white transform duration-500 ease-out">  <i class="ri-luggage-cart-fill"></i> </button></Link>
+                            <div >
+                                <span class="text-white text-2xl font-semibold mr-3">{{products[1].size}} </span>
+                                <Link :href="route('product.show', products[1].slug)">
+                                    <button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg
+                                hover:text-yellow-500 hover:bg-gray-200  hover:border-white transform duration-500 ease-out">
+                                        <i class="ri-luggage-cart-fill"></i>
+                                    </button>
+
+                                </Link>
+                            </div>
+
                         </div>
 
                     </div>
-                    <div id="popular-3"  class="rounded-md shadow-md border border-gray-100 w-[98%] min-h-[370px]    p-10 pt-24 shadow-green-950 h-auto relative space-y-3 bg-green-950 flex place-content-center items-center flex-col">
+                    <div id="popular-3"  class="rounded-md shadow-xl w-[95%] min-h-[340px]    px-10 pt-20 shadow-green-950 h-auto relative space-y-3 bg-green-950 flex justify-end items-center flex-col">
 
                         <img :src="`/storage/${ products[2].image_url}`" class="absolute w-48 -top-4 left-1/2   -translate-y-1/2 -translate-x-1/2 transform hover:-top-8 duration-500 ease-in-out   items-center" >
 
-                        <p class="text-white line-clamp-3   font-lobster font-semibold  text-center  text-3xl">
-                            {{ products[2].title }}
+                        <p class=" text-balance text-white line-clamp-3   font-lobster font-semibold  text-center  text-3xl">
+                            <Link :href="route('product.show', products[2].slug)"> {{ products[2].title }} </Link>
                         </p>
-                        <div class="w-full bg-yellow-400 h-0.5 "></div>
-                        <div class="w-full bg-yellow-400 h-0.5"></div>
-                        <div class="text-white text-xl text-center text- line-clamp-3 font-lobster flex justify-between  pt-2" >
-                            <span class="text-xl absolute bottom-8 left-8 font-bold place-content-center">
-                                <span class="text-yellow-500 text-[1.2em]">{{ products[2].sale_price }}</span> руб.
+
+                        <div class="text-white text-xl relative text-center w-full line-clamp-3 font-lobster flex justify-between pb-4  pt-2" >
+                            <div class="w-full bg-yellow-400 h-0.5 absolute top-0 "></div>
+                            <span class="text-xl  font-bold place-content-center">
+                               от <span class="text-yellow-500 text-[1.2em]"> {{ products[2].min_price }}</span> ₽
                             </span>
-                            <Link class="bottom-6 right-8 absolute" :href="route('product.show', products[2].slug)"><button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg hover:text-yellow-500  hover:border-white transform duration-500 ease-out">  <i class="ri-luggage-cart-fill"></i> </button></Link>
+                            <div >
+                                <span class="text-white text-2xl font-semibold mr-3">{{products[2].size}} </span>
+                                <Link :href="route('product.show', products[2].slug)">
+                                    <button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg
+                                hover:text-yellow-500 hover:bg-gray-200  hover:border-white transform duration-500 ease-out">
+                                        <i class="ri-luggage-cart-fill"></i>
+                                    </button>
+
+                                </Link>
+                            </div>
+
                         </div>
 
                     </div>
-                    <div id="popular-4"  class="rounded-md shadow-md border border-gray-100 w-[98%] min-h-[370px]    p-10 pt-24 shadow-green-950 h-auto relative space-y-3 bg-green-950 flex place-content-center items-center flex-col">
+                    <div id="popular-4"  class="rounded-md shadow-xl w-[95%] min-h-[340px]    px-10 pt-20 shadow-green-950 h-auto relative space-y-3 bg-green-950 flex justify-end items-center flex-col">
 
                         <img :src="`/storage/${ products[3].image_url}`" class="absolute w-48 -top-4 left-1/2   -translate-y-1/2 -translate-x-1/2 transform hover:-top-8 duration-500 ease-in-out   items-center" >
 
-                        <p class="text-white line-clamp-3   font-lobster font-semibold  text-center  text-3xl">
-                            {{ products[3].title }}
+                        <p class=" text-balance text-white line-clamp-3   font-lobster font-semibold  text-center  text-3xl">
+                            <Link :href="route('product.show', products[3].slug)"> {{ products[3].title }} </Link>
                         </p>
-                        <div class="w-full bg-yellow-400 h-0.5 "></div>
-                        <div class="w-full bg-yellow-400 h-0.5"></div>
-                        <div class="text-white text-xl text-center text- line-clamp-3 font-lobster flex justify-between  pt-2" >
-                            <span class="text-xl absolute bottom-8 left-8 font-bold place-content-center">
-                                <span class="text-yellow-500 text-[1.2em]">{{ products[3].sale_price }}</span> руб.
+
+                        <div class="text-white text-xl relative text-center w-full line-clamp-3 font-lobster flex justify-between pb-4  pt-2" >
+                            <div class="w-full bg-yellow-400 h-0.5 absolute top-0 "></div>
+                            <span class="text-xl  font-bold place-content-center">
+                               от <span class="text-yellow-500 text-[1.2em]"> {{ products[3].min_price }}</span> ₽
                             </span>
-                            <Link class="bottom-6 right-8 absolute" :href="route('product.show', products[3].slug)"><button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg hover:text-yellow-500  hover:border-white transform duration-500 ease-out">  <i class="ri-luggage-cart-fill"></i> </button></Link>
+                            <div >
+                                <span class="text-white text-2xl font-semibold mr-3">{{products[3].size}} </span>
+                                <Link :href="route('product.show', products[3].slug)">
+                                    <button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg
+                                hover:text-yellow-500 hover:bg-gray-200  hover:border-white transform duration-500 ease-out">
+                                        <i class="ri-luggage-cart-fill"></i>
+                                    </button>
+
+                                </Link>
+                            </div>
+
                         </div>
 
                     </div>
 
                 </div>
                 <div class="bg-green-950
-                text-white xl:text-5xl lg:text-4xl font-lobster p-5 mt-12 xs:text-xl md:text-3xl w-auto ring-2 text-center  place-self-center ring-yellow-500 rounded-full">
+                text-white lg:text-4xl font-rubick font-semibold p-6 mt-12 xs:text-xl md:text-3xl w-auto ring-2 text-center  place-self-center ring-yellow-500 rounded-full">
                     <Link :href="route('product.index')" >
                         Посмотреть все товары
                     </Link>
@@ -551,7 +591,7 @@ const isAuth = computed(() => userStore.isAuth)
                     <!-- If we need scrollbar -->
                     <div class="swiper-scrollbar"></div>
                 </div>
-                <div id="dovolny" :class="{'animate-slide-left': dovolny}" class="  w-full  xs:text-center  xs:text-3xl lg:text-end md:text-5xl pb-2 lg:text-7xl font-lobster ">
+                <div id="dovolny" :class="{'animate-slide-left': dovolny}" class="  w-full  xs:text-center  xs:text-3xl lg:text-end lg:pr-24 md:text-5xl pb-2 lg:text-7xl font-lobster ">
                     И остались <span class="text-yellow-500">довольны</span>
                 </div>
             </div>
@@ -561,7 +601,7 @@ const isAuth = computed(() => userStore.isAuth)
 
                 <div id="mapPage" class=" absolute z-0  w-[30dvw]   h-[30dvw] rounded-[100%] top-0 -left-[30dvw] bg-green-950 "></div>
                 <div class="flex flex-col items-center z-0 space-y-12 ">
-                    <span class="text-white xs:-bottom-3/4 lg:-bottom-[36%] text-center lg:-right-[45%] xs:text-3xl w-11/12 md:text-5xl lg:text-7xl font-lobster  py-10 ">
+                    <span class="text-white xs:-bottom-3/4 lg:-bottom-[36%] text-center lg:-right-[45%] xs:text-3xl xs:w-11/12 md:w-full md:text-5xl lg:text-7xl font-rubick font-semibold  py-10 ">
                         Как до нас добраться?
                     </span>
                     <div id="map" v-if="!layout.isMobile" style="width: 800px; height: 500px"></div>

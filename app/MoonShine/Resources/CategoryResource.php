@@ -11,6 +11,7 @@ use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Fields\Slug;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
 use MoonShine\Contracts\UI\FieldContract;
@@ -35,6 +36,7 @@ class CategoryResource extends ModelResource
             ID::make()->sortable(),
             Text::make('Наименование', 'title'),
             Slug::make('Slug', 'slug')->from('title'),
+            BelongsTo::make('Родитель', 'parent', 'title' , CategoryResource::class)->nullable(),
         ];
     }
 
@@ -48,7 +50,10 @@ class CategoryResource extends ModelResource
                 ID::make(),
                 Text::make('Наименование', 'title'),
                 Slug::make('Slug', 'slug')->from('title'),
-                BelongsTo::make('Родитель', 'parent', 'title' , CategoryResource::class)->nullable(),
+                BelongsTo::make('Родитель', 'parent', 'title' , CategoryResource::class)
+                    ->nullable(),
+                HasMany::make('Дети', 'children', 'title' , CategoryResource::class)->nullable()
+                    ->creatable()
             ])
         ];
     }
@@ -63,7 +68,7 @@ class CategoryResource extends ModelResource
             Text::make('Наименование', 'title'),
             Slug::make('Slug', 'slug')->from('title'),
             BelongsTo::make('Родитель', 'parent', 'title' , CategoryResource::class)->nullable(),
-            HasMany::make('Дети', 'children', 'title' , CategoryResource::class)->nullable()
+            HasMany::make('Дети', 'children', 'title' , CategoryResource::class)->nullable()->creatable()
         ];
     }
 
