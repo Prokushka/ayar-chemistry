@@ -40,6 +40,10 @@ return [
         'my_id' => env('MY_USER_ID'),
         'refresh_token' => env('REFRESH_API_TOKEN'),
        // 'access_token' => env('ACCESS_API_TOKEN')
+    ],
+    'gigachat' => [
+        'secret' => env('GIGACHAT_API_SECRET'),
+        'client' => env('GIGACHAT_API_CLIENT')
     ]
 
 ];

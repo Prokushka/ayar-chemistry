@@ -56,6 +56,7 @@ function convertion(){
             <div class="grid grid-cols-1 md:grid-cols-2  gap-8">
                 <!-- Фото товара -->
                 <div class="py-12 lg:mt-0 relative overflow-hidden">
+
                     <div v-if="event.color" :style="`background-color: ${event.color};`" class="absolute bg-red-700 text-white transform rotate-45 h-6 w-[180px] z-30 text-center font-semibold font-rubick top-8 -right-10">
                         {{ event.title }}</div>
                     <img v-if="product && product.image_url" :src="`/storage/${product.image_url}`"
@@ -66,8 +67,6 @@ function convertion(){
                 <div class="flex flex-col  justify-between">
                     <div class="">
                         <h1 v-if="product && product.title"  class="text-3xl text-center font-bold mb-2">{{ product.title }}</h1>
-
-                        <span v-if="product && product.sku"  class="text-white"> Артикул: {{ product.sku }}</span>
                         <p v-if="product && product.description" class=" my-6">
                            <span class="font-bold">Описание: </span>{{product.description}}
                         </p>
@@ -95,9 +94,12 @@ function convertion(){
                             </div>
                         </div><!--<div class="text-xl font-semibold text-white py-1 mb-4">В наличии: <span class="text-yellow-500">{{product?.quantity}} </span> шт.</div>-->
 
-                        <button @click.prevent="convertion" class="w-full bg-green-900/60 hover:bg-green-900/70 text-white ring-2 ring-white font-semibold py-3 rounded transition">
+                        <button v-if="product.is_active" @click.prevent="convertion" class="w-full bg-green-900/60 hover:bg-green-900/70 text-white ring-2 ring-white font-semibold py-3 rounded transition">
                             Добавить в корзину
                         </button>
+                        <div class="w-full py-3 font-rubick text-center text-2xl font-bold text-white" v-else>
+                            Нет в наличии
+                        </div>
                     </div>
 
 

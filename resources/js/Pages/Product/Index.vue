@@ -39,8 +39,10 @@ export default {
             </select>
         </div>-->
 
-        <div v-if="products.length > 0"  class="flex justify-center place-self-center bg-green-950/70 py-10 rounded-md shadow-xl shadow-green-90/70 ring-2 ring-green-950 w-11/12  grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-24 items-center justify-items-center  ">
+        <div v-if="products.length > 0"  class="flex justify-center place-self-center bg-green-950/70 py-10 rounded-md shadow-xl shadow-green-90/70 ring-2 ring-green-950 w-11/12  grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-6 items-center justify-items-center  ">
             <div v-for="product in products" class="rounded-md shadow-md shadow-xl overflow-hidden shadow-green-950 w-11/12  relative  h-[420px]  p-4   relative  bg-green-950 flex place-content-center justify-between items-center flex-col">
+                <div v-if="!product.is_active" class="absolute bg-yellow-700 rounded-lg text-white transform text-sm  h-5 w-[118px] z-50  text-center font-bold font-rubick top-[220px] right-4">
+                    Нет в Наличии</div>
                 <div v-if="product.event_color" :style="`background-color: ${product.event_color};`" class="absolute bg-red-700 text-white transform rotate-45 h-6 w-[180px] z-30 text-center font-semibold font-rubick top-8 -right-10">
                     {{ product?.event }}</div>
                 <img

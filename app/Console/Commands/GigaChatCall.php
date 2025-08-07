@@ -2,26 +2,24 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Services\AvitoSendMessage;
 use App\Http\Services\CallGigaChatAI;
-use App\Jobs\AvitoSendMessages;
 use Illuminate\Console\Command;
 
-class CallListenAvitoMessage extends Command
+class GigaChatCall extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'avito:msg';
+    protected $signature = 'gigachat:call {message}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Call a gigachat API with prompt';
 
     /**
      * Execute the console command.
@@ -29,6 +27,6 @@ class CallListenAvitoMessage extends Command
     public function handle()
     {
 
-        (new AvitoSendMessage())->sendMessage();
+       return (new CallGigaChatAI())->call($this->argument('message'));
     }
 }

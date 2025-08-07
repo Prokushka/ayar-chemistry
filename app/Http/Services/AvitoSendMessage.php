@@ -8,16 +8,26 @@ use Illuminate\Support\Facades\Http;
 
 class AvitoSendMessage
 {
-    public static function sendMessage()
+
+    private string  $userId;
+
+    private string $token;
+    public function __construct()
+    {
+        $this->userId = config('services.avito.my_id');
+        $this->token = (string) Cache::get('access_token');
+    }
+
+    public function sendMessage()
     {
 
         $token = Cache::get('access_token');
 
-        $userId = config('services.avito.my_id');
-        $response = Http::timeout(30)->retry(3, 500)->withHeader('Authorization',"Bearer $token")
+
+        $response = Http::timeout(30)->retry(3, 500)->withHeader('Authorization',"Bearer $this->token")
             ->withUrlParameters([
                 'domen' => 'https://api.avito.ru',
-                'user_id' => $userId
+                'user_id' => $this->userId
             ])
             ->get('{+domen}/messenger/v2/accounts/{user_id}/chats',[
                 'unread_only' => 'true',
@@ -25,7 +35,7 @@ class AvitoSendMessage
             ]);
 
         if ($response->failed()) {
-            self::refreshToken();
+            $this->refreshToken();
             return;
         }
 
@@ -37,14 +47,10 @@ class AvitoSendMessage
 
             for ($i = 0; $i < count($col['chats']); $i++){
                 $chatId = $col['chats'][$i]['id'];
-                $price = false;
-                $lastMessage = $col['chats'][$i]['last_message']['content']['text'];
-                if (mb_strtolower($lastMessage) === 'прайс'){
-                    $message = 'https://drive.google.com/file/d/1_aPD5pxwKAUyJxyDejoMK5X3whbSlu54/view?usp=drive_link';
-                    $price = true;
-                }
-                else{
-                    $message = 'Здравствуйте. 🤝 Вас оптом интересует? Какие-то вопросы есть у вас? Напишите пожалуйста нам сюда на WhatApp. Наши номера для связи
+                $lastMessage = $this->countMessages($chatId);
+                $firstMessage = false;
+                if ($lastMessage === null){
+                    $sendMessage = 'Здравствуйте. 🤝 Вас оптом интересует? Какие-то вопросы есть у вас? Напишите пожалуйста нам сюда на WhatApp. Наши номера для связи
 
         https://wa.me/79934156684
         https://wa.me/79953664423
@@ -54,13 +60,26 @@ class AvitoSendMessage
         Ecли вам необходим прайс - напишите "Прайс"
 
         ';
+                    $firstMessage = true;
                 }
+                else{
+                    if (mb_strtolower($lastMessage) === 'прайс'){
+                        $sendMessage = 'https://drive.google.com/file/d/1_aPD5pxwKAUyJxyDejoMK5X3whbSlu54/view?usp=drive_link';
+                    }
+                    else{
+                        $sendMessage = CallGigaChatAI::call($lastMessage);
+                    }
+
+                }
+                //$lastMessage = $col['chats'][$i]['last_message']['content']['text'];
+
+
                 Http::timeout(30)->retry(3, 500)->withHeaders([
                     'Authorization' => "Bearer $token",
                 ])
                     ->withUrlParameters([
                         'domen' => 'https://api.avito.ru',
-                        'user_id' => $userId,
+                        'user_id' => $this->userId,
                         'chat_id' => $chatId
                     ])
                     ->post('{+domen}/messenger/v1/accounts/{user_id}/chats/{chat_id}/read');
@@ -69,27 +88,27 @@ class AvitoSendMessage
                 ])
                     ->withUrlParameters([
                         'domen' => 'https://api.avito.ru',
-                        'user_id' => $userId,
+                        'user_id' => $this->userId,
                         'chat_id' => $chatId
                     ])
                     ->post('{+domen}/messenger/v1/accounts/{user_id}/chats/{chat_id}/messages',[
                         'message' => [
-                            'text' => "$message",
+                            'text' => "$sendMessage",
                         ],
                         'type' => 'text',
                     ]);
-                if ($price === false){
+                if ($firstMessage === true){
                     Http::timeout(30)->retry(3, 500)->withHeaders([
                         'Authorization' => "Bearer $token",
                     ])
                         ->withUrlParameters([
                             'domen' => 'https://api.avito.ru',
-                            'user_id' => $userId,
+                            'user_id' => $this->userId,
                             'chat_id' => $chatId
                         ])
                         ->post('{+domen}/messenger/v1/accounts/{user_id}/chats/{chat_id}/messages',[
                             'message' => [
-                                'text' => "Также, вы можете более подробно ознакомиться с нашими товарами на сайте - https://ayar-chemistry.ru",
+                                'text' => "",
                             ],
                             'type' => 'text',
                         ]);
@@ -100,9 +119,31 @@ class AvitoSendMessage
         AvitoSendMessages::dispatch()->delay(now()->addSeconds(3));
     }
 
+    protected function countMessages( string $chatId): ?string
+    {
+        $arr = [];
+        $response = Http::timeout(30)->retry(3, 500)->withHeader('Authorization',"Bearer $this->token")
+            ->withUrlParameters([
+                'domen' => 'https://api.avito.ru',
+                'user_id' => $this->userId,
+                'chat_id' => $chatId
+            ])
+            ->get('{+domen}/messenger/v3/accounts/{user_id}/chats/{chat_id}/messages/',[
+                'limit' => 2
+            ]);
+        $res = $response->json();
+        foreach ($res['messages'] as $key => $message){
+            if ($message['type'] !== 'system'){
+                $arr[$key] = $message;
+            }
+        }
+        if (count($arr) > 1){
+            return $res['messages'][0]['content']['text'];
+        }
+        return null;
+    }
 
-
-    private static function refreshToken()
+    private function refreshToken(): void
     {
         $client = config('services.avito.client');
         $secret = config('services.avito.secret');

@@ -108,7 +108,7 @@ onMounted(() => console.log(categories.value))
                             <input @keyup.enter.prevent="searchProduct" v-model="search" class="rounded-md ring-2 mb-1 ring-yellow-600 text-gray-800  text-xl w-full placeholder:text-gray-500 placeholder:text-center" placeholder="Поиск" type="text" >
 
                         </div>
-                        <div id="cat-list"  class="z-50 absolute -top-1.5 -right-14 rig rounded-md z-50 text-white text-3xl mt-1 transform bg-green-950 p-2 ">
+                        <div id="cat-list"  class="z-50 absolute -top-1.5 -right-14 rig rounded-md z-50 text-white text-3xl mt-1 transform  p-2 ">
                             <i @click.prevent="getCategories" class="ri-equalizer-3-fill  "></i>
                         </div>
                     </div>

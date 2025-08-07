@@ -27,6 +27,7 @@ class AvitoTokenCreate extends Command
      */
     public function handle()
     {
+
         if (!$this->argument('token')) {
             $this->error('Token is missing');
             return Command::FAILURE;
@@ -49,9 +50,11 @@ class AvitoTokenCreate extends Command
             $this->error('Ошибка получения токена');
             return Command::FAILURE;
         }
-        $json = $token->json();
-        Cache::put('access_token' , $json['access_token'], now()->addDay());
-        Cache::put('refresh_token' , $json['refresh_token']);
-        return Command::SUCCESS;
+        if (!Cache::has('access_token')){
+            $json = $token->json();
+            Cache::put('access_token' , $json['access_token'], now()->addDay());
+            Cache::put('refresh_token' , $json['refresh_token']);
+            return Command::SUCCESS;
+        }
     }
 }
