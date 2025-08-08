@@ -108,7 +108,7 @@ class AvitoSendMessage
                         ])
                         ->post('{+domen}/messenger/v1/accounts/{user_id}/chats/{chat_id}/messages',[
                             'message' => [
-                                'text' => "",
+                                'text' => "Более подробно можно ознакомиться на нашем сайте - https://ayar-chemistry.ru",
                             ],
                             'type' => 'text',
                         ]);
@@ -148,27 +148,7 @@ class AvitoSendMessage
         $client = config('services.avito.client');
         $secret = config('services.avito.secret');
         $refresh = Cache::get('refresh_token');
-        if (!$refresh) {
-            $token = Http::timeout(30)->retry(3, 500)->asForm()->withUrlParameters([
-                'domen' => 'https://api.avito.ru',
-            ])
-                ->post('{+domen}/token',[
-                    'client_id' => $client,
-                    'client_secret' => $secret,
-                    'grant_type' => 'authorization_code',
-                    'code' => 'DQ9rNuugSyO1no8Y1xsGQg'
 
-                ]);
-
-            if ($token->failed()) {
-                \Log::error('Ошибка обновления токена Avito через authorization_code: ' . $token->body());
-                return;
-            }
-
-
-        }
-
-        else{
             $token = Http::timeout(30)->retry(3, 500)->asForm()->withUrlParameters([
                 'domen' => 'https://api.avito.ru',
             ])
@@ -182,7 +162,6 @@ class AvitoSendMessage
                 \Log::error('Ошибка обновления токена Avito через refresh_token: ' . $token->body());
                 return;
             }
-        }
 
         $json = $token->json();
         dump(Cache::get('access_token'));
