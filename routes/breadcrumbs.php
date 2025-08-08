@@ -29,7 +29,8 @@ Breadcrumbs::for('product.category.show', function (Diglactic\Breadcrumbs\Genera
 });
 
 // Конкретная категория
-Breadcrumbs::for('product.show', fn(Diglactic\Breadcrumbs\Generator $trail, Product $product) => [
+Breadcrumbs::for('product.show', fn(Diglactic\Breadcrumbs\Generator $trail, string $slug) => [
+    $product = Product::where('products.slug' , $slug)->first(),
     $trail->parent('product.category.show', $product->category)
         ->push($product->title, route('product.show', $product->slug))
 ]);

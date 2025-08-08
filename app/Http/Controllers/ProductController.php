@@ -7,6 +7,7 @@ use App\Models\Product;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -17,19 +18,21 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with(['priceTiers', 'priceEvent'])->get()->map(function ($product) {
-            $minPrice = $product->priceTiers->sortBy('price')->first()?->price;
+        $products = Cache::remember('products_list', 3600, function () {
+            return Product::with(['priceTiers', 'priceEvent'])->get()->map(function ($product) {
+                $minPrice = $product->priceTiers->sortBy('price')->first()?->price;
 
-            return [
-                'title' => $product->title,
-                'image_url' => $product->image_url,
-                'slug' => $product->slug,
-                'is_active' => $product->is_active,
-                'size' => $product->size,
-                'min_price' => $minPrice,
-                'event' => $product->priceEvent?->title,
-                'event_color' => $product->priceEvent?->color
-            ];
+                return [
+                    'title' => $product->title,
+                    'image_url' => $product->image_url,
+                    'slug' => $product->slug,
+                    'is_active' => $product->is_active,
+                    'size' => $product->size,
+                    'min_price' => $minPrice,
+                    'event' => $product->priceEvent?->title,
+                    'event_color' => $product->priceEvent?->color
+                ];
+            });
         });
 
         return Inertia::render('Product/Index', [
@@ -56,16 +59,18 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(string $slug)
     {
+        $product = Cache::remember('product_' . $slug,3600, function () use ($slug) {
+            return Product::where('slug', $slug)->firstOrFail();
 
-
+        });
         return Inertia::render('Product/Show', [
             'product' => $product,
             'priceTiers' => $product->price('price', 'from_quantity'),
             'event' => [
-               'title' => $product->priceEvent?->title,
-               'color' => $product->priceEvent?->color,
+                'title' => $product->priceEvent?->title,
+                'color' => $product->priceEvent?->color,
             ]
 
         ]);
