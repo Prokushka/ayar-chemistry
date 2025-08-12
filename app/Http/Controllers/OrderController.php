@@ -88,11 +88,11 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         /*quantity
-        product_id
+        position
         total_sum
         sale_price
         */
-        $product = Product::query()->find($request->product_id);
+        $product = Product::query()->find(array_key_first($request->position));
         $order = Order::query()
             ->where('user_id', auth()->id())
             ->where('status', 'Новый')->first();
@@ -104,16 +104,16 @@ class OrderController extends Controller
                 'user_id' => auth()->id(),
             ]);
         }
-        $profit = ($request->sale_price * $request->quantity) - ($product->purchase_price * $request->quantity);
-        $order->products()->attach($request->product_id, [
-            'purchase_price' => $product->purchase_price,
-            'sale_price' => $request->sale_price,
-            'quantity' => $request->quantity,
-            'profit' => $profit
-        ]);
 
-
-
+        foreach ($request->position as $key => $count){
+            $profit = ($request->sale_price * $count) - ($product->purchase_price * $count);
+            $order->products()->attach($key, [
+                'purchase_price' => $product->purchase_price,
+                'sale_price' => $request->sale_price,
+                'quantity' => $count,
+                'profit' => $profit
+            ]);
+        }
         return Inertia::render('Order/Index', [
            'orders' => Order::query()->where('user_id', auth()->id())
                ->where('status', '!=', 'Отменён')->get()
@@ -135,22 +135,28 @@ class OrderController extends Controller
 
     public function convertion(Request $request)
     {
+        $mainProduct = Product::find($request->id);
+        $containsPrice = $mainProduct->price('price', 'from_quantity');
 
-        $product = Product::query()->find($request->id);
+        $products = Product::where('sku', $mainProduct->sku)
+            ->orderByRaw("CASE WHEN id = ? THEN 0 ELSE 1 END", [$mainProduct->id])
+            ->get()
+            ->map(function ($product) {
 
-        $containsPrice = $product?->priceTiers()->get()->first(function (PriceTier $priceTier) use ($request){
-            return $priceTier->price == $request->total_price;
-        });
-
-        if (isset($containsPrice)){
-            return Inertia::render('Order/Convertion',[
-                'product' => [
+                return  [
                     'id' => $product->id,
+                    'slug' => $product->slug,
                     'title' => $product->title,
                     'image_url' => $product->image_url,
+                    'is_active' => $product->is_active,
+                ];
+            });
+        if (isset($containsPrice)){
+            return Inertia::render('Order/Convertion',[
+                    'products' => $products,
                     'salePrice' => $request->total_price,
-                    'min_quantity' => $containsPrice->from_quantity
-                ],
+                    'min_quantity' => $mainProduct->price( 'from_quantity')
+
             ]);
         }
         else{

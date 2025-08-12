@@ -72,7 +72,7 @@ class ProductResource extends ModelResource
                             resource: PriceTierResource::class, formatted: fn($item) => "от $item->from_quantity шт. - $item->price руб.")
                             ->asyncSearch('from_quantity')->selectMode()
                             ->placeholder('Поиск по кол-ву товара'),
-
+                        Text::make('sku', 'sku'),
                     ])
                 ]),
                 Column::make([
@@ -83,7 +83,6 @@ class ProductResource extends ModelResource
                         BelongsTo::make('Ивент', 'priceEvent', resource: PriceEventResource::class, formatted: 'title')->nullable()->creatable(),
                         Number::make('цена закупа', 'purchase_price')->buttons()->min(0)->step(0.01),
                         Text::make('описание', 'description'),
-                        Text::make('sku', 'sku'),
                     ])
                 ])
 

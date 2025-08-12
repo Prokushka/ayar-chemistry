@@ -24,3 +24,6 @@
 .bg-green{
     @apply bg-gradient-to-br from-green-950/95 via-green-900 to-green-950/90
 }
+.main-product::after {
+    @apply text-xl
+}

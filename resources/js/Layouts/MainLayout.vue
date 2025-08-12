@@ -72,7 +72,6 @@ const page = usePage()
 const categories = computed(() => page.props.categories)
 const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
 
-onMounted(() => console.log(categories.value))
 </script>
 
 <template>

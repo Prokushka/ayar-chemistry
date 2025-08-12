@@ -52,7 +52,7 @@ class Product extends Model
             ->where('from_quantity', '<=', $quantity)
             ->orderByDesc('from_quantity')
             ->first()
-            ?->price ?? $this->base_price;
+            ?->price;
     }
 
     public function price(...$values)
