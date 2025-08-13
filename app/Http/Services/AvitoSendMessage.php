@@ -15,7 +15,7 @@ class AvitoSendMessage
     public function __construct()
     {
         $this->userId = config('services.avito.my_id');
-        $this->token = (string) Cache::get('access_token');
+
     }
 
     public function sendMessage()
@@ -24,7 +24,7 @@ class AvitoSendMessage
         $token = Cache::get('access_token');
 
 
-        $response = Http::timeout(30)->retry(3, 500)->withHeader('Authorization',"Bearer $this->token")
+        $response = Http::timeout(30)->retry(3, 500)->withHeader('Authorization',"Bearer $token")
             ->withUrlParameters([
                 'domen' => 'https://api.avito.ru',
                 'user_id' => $this->userId
@@ -122,7 +122,8 @@ class AvitoSendMessage
     protected function countMessages( string $chatId): ?string
     {
         $arr = [];
-        $response = Http::timeout(30)->retry(3, 500)->withHeader('Authorization',"Bearer $this->token")
+        $token = Cache::get('access_token');
+        $response = Http::timeout(30)->retry(3, 500)->withHeader('Authorization',"Bearer $token")
             ->withUrlParameters([
                 'domen' => 'https://api.avito.ru',
                 'user_id' => $this->userId,
