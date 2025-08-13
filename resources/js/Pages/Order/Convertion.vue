@@ -57,7 +57,7 @@ watch(
     }
 
 );
-const remained = computed(() => props.min_quantity[0].from_quantity - summary.value > 0 ? props.min_quantity[0].from_quantity - summary.value : 0)
+const remained = computed(() => props.min_quantity - summary.value > 0 ? props.min_quantity - summary.value : 0)
 
 onMounted(() => console.log(props.min_quantity))
 const form = useForm({
@@ -66,7 +66,7 @@ const form = useForm({
     total_sum: 0,
     sale_price: null
 })
-const quantity = ref(props.min_quantity[0].from_quantity)
+const quantity = ref(props.min_quantity)
 const totalSum = computed(() => props.salePrice * summary.value)
 
 

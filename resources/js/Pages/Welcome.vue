@@ -341,7 +341,7 @@ const isAuth = computed(() => userStore.isAuth)
                 </div>
             </div>
 
-            <div class="flex-row justify-center items-center" v-if="products.length > 3" >
+            <div class="flex-col flex  justify-center items-center" v-if="products.length > 3" >
                 <div class=" w-full text text-white font-rubick font-semibold xs:text-[32px] xs:text-4xl place-content-center text-center md:text-5xl lg:text-7xl xs:pb-28 xs:pb-32 md:pb-48 lg:pb-52  items-center lg:text-7xl">
                     Популярные товары
                 </div>
@@ -360,7 +360,7 @@ const isAuth = computed(() => userStore.isAuth)
                                от <span class="text-yellow-500 text-[1.2em]"> {{ products[0].min_price }}</span> ₽
                             </span>
                             <div >
-                                <span class="text-white text-2xl font-semibold mr-3">{{products[0].size}} </span>
+                                <span class="text-white text-xl font-semibold mr-3">{{products[0].size}} </span>
                                 <Link :href="route('product.show', products[0].slug)">
                                     <button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg
                                 hover:text-yellow-500 hover:bg-gray-200  hover:border-white transform duration-500 ease-out">
@@ -387,7 +387,7 @@ const isAuth = computed(() => userStore.isAuth)
                                от <span class="text-yellow-500 text-[1.2em]"> {{ products[1].min_price }}</span> ₽
                             </span>
                             <div >
-                                <span class="text-white text-2xl font-semibold mr-3">{{products[1].size}} </span>
+                                <span class="text-white text-xl font-semibold mr-3">{{products[1].size}} </span>
                                 <Link :href="route('product.show', products[1].slug)">
                                     <button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg
                                 hover:text-yellow-500 hover:bg-gray-200  hover:border-white transform duration-500 ease-out">
@@ -411,10 +411,10 @@ const isAuth = computed(() => userStore.isAuth)
                         <div class="text-white text-xl relative text-center w-full line-clamp-3 font-lobster flex justify-between pb-4  pt-2" >
                             <div class="w-full bg-yellow-400 h-0.5 absolute top-0 "></div>
                             <span class="text-xl  font-bold place-content-center">
-                               от <span class="text-yellow-500 text-[1.2em]"> {{ products[2].min_price }}</span> ₽
+                               от <span class="text-yellow-500 text-[1.2em]"> {{ products[2].min_price }}</span>₽
                             </span>
-                            <div >
-                                <span class="text-white text-2xl font-semibold mr-3">{{products[2].size}} </span>
+                            <div>
+                                <span class="text-white text-xl font-semibold mr-3">{{products[2].size}}</span>
                                 <Link :href="route('product.show', products[2].slug)">
                                     <button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg
                                 hover:text-yellow-500 hover:bg-gray-200  hover:border-white transform duration-500 ease-out">
@@ -441,7 +441,7 @@ const isAuth = computed(() => userStore.isAuth)
                                от <span class="text-yellow-500 text-[1.2em]"> {{ products[3].min_price }}</span> ₽
                             </span>
                             <div >
-                                <span class="text-white text-2xl font-semibold mr-3">{{products[3].size}} </span>
+                                <span class="text-white text-xl font-semibold mr-3">{{products[3].size}} </span>
                                 <Link :href="route('product.show', products[3].slug)">
                                     <button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg
                                 hover:text-yellow-500 hover:bg-gray-200  hover:border-white transform duration-500 ease-out">

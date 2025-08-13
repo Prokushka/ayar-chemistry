@@ -136,7 +136,8 @@ class OrderController extends Controller
     public function convertion(Request $request)
     {
         $mainProduct = Product::find($request->id);
-        $containsPrice = $mainProduct->price('price', 'from_quantity');
+        $containsPrice = $mainProduct->priceTiers()->where('price', $request->total_price)->first();
+
 
         $products = Product::where('sku', $mainProduct->sku)
             ->orderByRaw("CASE WHEN id = ? THEN 0 ELSE 1 END", [$mainProduct->id])
@@ -152,10 +153,11 @@ class OrderController extends Controller
                 ];
             });
         if (isset($containsPrice)){
+
             return Inertia::render('Order/Convertion',[
                     'products' => $products,
                     'salePrice' => $request->total_price,
-                    'min_quantity' => $mainProduct->price( 'from_quantity')
+                    'min_quantity' => $containsPrice->from_quantity
 
             ]);
         }

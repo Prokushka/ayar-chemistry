@@ -11,18 +11,27 @@ class AvitoSendMessage
 
     private string  $userId;
 
-    private string $token;
+
     public function __construct()
     {
         $this->userId = config('services.avito.my_id');
 
     }
+    private function getToken(): string
+    {
+        $token = Cache::get('access_token');
 
+        if (!$token) {
+            $this->refreshToken();
+            $token = Cache::get('access_token');
+        }
+
+        return $token;
+    }
     public function sendMessage()
     {
 
-        $token = Cache::get('access_token');
-
+        $token = $this->getToken();
 
         $response = Http::timeout(30)->retry(3, 500)->withHeader('Authorization',"Bearer $token")
             ->withUrlParameters([
@@ -33,13 +42,6 @@ class AvitoSendMessage
                 'unread_only' => 'true',
                 'chat_types' => 'u2i,u2u'
             ]);
-
-        if ($response->failed()) {
-            $this->refreshToken();
-            return;
-        }
-
-
 
         $col = json_decode($response->getBody()->getContents(), true);
         $chats = $col['chats'][0]['id'] ?? null;
@@ -122,7 +124,7 @@ class AvitoSendMessage
     protected function countMessages( string $chatId): ?string
     {
         $arr = [];
-        $token = Cache::get('access_token');
+        $token = $this->getToken();
         $response = Http::timeout(30)->retry(3, 500)->withHeader('Authorization',"Bearer $token")
             ->withUrlParameters([
                 'domen' => 'https://api.avito.ru',
@@ -166,7 +168,7 @@ class AvitoSendMessage
 
         $json = $token->json();
         dump(Cache::get('access_token'));
-        Cache::put('access_token' , $json['access_token'], now()->addDay());
+        Cache::put('access_token' , $json['access_token'], now()->addSeconds($json['expires_in'] - 60));
         Cache::put('refresh_token' , $json['refresh_token']);
         AvitoSendMessages::dispatch()->delay(now()->addSeconds(3));
     }

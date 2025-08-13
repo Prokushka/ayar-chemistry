@@ -24,7 +24,7 @@ export default {
     <Head title="Product" />
     <MainLayout/>
 
-    <div class=" text-white z-20   items-center">
+    <div class=" text-white z-20 flex flex-col justify-center items-center">
 
         <div class="xs:text-5xl md:text-6xl lg:text-7xl font-lobster text-center py-28 font-medium">
             Наши товары
@@ -39,7 +39,7 @@ export default {
             </select>
         </div>-->
 
-        <div v-if="products.length > 0"  class="flex justify-center place-self-center bg-green-950/70 py-10 rounded-md shadow-xl shadow-green-90/70 ring-2 ring-green-950 w-11/12  grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-6 items-center justify-items-center  ">
+        <div v-if="products.length > 0"  class="flex justify-center place-self-center bg-green-950/70 py-10 rounded-md shadow-xl shadow-green-90/70 ring-2 ring-green-950 w-11/12  grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-6 items-center justify-items-center">
             <div v-for="product in products" class="rounded-md shadow-md shadow-xl overflow-hidden shadow-green-950 w-11/12  relative  h-[420px]  p-4   relative  bg-green-950 flex place-content-center justify-between items-center flex-col">
                 <div v-if="!product.is_active" class="absolute bg-yellow-700 rounded-lg text-white transform text-sm  h-5 w-[118px] z-30  text-center font-bold font-rubick top-[220px] right-4">
                     Нет в Наличии</div>
@@ -60,7 +60,7 @@ export default {
                                от <span class="text-yellow-500 text-[1.2em]"> {{ product.min_price }}</span> ₽
                             </span>
                     <div >
-                        <span class="text-white text-2xl font-semibold mr-3">{{product.size}} </span>
+                        <span class="text-white text-xl font-semibold mr-3">{{product.size}} </span>
                         <Link :href="route('product.show', product.slug)">
                             <button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg
                                 hover:text-yellow-500 hover:bg-gray-200  hover:border-white transform duration-500 ease-out">
