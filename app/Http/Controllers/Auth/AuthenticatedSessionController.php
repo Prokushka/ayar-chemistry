@@ -33,9 +33,7 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-        Log::info('Сессия обновлена', ['session' => session()->all()]);
-        Log::info('Значение test_key', ['test_key' => session('test_key')]);
-        return redirect()->intended(route('main', absolute: false));
+        return redirect()->intended(route('product.index', absolute: false));
     }
 
     /**

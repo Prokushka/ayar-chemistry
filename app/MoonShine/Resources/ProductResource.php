@@ -66,7 +66,11 @@ class ProductResource extends ModelResource
                         Number::make('кол-во товара', 'quantity'),
                         BelongsTo::make('Категория', 'category',
                             formatted: fn($item) => "$item->title", resource: CategoryResource::class)
-                            ->valuesQuery(fn(Builder $query) => $query->where('parent_id', null)),
+                            ->valuesQuery(fn(Builder $query) => $query
+                                ->leftJoin('categories as children', 'children.parent_id', '=', 'categories.id')
+                                ->whereNull('children.id')
+                                ->select('categories.*')
+                                ),
                         Text::make('Вес/объём', 'size'),
                         BelongsToMany::make('Оптовые цены', 'priceTiers',
                             resource: PriceTierResource::class, formatted: fn($item) => "от $item->from_quantity шт. - $item->price руб.")
