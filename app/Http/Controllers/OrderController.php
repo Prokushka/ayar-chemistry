@@ -107,12 +107,15 @@ class OrderController extends Controller
 
         foreach ($request->position as $key => $count){
             $profit = ($request->sale_price * $count) - ($product->purchase_price * $count);
-            $order->products()->attach($key, [
-                'purchase_price' => $product->purchase_price,
-                'sale_price' => $request->sale_price,
-                'quantity' => $count,
-                'profit' => $profit
-            ]);
+            if($count > 0){
+                $order->products()->attach($key, [
+                    'purchase_price' => $product->purchase_price,
+                    'sale_price' => $request->sale_price,
+                    'quantity' => $count,
+                    'profit' => $profit
+                ]);
+            }
+
         }
         return Inertia::render('Order/Index', [
            'orders' => Order::query()->where('user_id', auth()->id())
@@ -139,7 +142,7 @@ class OrderController extends Controller
         $containsPrice = $mainProduct->priceTiers()->where('price', $request->total_price)->first();
 
 
-        $products = Product::where('sku', $mainProduct->sku)
+        $products = Product::where('is_active', true)->where('sku', $mainProduct->sku)
             ->orderByRaw("CASE WHEN id = ? THEN 0 ELSE 1 END", [$mainProduct->id])
             ->get()
             ->map(function ($product) {

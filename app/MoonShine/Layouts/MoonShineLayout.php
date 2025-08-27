@@ -56,7 +56,7 @@ final class MoonShineLayout extends AppLayout
             MenuItem::make('Заказы', OrderResource::class),
 
             MenuItem::make('Категории', CategoryResource::class),
-            MenuItem::make('Cкидки на товары', PriceTierResource::class),
+            MenuItem::make('Градация цен', PriceTierResource::class),
             MenuItem::make('Ивенты', PriceEventResource::class),
         ];
     }

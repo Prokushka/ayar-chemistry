@@ -44,7 +44,7 @@ function getCategories(event){
         },
         x: {
             from: '0px',
-            to: '275px',
+            to: '17.5vw',
             ease: 'outCubic',
         },
         rotate: {
@@ -155,7 +155,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
                 </div>
             </nav>
             <div id="right-cat-menu" v-if="openCategoryMenu" class="absolute text-white font-rubick font-bold rounded-l-xl h-screen bg-green-950 right-0 top-0 w-1/5 ">
-                <div class="text-4xl  text-center pt-12">Категории</div>
+                <div class="text-4xl  text-center pt-16">Категории</div>
                 <div class="pt-12  space-y-4 ">
 
                     <Categories

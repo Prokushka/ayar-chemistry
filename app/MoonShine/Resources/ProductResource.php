@@ -7,6 +7,7 @@ namespace App\MoonShine\Resources;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
@@ -100,8 +101,6 @@ class ProductResource extends ModelResource
     protected function detailFields(): iterable
     {
         return [
-
-
             ID::make(),
             Text::make('Наименование товара', 'title')->reactive(),
             Image::make('Фото', 'image_url')->extraAttributes(
@@ -116,15 +115,24 @@ class ProductResource extends ModelResource
             Text::make('описание', 'description'),
             Text::make('sku', 'sku')->nullable(),
 
-
         ];
     }
 
+    public function afterUpdated($item): mixed
+    {
 
-    #[SearchUsingFullText(['title', 'text'])]
+       \Cache::forget('products_list');
+        Cache::forget('product' . $item->slug);
+
+       return $item;
+    }
+
+
+
+
     protected function search(): array
     {
-        return ['id', 'name', 'sku'];
+        return ['id','title', 'sku'];
     }
 
 
