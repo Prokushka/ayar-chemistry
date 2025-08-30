@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class AvitoTokenCreate extends Command
 {
@@ -50,8 +51,10 @@ class AvitoTokenCreate extends Command
             $this->error('Ошибка получения токена');
             return Command::FAILURE;
         }
+
         if (!Cache::has('access_token')){
             $json = $token->json();
+            Log::info($json);
             Cache::put('access_token' , $json['access_token'], now()->addDay());
             Cache::put('refresh_token' , $json['refresh_token']);
             return Command::SUCCESS;
