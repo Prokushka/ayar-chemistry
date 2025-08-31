@@ -84,7 +84,7 @@ function orderComplete(id){
         <MainLayout></MainLayout>
         <div v-if="orders.length > 0" class="mx-auto place-self-center  py-10 rounded-md   md:w-11/12 lg:w-2/5  xs:w-full   items-center justify-items-center  ">
 
-            <h1 class="xs:text-4xl lg:text-5xl  font-bold my-24">Список заказов</h1>
+            <h1 class="xs:text-4xl lg:text-5xl text-center  font-bold my-24">Список заказов</h1>
             <div  class="container shadow-xl shadow-green-90/70 ring-2 ring-white bg-green-950/70 mx-auto">
                 <div class="overflow-x-auto rounded-lg shadow">
                     <table class="w-full bg-green-950">

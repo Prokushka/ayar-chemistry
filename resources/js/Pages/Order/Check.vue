@@ -62,7 +62,7 @@ function orderComplete(id){
 
     <div v-if="order.products"  class="  z-0 text-white z-50  text-center">
         <MainLayout/>
-        <div  class="container place-self-center  py-24 rounded-md   md:w-11/12   xs:w-full   items-center justify-items-center  ">
+        <div  class="w-full md:w-11/12 lg:w-3/5 mx-auto py-24 rounded-md  ">
 
             <h1 class="text-4xl  font-bold mb-6">Ваш заказ №{{order.id}}</h1>
             <button v-if="order.products.length > 0 && order.status === 'Новый'" @click.prevent="orderComplete(order.id)" class="place-self-center bg-green-950 text-white font-comic font-semibold text-center py-2 px-4
@@ -71,31 +71,35 @@ function orderComplete(id){
             <div class="flex flex-col items-center justify-items-center space-y-8 w-full ">
 
 
-                <div v-for="product in order.products" class="flex relative min-h-[200px]  flex-row xs:w-11/12 bg-green-950 rounded-md ring-1 ring-yellow-500 items-center lg:w-3/5 ">
+                <div v-for="product in order.products"
+                     class="flex relative min-h-[200px]  flex-row mx-auto xs:w-11/12 bg-green-950 rounded-md ring-1 ring-yellow-500 items-center lg:w-3/5 ">
                     <div v-if="order.status === 'Новый'" @click.prevent="deleteOrder(product.id)" class="absolute -top-3 -right-3" >
                         <button class="bg-red-600 py-0.5 px-1 rounded-lg border hover:border-red-500 text-lg hover:text-red-500 hover:bg-gray-200
                          border-white transform duration-500 ease-out"> <i class="ri-close-fill"></i>
                         </button>
                     </div>
-                    <div class=" p-6">
-                        <img width="" class="h-96 w-full object-contain rounded-lg " :src="`/storage/${product.image_url}`" alt="">
-                    </div>
-                    <div class=" w-[50%] flex-col space-y-5 justify-between pr-4 ">
-                        <div class="text-white  md:text-lg lg:text-xl xl:text-2xl line-clamp-3 text-unwrap text-top font-comic font-medium">
-                            {{product.title}}
+                    <div class="flex md:flex-row w-full py-4 flex-col items-center">
+                        <div class=" p-6">
+                            <img width="" class="xs:h-64 md:h-96 w-full object-contain rounded-lg " :src="`/storage/${product.image_url}`" alt="">
                         </div>
-                        <div class=" text-white xs:text-[15px] md:text-md lg:text-lg xl:text-xl  text-bottom font-comic font-medium">
-                           <div>
-                               Количество: <span class="text-yellow-500">{{product.pivot.quantity}}</span>
-                           </div>
-                            <div>
-                                Стоимость: <span class="text-yellow-500">{{product.pivot.sale_price}}</span>
+                        <div class=" md:w-[50%] w-full flex-col space-y-5 justify-between pr-4 ">
+                            <div class="text-white   xs:text-lg lg:text-xl xl:text-2xl line-clamp-3 text-unwrap text-top font-comic font-medium">
+                                {{product.title}}
                             </div>
-                            <div>
-                                Итого: <span class="text-yellow-500">{{product.pivot.quantity * product.pivot.sale_price}}</span> руб.
+                            <div class=" text-white xs:text-[15px] md:text-md lg:text-lg xl:text-xl  text-bottom font-comic font-medium">
+                                <div>
+                                    Количество: <span class="text-yellow-500">{{product.pivot.quantity}} шт.</span>
+                                </div>
+                                <div>
+                                    Стоимость: <span class="text-yellow-500">{{product.pivot.sale_price}}</span> ₽
+                                </div>
+                                <div>
+                                    Итого: <span class="text-yellow-500">{{product.pivot.quantity * product.pivot.sale_price}}</span> ₽
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
             </div>
