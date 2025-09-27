@@ -35,6 +35,8 @@ services:
       - laravel-storage-production:/var/www/laravel/storage:ro
     restart: unless-stopped
     depends_on:
+      whatsapp-bot:
+        condition: service_started
       app:
        condition: service_healthy
     networks:
@@ -48,7 +50,7 @@ services:
       MYSQL_PASSWORD: ayarpassword
       MYSQL_ROOT_PASSWORD: ayarpassword
     ports:
-      - "3306:3306"
+      - "5506:3306"
     restart: unless-stopped
     volumes:
       - db_data:/var/lib/mysql
@@ -59,7 +61,21 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-
+  whatsapp-bot:
+    build:
+      context: ./../whatsapp-js
+      dockerfile: ./Dockerfile
+    container_name: whatsapp-cheat
+    volumes:
+      - ./../whatsapp-js/tokens/main-session:/usr/src/app/tokens/main-session
+    shm_size: '1gb'
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    networks:
+      - app-network
+    ports:
+      - "3000:3000"
   redis:
     restart: unless-stopped
     image: redis:alpine

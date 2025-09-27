@@ -41,6 +41,15 @@ Route::get('/', function (?Request $request) {
     ]);
 })->name('main');
 
+Route::get('/broadcast', function (){
+    return Inertia::render('Whatsapp/Index');
+})->middleware('adminPanel');
+Route::post('/broadcast', function (Request $request){
+    \Illuminate\Support\Facades\Http::get('http://whatsapp-bot:3000/broadcast', [
+        'message' => $request->message
+    ]);
+})->name('broadcast');
+
 Route::get('/info', function () {
     Log::info('Phpinfo page visited');
     return phpinfo();

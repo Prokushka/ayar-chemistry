@@ -15,6 +15,7 @@ services:
             -   ayar_db
             -   npm
             -   rabbitmq
+            -   whatsapp-bot
     ayar_db: #менять именя каждый раз иначе не то запускает
         image: mysql:8.0
         volumes:
@@ -88,6 +89,23 @@ services:
             - ./:/var/www/laravel
         networks:
             - ayar_network
+    whatsapp-bot:
+        build:
+            context: ./../whatsapp-js
+            dockerfile: ./Dockerfile
+        container_name: whatsapp-cheat
+        volumes:
+            - ./../whatsapp-js:/usr/src/app
+            - ./../whatsapp-js/node_modules:/usr/src/app/node_modules
+            # для проды - ./whatsapp-js/session:/usr/src/app/session
+        shm_size: '1gb'
+        environment:
+            - NODE_ENV=development
+            - PORT=3000
+        networks:
+            - ayar_network
+        ports:
+            - "3000:3000"
 networks:
     ayar_network:
         driver: bridge
