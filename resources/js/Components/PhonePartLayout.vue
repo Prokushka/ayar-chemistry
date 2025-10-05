@@ -32,7 +32,7 @@ function mobileMenu(event){
         },
         x: {
             from: '0px',
-            to: '45dvw',
+            to: '50dvw',
             ease: 'outCubic',
         },
         rotate: {
@@ -131,45 +131,59 @@ function categoryShow(slug){
             <Link
 
                 :href="route('main')"
-                class="rounded-md px-3 py-2"
+                class="phone-layout rounded-md px-3 py-2"
             >
-                На главную
+                <p>
+                    На главную
+                </p>
             </Link>
             <Link
                 :href="route('product.index')"
-                class="rounded-md px-3 py-2  "
+                class="phone-layout rounded-md px-3 py-2  "
             >
-                Товары
+                <p>
+                    Товары
+                </p>
+
             </Link>
             <template v-if="$page.props.auth.user" >
             <Link
                 v-if="$page.props.auth.user"
                 :href="route('order.index')"
-                class="rounded-md px-3 py-2  "
+                class="phone-layout rounded-md px-3 py-2  "
             >
-                Мои заказы
+                <p>
+                 Мои заказы
+                </p>
+
             </Link>
                 <Link
                     @click.prevent="logout"
                     method="post"
-                    class="rounded-md px-3 py-2"
+                    class="phone-layout rounded-md px-3 py-2"
                 >
-                    Выйти
+                    <p>
+                       Выйти
+                    </p>
                 </Link>
             </template>
             <template v-else>
                 <Link
                     :href="route('login')"
-                    class="rounded-md px-3 py-2 "
+                    class="phone-layout rounded-md px-3 py-2 "
                 >
-                    Вход
+                    <p>
+                        Вход
+                    </p>
                 </Link>
                 <Link
 
                     :href="route('register')"
-                    class="rounded-md px-3 py-2  "
+                    class="phone-layout rounded-md px-3 py-2  "
                 >
-                    Регистрация
+                    <p>
+                        Регистрация
+                    </p>
                 </Link>
 
             </template>
@@ -185,7 +199,7 @@ function categoryShow(slug){
         </div><!--break-words whitespace-normal-->
     </div>
     <div class="w-full bg-green-950 py-2">
-        <div  v-if="layout.isMobile && visionMenu" class="z-50 absolute top-1 left-0 rounded-md z-50 text-white text-3xl  transform bg-green-950 p-2 ">
+        <div  v-if="layout.isMobile && visionMenu" class="z-50 absolute top-2.5 left-2 rounded-md z-50 text-white text-3xl px-1 transform bg-green-950 py-0.5 ">
             <i @click.prevent="mobileMenu($event)" class="ri-menu-line "></i>
         </div>
         <div class=" w-full flex justify-center   ">
@@ -201,7 +215,7 @@ function categoryShow(slug){
         </div>
     </div>
 
-    <div class="   ">
+    <div >
 
     <slot/>
     </div>

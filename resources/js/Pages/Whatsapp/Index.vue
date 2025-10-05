@@ -1,6 +1,6 @@
 <template>
     <div class="max-w-lg text-white mx-auto p-4">
-        <h1 class="text-xl text-center font-bold mb-4">Рассылка!!!!</h1>
+        <h1 class="text-xl text-center font-bold mb-4">Рассылка XD XD XD XD :D :-D - Мустафа)))</h1>
 
         <form @submit.prevent="submit">
 
@@ -22,7 +22,7 @@
                 class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-blue-500"
                 :disabled="form.processing"
             >
-                {{ form.processing ? "Сохранение..." : "Сохранить" }}
+                {{ form.processing ? "Отправка..." : "Отправить" }}
             </button>
         </form>
     </div>

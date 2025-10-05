@@ -6,6 +6,7 @@ import MainLayout from "@/Layouts/MainLayout.vue";
 import {useLayoutStore} from "@/stores/layout.js";
 import FooterComponent from "@/Components/FooterComponent.vue";
 import {useUserStore} from "@/stores/user.js";
+import HeaderComponent from "@/Components/HeaderComponent.vue";
 
 
 function animation(entries, toggle){
@@ -26,7 +27,6 @@ function animation(entries, toggle){
 }
 const doverie = ref(false)
 const firstAnimation = ref(false)
-const cleaningLogo = ref(false)
 const secondAnimation = ref(false)
 const container1 = ref(false)
 const container2 = ref(false)
@@ -282,9 +282,18 @@ onMounted(() => {
 
     });
 })
+
+function navLink(i){
+    const el = document.getElementById(`section-${i}`)
+    el.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    })
+}
+
 const userStore = useUserStore()
 
-const isAuth = computed(() => userStore.isAuth)
+
 
 
 </script>
@@ -292,56 +301,106 @@ const isAuth = computed(() => userStore.isAuth)
 <template>
     <Head title="Welcome" />
     <MainLayout/>
-
-        <div class=" bg-gradient-to-br from-green-950/95 via-green-900 to-green-950/90 xs:space-y-[155px] lg:space-y-[240px] overflow-hidden relative">
-            <div  class="absolute overflow-hidden z-10 -right-[100px] -top-[20dvh] size-[66dvh] bg-green-950/90 animate-up-size rounded-[100%]"></div>
-<!--    start        -->
-            <div class="relative z-10 flex items-center justify-center text-white">
-                <div class="flex flex-col items-center">
-                    <img class="py-[2%] w-5/6 lg:w-2/5" src="/stickers/main_text.png" />
-                    <p class="animate-move-y mt-12 -translate-y-2 leading-relaxed lg:text-[28px] font-comic w-11/12 md:w-3/4 text-center text-gray-100 tracking-normal">
-                        Наша оптовая компания предлагает широкий ассортимент бытовой химии по выгодным ценам.
-                        Мы гарантируем качественные товары, быструю доставку и индивидуальный подход к каждому клиенту.
-                        Выбирайте надёжного партнёра для стабильных поставок и экономьте с нами!
-                    </p>
+    <section>
+        <header-component/>
+        <section>
+            <nav class="w-full xs:text-[0.7rem] lg:text-[1.2rem] flex text-white font-semibold lg:space-x-2 justify-center bg-green-950">
+                <div   id="cursor-1"  class="xs:px-1 lg:px-2  cursor-pointer flex justify-center flex-row py-[1rem]">
+                    <div>
+                        <span @click.prevent="navLink(1)" class="hover:text-yellow-500">О нас </span>
+                    </div>
+                    <div class="ml-1.5 lg:ml-4 xs:h-5 lg:h-8 bg-white w-0.5 rounded-sm"></div>
                 </div>
-            </div>
-<!--    classic containers        -->
-            <div class="relative z-10 flex flex-col items-center justify-center space-y-12  text-white font-lobster ">
+                <div id="cursor-2" class="xs:px-1 lg:px-2  cursor-pointer flex justify-center flex-row py-[1rem]">
+                    <div>
+                        <span @click.prevent="navLink(2)" class="hover:text-yellow-500">Популярные товары </span>
+                    </div>
+                      <div class="ml-1.5 lg:ml-4 xs:h-5 lg:h-8 bg-white w-0.5 rounded-sm"></div>
+                </div>
+                <div id="cursor-3" class="xs:px-1 lg:px-2  cursor-pointer flex justify-center flex-row py-[1rem]">
+                    <div>
+                        <span @click.prevent="navLink(3)" class="hover:text-yellow-500">Отзывы  </span>
+                    </div>
+                      <div class="ml-1.5 lg:ml-4 xs:h-5 lg:h-8 bg-white w-0.5 rounded-sm"></div>
+                </div>
+                <div id="cursor-4" class="xs:px-1 md:px-2  cursor-pointer mt-[1rem] ">
+                    <div>
+                        <span @click.prevent="navLink(4)" class="hover:text-yellow-500 ">Как добраться?</span>
+                    </div>
+                </div>
+            </nav>
+        </section>
+    </section>
+    <main>
+        <div class=" xs:space-y-[155px] lg:space-y-[240px]  overflow-hidden relative">
+
+
+            <!--    classic containers        -->
+            <section id="section-1" class="relative z-10 flex flex-col items-center justify-center space-y-12 pt-[5rem]  text-white font-lobster ">
                 <div id="text2" :class="{'animate-text-up': firstAnimation}" class="xs:text-[40px] font-rubick font-semibold xs:text-4xl w-11/12 text-center md:text-5xl lg:text-7xl xs:pb-12 xs:pb-16 md:pb-24 lg:pb-32 items-center lg:text-center">
                     Почему стоит <p v-if="layout.isMobile" >брать у наc?</p><span v-if="!layout.isMobile" >брать у наc?</span>
                 </div>
                 <img :class="{'animate-roll-right ': firstAnimation}" id="cleaning_logo" @click.prevent="rotateFirstLogo($event)" src="/stickers/cleaning_logo.png" class="absolute xs:hidden lg:block overflow-hidden xs:opacity-25 lg:opacity-75 z-30 xs:-left-[38%] lg:-left-[32%]  xs:top-[15%] md:top-[20%]  rounded-[100%]">
                 <img id="cleaning_more_logo" src="/stickers/more_cleaning_logo.png" :class="{'animate-roll-left': secondAnimation}" @click.prevent="rotateSecondLogo($event)" class=" overflow-hidden absolute xs:hidden lg:block xs:opacity-25 z-50 lg:opacity-75 xs:top-[50%] lg:top-[35%] xs:-right-[48%] lg:-right-[34%] bottom-[35%]  rounded-[100%]">
-                <div class="grid grid-rows-3 gap-y-10 justify-items-center  ">
-                    <div id="container-1" :class="{'animate-slide-left': container1}" class="bg-green-950 xs:w-11/12 md:w-5/6 lg:w-1/3 xs:p-4 xs:p-5 xs:text-center lg:p-10 rounded-lg ">
-                        <p class="xs:text-2xl  lg:text-4xl text-center mb-7 font-semibold font-lobster">Доступные цены и выгодные условия поставки</p>
-                        <span class="xs:text-md lg:text-xl">
-                            Крупные оптовые компании могут предлагать конкурентоспособные цены
-                            за счёт масштабов закупок и собственной сырьевой базы,
-                            а также предоставлять гибкие условия сотрудничества для клиентов
-                        </span>
-                    </div>
-                    <div id="container-2" :class="{'animate-slide-right': container2}" class="bg-green-950 xs:w-11/12 md:w-5/6 lg:w-1/3 w-1/3 xs:p-4 xs:p-5 xs:text-center lg:p-10 rounded-lg ">
-                        <p class="xs:text-2xl  lg:text-4xl text-center mb-7 font-semibold font-lobster">Гарантия качества продукции</p>
-                        <span class="xs:text-md lg:text-xl">
-                            Компании, работающие напрямую с производителями или имеющие собственные лаборатории контроля,
-                            могут обеспечить строгое соблюдение стандартов, безопасность и стабильное качество товаров, что особенно важно для оптовых покупателей
-                        </span>
-                    </div>
-                    <div id="container-3" :class="{'animate-slide-left': container3}" class="bg-green-950 xs:w-11/12 md:w-5/6 lg:w-1/3 w-1/3 xs:p-4 xs:p-5 xs:text-center lg:p-10 rounded-lg ">
-                        <p class="xs:text-2xl  lg:text-4xl text-center mb-7 font-semibold font-lobster">Широкий ассортимент и логистические возможности</p>
-                        <span class="xs:text-md lg:text-xl">
-                            Оптовые продавцы бытовой химии обычно предлагают продукцию сразу нескольких производителей,
-                            что позволяет удовлетворить разнообразные потребности клиентов,
-                            а развитая логистическая сеть обеспечивает быструю и надёжную доставку даже в удалённые регионы
+                <div class="grid grid-rows-3 gap-y-10 justify-items-center">
+                    <div id="container-1" :class="{'animate-slide-left': container1}" class="bg-green-950  xs:w-11/12 md:w-5/6 lg:w-1/3 xs:p-4 xs:p-5 xs:text-center lg:p-10 rounded-lg">
+                        <div class="flex flex-row  ">
+                            <div>
+                                <p class="xs:text-xl lg:text-4xl text-center mb-7 font-semibold font-lobster">Честные цены и удобные условия работы </p>
+                            </div>
+                            <div>
+                                <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7">
+                                    <path class="cursor-pointer" stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                                </svg>
+                            </div>
+                        </div>
 
-                        </span>
+                        <span class="xs:text-[0.8rem] font-medium lg:text-xl font-rubick">
+            Мы закупаем продукцию <strong class="text-yellow-500 ">напрямую</strong>  у производителей и держим собственные складские запасы,
+            поэтому можем предлагать действительно выгодные цены и гибкие условия поставки.
+            Для постоянных клиентов действуют персональные скидки и ускоренная доставка.
+        </span>
+                    </div>
+
+                    <div id="container-2" :class="{'animate-slide-right': container2}" class="bg-green-950 xs:w-11/12 md:w-5/6 lg:w-1/3 xs:p-4 xs:p-5 xs:text-center lg:p-10 rounded-lg">
+                        <div class="flex flex-row  ">
+                            <div>
+                                <p class="xs:text-xl lg:text-4xl text-center mb-7 font-semibold font-lobster">Качество, за которое отвечаем</p>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path class="cursor-pointer" stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <span class="xs:text-[0.8rem] font-medium lg:text-xl font-rubick">
+            Вся наша продукция проходит проверку на соответствие стандартам и требованиям безопасности.
+            Мы работаем только с надёжными брендами и поставщиками, а каждую партию дополнительно контролируем перед отгрузкой.
+            Мы уверены в том, что поставляем — и <strong class="text-yellow-500 ">отвечаем</strong> за результат.
+        </span>
+                    </div>
+
+                    <div id="container-3" :class="{'animate-slide-left': container3}" class="bg-green-950 xs:w-11/12 md:w-5/6 lg:w-1/3 xs:p-4 xs:p-5 xs:text-center lg:p-10 rounded-lg">
+                        <div class="flex flex-row ">
+                            <div><p class="xs:text-xl lg:text-4xl text-center mb-7 font-semibold font-lobster">Ассортимент и доставка без границ</p></div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m20.893 13.393-1.135-1.135a2.252 2.252 0 0 1-.421-.585l-1.08-2.16a.414.414 0 0 0-.663-.107.827.827 0 0 1-.812.21l-1.273-.363a.89.89 0 0 0-.738 1.595l.587.39c.59.395.674 1.23.172 1.732l-.2.2c-.212.212-.33.498-.33.796v.41c0 .409-.11.809-.32 1.158l-1.315 2.191a2.11 2.11 0 0 1-1.81 1.025 1.055 1.055 0 0 1-1.055-1.055v-1.172c0-.92-.56-1.747-1.414-2.089l-.655-.261a2.25 2.25 0 0 1-1.383-2.46l.007-.042a2.25 2.25 0 0 1 .29-.787l.09-.15a2.25 2.25 0 0 1 2.37-1.048l1.178.236a1.125 1.125 0 0 0 1.302-.795l.208-.73a1.125 1.125 0 0 0-.578-1.315l-.665-.332-.091.091a2.25 2.25 0 0 1-1.591.659h-.18c-.249 0-.487.1-.662.274a.931.931 0 0 1-1.458-1.137l1.411-2.353a2.25 2.25 0 0 0 .286-.76m11.928 9.869A9 9 0 0 0 8.965 3.525m11.928 9.868A9 9 0 1 1 8.965 3.525" />
+                                </svg>
+                            </div>
+                        </div>
+
+
+                        <span class="xs:text-[0.8rem] font-medium lg:text-xl font-rubick">
+            На наших складах — всё от бытовой химии до профессиональных средств для клининга.
+            Мы <strong class="text-yellow-500 ">регулярно</strong> расширяем ассортимент и поддерживаем наличие ходовых позиций.
+            Благодаря собственной логистике доставляем заказы быстро и точно в срок — по всему региону и за его пределы.
+        </span>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="flex-col flex  justify-center items-center" v-if="products.length > 3" >
+            <section id="section-2" class="flex-col flex scroll-mt-20  justify-center items-center" v-if="products.length > 3" >
                 <div class=" w-full text text-white font-rubick font-semibold xs:text-[32px] xs:text-4xl place-content-center text-center md:text-5xl lg:text-7xl xs:pb-28 xs:pb-32 md:pb-48 lg:pb-52  items-center lg:text-7xl">
                     Популярные товары
                 </div>
@@ -360,7 +419,7 @@ const isAuth = computed(() => userStore.isAuth)
                                от <span class="text-yellow-500 text-[1.2em]"> {{ products[0].min_price }}</span> ₽
                             </span>
                             <div >
-                                <span class="text-white text-xl font-semibold mr-3">{{products[0].size}} </span>
+                                <span class="text-white text-lg font-rubick font-semibold mr-3">{{products[0].size}} </span>
                                 <Link :href="route('product.show', products[0].slug)">
                                     <button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg
                                 hover:text-yellow-500 hover:bg-gray-200  hover:border-white transform duration-500 ease-out">
@@ -387,7 +446,7 @@ const isAuth = computed(() => userStore.isAuth)
                                от <span class="text-yellow-500 text-[1.2em]"> {{ products[1].min_price }}</span> ₽
                             </span>
                             <div >
-                                <span class="text-white text-xl font-semibold mr-3">{{products[1].size}} </span>
+                                <span class="text-white text-lg font-rubick font-semibold mr-3">{{products[1].size}} </span>
                                 <Link :href="route('product.show', products[1].slug)">
                                     <button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg
                                 hover:text-yellow-500 hover:bg-gray-200  hover:border-white transform duration-500 ease-out">
@@ -414,7 +473,7 @@ const isAuth = computed(() => userStore.isAuth)
                                от <span class="text-yellow-500 text-[1.2em]"> {{ products[2].min_price }}</span>₽
                             </span>
                             <div>
-                                <span class="text-white text-xl font-semibold mr-3">{{products[2].size}}</span>
+                                <span class="text-white text-lg font-rubick font-semibold mr-3">{{products[2].size}}</span>
                                 <Link :href="route('product.show', products[2].slug)">
                                     <button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg
                                 hover:text-yellow-500 hover:bg-gray-200  hover:border-white transform duration-500 ease-out">
@@ -441,7 +500,7 @@ const isAuth = computed(() => userStore.isAuth)
                                от <span class="text-yellow-500 text-[1.2em]"> {{ products[3].min_price }}</span> ₽
                             </span>
                             <div >
-                                <span class="text-white text-xl font-semibold mr-3">{{products[3].size}} </span>
+                                <span class="text-white text-lg font-rubick font-semibold mr-3">{{products[3].size}} </span>
                                 <Link :href="route('product.show', products[3].slug)">
                                     <button class="bg-yellow-500 py-2 px-3 rounded-lg border border-yellow-500 text-lg
                                 hover:text-yellow-500 hover:bg-gray-200  hover:border-white transform duration-500 ease-out">
@@ -457,16 +516,18 @@ const isAuth = computed(() => userStore.isAuth)
 
                 </div>
                 <div class="bg-green-950
-                text-white lg:text-4xl font-rubick font-semibold p-6 mt-12 xs:text-xl md:text-3xl w-auto ring-2 text-center  place-self-center ring-yellow-500 rounded-full">
+                text-white lg:text-4xl font-rubick font-semibold p-6 mt-12 xs:text-xl
+                 md:text-3xl w-auto hover:ring-white hover:text-yellow-600 ring-2 text-center  place-self-center ring-yellow-500 rounded-full">
                     <Link :href="route('product.index')" >
                         Посмотреть все товары
                     </Link>
                 </div>
 
-            </div>
-            <div id="text1" class="z-40 bg-green-950 text-white font-lobster py-10 space-y-6  ">
+            </section>
+            <section id="section-3"  class="z-40 scroll-mt-20 ">
+                <div class="bg-green-950 text-white mt-10  font-lobster py-10 space-y-6 ">
 
-                <div  :class="{'animate-slide-right': doverie}" class=" lg:pl-24 xs:text-center  w-full  xs:text-center lg:text-start
+                <div id="text1" :class="{'animate-slide-right': doverie}" class=" lg:pl-24 xs:text-center  w-full  xs:text-center lg:text-start
                  xs:text-3xl md:text-5xl lg:text-7xl font-lobster pt-2 ">Эти клиенты <p v-if="layout.isMobile">доверились нам</p><span  v-if="!layout.isMobile">доверились нам</span> </div>
 
                 <div class="swiper">
@@ -482,7 +543,7 @@ const isAuth = computed(() => userStore.isAuth)
                                 <p class="font-rubick text-lg">
                                     Работаем с Ayar chemistry уже второй год — всегда широкий ассортимент, быстрая отгрузка и приятные цены. Очень довольны сотрудничеством!
                                 </p>
-                                <span class="text-yellow-500 font-lobster text-5xl text-right">,,</span>
+                                <span class="text-yellow-500 font-lobster text-5xl text-right font-semibold">,,</span>
                             </div> </div>
                         <div class="swiper-slide flex justify-center space-x-6"><div class="bg-green-900/65 ring-2 ring-green-950 rounded-lg p-6 max-w-sm w-full space-y-3 flex flex-col">
                             <div class="flex items-center">
@@ -492,7 +553,7 @@ const isAuth = computed(() => userStore.isAuth)
                             <p class="font-rubick text-lg">
                                 Заказывали бытовую химию крупным оптом для торговой сети, всё пришло в срок, качество продукции отличное, менеджеры всегда на связи.
                             </p>
-                            <span class="text-yellow-500 font-lobster text-5xl text-right">,,</span>
+                            <span class="text-yellow-500 font-lobster text-5xl text-right font-semibold">,,</span>
                         </div></div>
                         <!-- Слайд 2 -->
                         <div class="swiper-slide flex justify-center space-x-6">
@@ -504,7 +565,7 @@ const isAuth = computed(() => userStore.isAuth)
                                 <p class="font-rubick text-lg">
                                     Приятно удивила гибкая система скидок и индивидуальный подход к клиенту. Ayar chemistry — надёжный поставщик!
                                 </p>
-                                <span class="text-yellow-500 font-lobster text-5xl text-right">,,</span>
+                                <span class="text-yellow-500 font-lobster text-5xl text-right font-semibold">,,</span>
                             </div>  </div>
                         <div class="swiper-slide flex justify-center space-x-6">
                             <div class="bg-green-900/65 ring-2 ring-green-950 rounded-lg p-6 max-w-sm w-full space-y-3 flex flex-col">
@@ -515,7 +576,7 @@ const isAuth = computed(() => userStore.isAuth)
                                 <p class="font-rubick text-lg">
                                     Оформление заказа занимает минимум времени, документы всегда в порядке, доставка чётко по графику. Спасибо за профессионализм!
                                 </p>
-                                <span class="text-yellow-500 font-lobster text-5xl text-right">,,</span>
+                                <span class="text-yellow-500 font-lobster text-5xl text-right font-semibold">,,</span>
                             </div>
                         </div>
                         <div class="swiper-slide flex justify-center space-x-6">
@@ -527,7 +588,7 @@ const isAuth = computed(() => userStore.isAuth)
                                 <p class="font-rubick text-lg">
                                     Очень удобно, что можно заказать как крупный, так и мелкий опт. Всегда подбирают оптимальные условия для нашего бизнеса.
                                 </p>
-                                <span class="text-yellow-500 font-lobster text-5xl text-right">,,</span>
+                                <span class="text-yellow-500 font-lobster text-5xl text-right font-semibold">,,</span>
                             </div>
                         </div>
                         <div class="swiper-slide flex justify-center space-x-6">
@@ -538,7 +599,7 @@ const isAuth = computed(() => userStore.isAuth)
                                 </div>
                                 <p class="font-rubick text-lg">
                                     Постоянно заказываем у Ayar chemistry — надёжный поставщик, всё чётко и без задержек.</p>
-                                <span class="text-yellow-500 font-lobster text-5xl text-right">,,</span>
+                                <span class="text-yellow-500 font-lobster text-5xl text-right font-semibold">,,</span>
                             </div>
                         </div>
                         <!-- Слайд 3 -->
@@ -551,7 +612,7 @@ const isAuth = computed(() => userStore.isAuth)
                                 <p class="font-rubick text-lg">
                                     Уже несколько раз заказывали у Ayar chemistry бытовую химию для клининговой компании — всё устраивает, рекомендуем!
                                 </p>
-                                <span class="text-yellow-500 font-lobster text-5xl text-right">,,</span>
+                                <span class="text-yellow-500 font-lobster text-5xl text-right font-semibold">,,</span>
                             </div>
                         </div>
                         <div class="swiper-slide flex justify-center space-x-6">
@@ -563,7 +624,7 @@ const isAuth = computed(() => userStore.isAuth)
                                 <p class="font-rubick text-lg">
                                     Приятно работать с компанией, которая ценит своих клиентов и всегда идёт навстречу по срокам и условиям оплаты.
                                 </p>
-                                <span class="text-yellow-500 font-lobster text-5xl text-right">,,</span>
+                                <span class="text-yellow-500 font-lobster text-5xl text-right font-semibold">,,</span>
                             </div>
                         </div>
                         <div class="swiper-slide flex justify-center space-x-6">
@@ -575,7 +636,7 @@ const isAuth = computed(() => userStore.isAuth)
                                 <p class="font-rubick text-lg">
                                     Надёжный партнёр для оптовых закупок: всегда свежие товары, быстрая логистика и отличное отношение к клиенту!
                                 </p>
-                                <span class="text-yellow-500 font-lobster text-5xl text-right">,,</span>
+                                <span class="text-yellow-500 font-lobster text-5xl text-right font-semibold">,,</span>
                             </div>
                         </div>
 
@@ -594,10 +655,11 @@ const isAuth = computed(() => userStore.isAuth)
                 <div id="dovolny" :class="{'animate-slide-left': dovolny}" class="  w-full  xs:text-center  xs:text-3xl lg:text-end lg:pr-24 md:text-5xl pb-2 lg:text-7xl font-lobster ">
                     И остались <span class="text-yellow-500">довольны</span>
                 </div>
-            </div>
+                </div>
+            </section>
 
             <!--   Ynd Map         -->
-            <div class="relative z-40 flex items-center justify-center  text-white font-lobster ">
+            <section id="section-4" class="relative scroll-mt-20 z-40 flex items-center justify-center  text-white font-lobster ">
 
                 <div id="mapPage" class=" absolute z-0  w-[30dvw]   h-[30dvw] rounded-[100%] top-0 -left-[30dvw] bg-green-950 "></div>
                 <div class="flex flex-col items-center z-0 space-y-12 ">
@@ -607,26 +669,11 @@ const isAuth = computed(() => userStore.isAuth)
                     <div id="map" v-if="!layout.isMobile" style="width: 800px; height: 500px"></div>
                     <div id="map" class="items-center" v-else  style=" width: 80dvw; height: 80dvw"></div>
                 </div>
-            </div>
-            <!-- REGISTER           -->
-            <div  class="pb-8 relative z-40 flex items-center justify-center  text-white font-lobster ">
-
-                <div v-if="isAuth == null || isAuth === false" class="flex flex-col items-center space-y-12 text-gray-800 ">
-                    <span class="text-white xs:text-3xl w-11/12 md:text-5xl lg:text-7xl text-center font-lobster  py-10 "><span class="text-yellow-600">Зарегистрируйтесь </span> - и мы с вами свяжемся</span>
-                    <div class="items-center text-white text-lobster xs:text-2xl xs:text-3xl md:text-4xl text-center flex flex-col space-y-8 text-center xs:p-8 xs:p-10 md:p-16 ">
-                        <Link :href="route('register')">
-
-
-                            <button class="button-yellow"> Регистрация </button>
-                        </Link>
-                        <Link :href="route('login')">
-                            <button class="button-yellow" >Вход</button>
-                        </Link>
-                    </div>
-
-                </div>
-            </div>
-            <!--    footer        -->
-            <FooterComponent></FooterComponent>
+            </section>
         </div>
+    </main>
+    <footer class="mt-[20rem]">
+        <FooterComponent></FooterComponent>
+    </footer>
+
 </template>

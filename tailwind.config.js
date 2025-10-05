@@ -12,6 +12,11 @@ export default {
     darkMode: 'class',
     theme: {
         extend: {
+            brightness: {
+                25: '.25',
+                35: '.35',
+                40: '.40'
+            },
             screens:{
                'xs': '340px',
                'md': '540px',

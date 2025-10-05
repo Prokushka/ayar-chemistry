@@ -80,8 +80,6 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
 
         <PhonePartLayout v-if="layout.isMobile"></PhonePartLayout>
 
-
-
         <header v-if="!layout.isMobile" class="flex fixed z-50 flex-row  w-full  h-auto   font-rubick text-xl  bg-green-950 items-center py-3 lg:grid-cols-3">
             <nav class="mx-3 text-white font-medium flex flex-1  justify-between pr-3">
                 <div class=" pt-2">
@@ -90,14 +88,14 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
                         :href="route('main')"
                         class="rounded-md px-3 py-2 text-white "
                     >
-                        На главную
+                       <span>Главная</span>
                     </Link>
                     <Link
 
                         :href="route('product.index')"
                         class="rounded-md px-3 py-2 "
                     >
-                        Товары
+                        <span>Товары</span>
                     </Link>
                 </div>
                 <div class="w-2/5  ">
@@ -122,14 +120,14 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
                             :href="route('order.index')"
                             class="rounded-md px-3 py-2 "
                         >
-                            Мои заказы
+                            <p>Мои заказы</p>
                         </Link>
                         <Link
                             @click.prevent="logout"
                             method="post"
                             class="rounded-md px-3 py-2"
                         >
-                            Выйти
+                            <p>Выйти</p>
                         </Link>
 
 

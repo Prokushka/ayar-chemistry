@@ -27,3 +27,11 @@
 .main-product::after {
     @apply text-xl
 }
+
+.phone-layout{
+    @apply drop-shadow-xl shadow-gray-800
+}
+
+body{
+    @apply xs:text-[20px]
+}
