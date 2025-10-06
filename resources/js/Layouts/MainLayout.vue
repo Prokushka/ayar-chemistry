@@ -1,12 +1,11 @@
 <script setup>
 
-import {Link, router} from "@inertiajs/vue3";
+import {Link, router, usePage} from "@inertiajs/vue3";
 
 import PhonePartLayout from "@/Components/PhonePartLayout.vue";
 import {useLayoutStore} from "@/stores/layout.js";
 import {useUserStore} from "@/stores/user.js";
-import {computed, onMounted, ref, watch} from 'vue'
-import { usePage } from '@inertiajs/vue3'
+import {computed, ref} from 'vue'
 import {animate} from "animejs";
 import Categories from "@/Components/Categories.vue";
 
@@ -88,7 +87,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
                         :href="route('main')"
                         class="rounded-md px-3 py-2 text-white "
                     >
-                       <span>Главная</span>
+                        <span>Главная</span>
                     </Link>
                     <Link
 
@@ -111,45 +110,42 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
                     </div>
 
                 </div>
-                <div>
-
-                <template v-if="$page.props.auth.user">
-
-                        <Link
-                            v-if="$page.props.auth.user"
-                            :href="route('order.index')"
-                            class="rounded-md px-3 py-2 "
-                        >
-                            <p>Мои заказы</p>
-                        </Link>
+                <div class="flex flex-row"  v-if="$page.props.auth.user">
+                    <Link
+                        v-if="$page.props.auth.user"
+                        :href="route('order.index')"
+                        class="rounded-md px-3 py-2 "
+                    >
+                        <p>Мои заказы</p>
+                    </Link>
+                    <div>
                         <Link
                             @click.prevent="logout"
                             method="post"
-                            class="rounded-md px-3 py-2"
+                            class="rounded-md text-center px-3 py-2"
                         >
                             <p>Выйти</p>
                         </Link>
-
-
-                </template>
-                <template v-else>
-                    <div class="pt-2">
-                    <Link
-                        :href="route('login')"
-                        class="rounded-md px-3 py-2"
-                    >
-                        Вход
-                    </Link>
-
-                    <Link
-
-                        :href="route('register')"
-                        class="rounded-md px-3 py-2 "
-                    >
-                        Регистрация
-                    </Link>
                     </div>
-                </template>
+
+                </div>
+                <div v-else>
+                    <div class="pt-2">
+                        <Link
+                            :href="route('login')"
+                            class="rounded-md px-3 py-2"
+                        >
+                            Вход
+                        </Link>
+
+                        <Link
+
+                            :href="route('register')"
+                            class="rounded-md px-3 py-2 "
+                        >
+                            Регистрация
+                        </Link>
+                    </div>
                 </div>
             </nav>
             <div id="right-cat-menu" v-if="openCategoryMenu" class="absolute text-white font-rubick font-bold rounded-l-xl h-screen bg-green-950 right-0 top-0 w-1/5 ">
@@ -165,7 +161,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
             </div>
         </header>
 
-            <slot />
+        <slot />
 
 
 
@@ -190,8 +186,8 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
                     class="px-1 text-yellow-400 select-none"
                     aria-hidden="true"
                 >
-        &rsaquo;
-      </span>
+                    &rsaquo;
+                </span>
             </li>
         </ol>
     </nav>

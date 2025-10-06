@@ -659,9 +659,8 @@ const userStore = useUserStore()
             </section>
 
             <!--   Ynd Map         -->
-            <section id="section-4" class="relative scroll-mt-20 z-40 flex items-center justify-center  text-white font-lobster ">
-
-                <div id="mapPage" class=" absolute z-0  w-[30dvw]   h-[30dvw] rounded-[100%] top-0 -left-[30dvw] bg-green-950 "></div>
+            <section id="section-4" class="relative scroll-mt-20 z-40 flex overflow-visible items-center justify-center  text-white font-lobster ">
+                <div id="mapPage" class="absolute z-0 w-[30dvw] h-[30dvw] rounded-[100%] top-0 -left-[30dvw] bg-green-950 will-change-transform"></div>
                 <div class="flex flex-col items-center z-0 space-y-12 ">
                     <span class="text-white xs:-bottom-3/4 lg:-bottom-[36%] text-center lg:-right-[45%] xs:text-3xl xs:w-11/12 md:w-full md:text-5xl lg:text-7xl font-rubick font-semibold  py-10 ">
                         Как до нас добраться?
