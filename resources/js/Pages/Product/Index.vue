@@ -43,8 +43,9 @@ export default {
             <div v-for="product in products" class="rounded-md shadow-md shadow-xl overflow-hidden shadow-green-950 w-11/12  relative  h-[420px]  p-4   relative  bg-green-950 flex place-content-center justify-between items-center flex-col">
                 <div v-if="product && product.is_active === false" class="absolute bg-yellow-700 rounded-lg text-white transform text-sm  h-5 w-[118px] z-30  text-center font-bold font-rubick top-[220px] right-4">
                     Нет в Наличии</div>
-                <div v-if="product.event_color" :style="`background-color: ${product.event_color};`" class="absolute bg-red-700 text-white transform rotate-45 h-6 w-[180px] z-30 text-center font-semibold font-rubick top-8 -right-10">
-                    {{ product?.event }}</div>
+                <div v-if="product.event_color" :style="`background-color: ${product.event_color};`" class="absolute bg-red-700 text-white transform rotate-45 h-6 text-base w-[180px] z-30 text-center font-semibold font-rubick top-8 align-top -right-10">
+                    <p class="pb-5">{{ product?.event }}</p>
+                </div>
                 <img
                     :src="`/storage/${product.image_url}`"
                     class="h-56 h-56 object-contain mb-2 rounded"
