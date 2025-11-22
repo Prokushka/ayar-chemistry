@@ -39,7 +39,7 @@ function passwordConfirmToggle(){
     <GuestLayout>
         <Head title="Register" />
 
-        <form @submit.prevent="submit">
+        <form class="pb-12" @submit.prevent="submit">
             <div>
                 <InputLabel for="name" value="Ваше имя" />
 

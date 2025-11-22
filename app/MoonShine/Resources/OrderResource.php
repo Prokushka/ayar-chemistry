@@ -109,6 +109,13 @@ class OrderResource extends ModelResource
         ];
     }
 
+    public function beforeUpdating(mixed $item): mixed
+    {
+        if ($item->status === 'Подтверждён'){
+            throw new \Exception('Заказ уже подтверждён');
+        }
+        return $item;
+    }
     public function afterUpdated($item): mixed
     {
         if ($item->status === 'Подтверждён'){
@@ -137,8 +144,6 @@ class OrderResource extends ModelResource
 
         }
         return $item;
-
-
     }
 
     /**

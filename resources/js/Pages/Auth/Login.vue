@@ -51,7 +51,7 @@ function passwordToggle(){
             {{ status }}
         </div>
 
-        <form class="font-lato"  @submit.prevent="submit">
+        <form class="font-lato pb-12"  @submit.prevent="submit">
             <div>
                 <InputLabel for="email" value="Email" />
 

@@ -340,8 +340,14 @@ const userStore = useUserStore()
                 <div id="text2" :class="{'animate-text-up': firstAnimation}" class="xs:text-[40px] font-rubick font-semibold xs:text-4xl w-11/12 text-center md:text-5xl lg:text-7xl xs:pb-12 xs:pb-16 md:pb-24 lg:pb-32 items-center lg:text-center">
                     Почему стоит <p v-if="layout.isMobile" >брать у наc?</p><span v-if="!layout.isMobile" >брать у наc?</span>
                 </div>
-                <img :class="{'animate-roll-right ': firstAnimation}" id="cleaning_logo" @click.prevent="rotateFirstLogo($event)" src="/stickers/cleaning_logo.png" class="absolute xs:hidden lg:block overflow-hidden xs:opacity-25 lg:opacity-75 z-30 xs:-left-[38%] lg:-left-[32%]  xs:top-[15%] md:top-[20%]  rounded-[100%]">
-                <img id="cleaning_more_logo" src="/stickers/more_cleaning_logo.png" :class="{'animate-roll-left': secondAnimation}" @click.prevent="rotateSecondLogo($event)" class=" overflow-hidden absolute xs:hidden lg:block xs:opacity-25 z-50 lg:opacity-75 xs:top-[50%] lg:top-[35%] xs:-right-[48%] lg:-right-[34%] bottom-[35%]  rounded-[100%]">
+                <img :class="{'animate-roll-right ': firstAnimation}" id="cleaning_logo"
+                     @click.prevent="rotateFirstLogo($event)" src="/stickers/cleaning_logo.png"
+                     class="absolute xs:hidden lg:block overflow-hidden xs:opacity-25 lg:opacity-75
+                     z-30 xs:-left-[38%] lg:-left-[48vw]  xs:top-[15%] md:top-[20%]  rounded-[100%]">
+                <img id="cleaning_more_logo" src="/stickers/more_cleaning_logo.png"
+                     :class="{'animate-roll-left': secondAnimation}" @click.prevent="rotateSecondLogo($event)"
+                     class=" overflow-hidden absolute xs:hidden lg:block xs:opacity-25 z-50
+                     lg:opacity-75 xs:top-[50%] lg:top-[35%] xs:-right-[48%] lg:-right-[48vw] bottom-[35%]  rounded-[100%]">
                 <div class="grid grid-rows-3 gap-y-10 justify-items-center">
                     <div id="container-1" :class="{'animate-slide-left': container1}" class="bg-green-950  xs:w-11/12 md:w-5/6 lg:w-1/3 xs:p-4 xs:p-5 xs:text-center lg:p-10 rounded-lg">
                         <div class="flex flex-row  ">
@@ -660,8 +666,8 @@ const userStore = useUserStore()
 
             <!--   Ynd Map         -->
             <section id="section-4" class="relative scroll-mt-20 z-40 flex overflow-visible items-center justify-center  text-white font-lobster ">
-                <div id="mapPage" class="absolute z-0 w-[30dvw] h-[30dvw] rounded-[100%] top-0 -left-[30dvw] bg-green-950 will-change-transform"></div>
-                <div class="flex flex-col items-center z-0 space-y-12 ">
+                <div id="mapPage" class="absolute z-0 w-[30dvw] h-[30dvw] rounded-[100%] top-0 -left-[30dvw] bg-green-950 "></div>
+                <div class="flex flex-col items-center z-10 space-y-12 ">
                     <span class="text-white xs:-bottom-3/4 lg:-bottom-[36%] text-center lg:-right-[45%] xs:text-3xl xs:w-11/12 md:w-full md:text-5xl lg:text-7xl font-rubick font-semibold  py-10 ">
                         Как до нас добраться?
                     </span>

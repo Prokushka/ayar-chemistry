@@ -117,7 +117,6 @@ const categories = computed(() => usePage().props.categories)
 
 function createCategoryLayout(){
     const list = useTemplateRef('categoryList')
-
 }
 onMounted(() => createCategoryLayout())
 function categoryShow(slug){
@@ -127,7 +126,7 @@ function categoryShow(slug){
 
 <template>
     <div :class="{'backdrop-blur-xl': openMenu, 'bg-green-950': !visionMenu}"   v-if="openMenu" class=" z-50  h-screen w-screen flex justify-center  items-center">
-        <div v-if="openMenu && showMenu" class=" flex font-bold flex-col text-yellow-400 font-medium  justify-items-center place-content-center text-center  space-y-4 z-50 text-3xl z-60 absolute translate-y-0 " >
+        <div v-if="openMenu && showMenu" class=" flex font-bold flex-col text-yellow-400 font-medium  justify-items-center place-content-center text-center  space-y-4 z-50 text-2xl z-60 absolute translate-y-0 " >
             <Link
 
                 :href="route('main')"
@@ -215,10 +214,8 @@ function categoryShow(slug){
         </div>
     </div>
 
-    <div >
 
-    <slot/>
-    </div>
+
 </template>
 
 <style scoped>

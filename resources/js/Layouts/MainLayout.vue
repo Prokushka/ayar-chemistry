@@ -85,14 +85,14 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
                     <Link
 
                         :href="route('main')"
-                        class="rounded-md px-3 py-2 text-white "
+                        class="rounded-md mx-6 py-2 text-white "
                     >
                         <span>Главная</span>
                     </Link>
                     <Link
 
                         :href="route('product.index')"
-                        class="rounded-md px-3 py-2 "
+                        class="rounded-md mx-6 py-2 "
                     >
                         <span>Товары</span>
                     </Link>
@@ -114,7 +114,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
                     <Link
                         v-if="$page.props.auth.user"
                         :href="route('order.index')"
-                        class="rounded-md px-3 py-2 "
+                        class="rounded-md px-6 py-2 "
                     >
                         <p>Мои заказы</p>
                     </Link>
@@ -122,7 +122,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
                         <Link
                             @click.prevent="logout"
                             method="post"
-                            class="rounded-md text-center px-3 py-2"
+                            class="rounded-md text-center px-6 py-2"
                         >
                             <p>Выйти</p>
                         </Link>
@@ -133,7 +133,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
                     <div class="pt-2">
                         <Link
                             :href="route('login')"
-                            class="rounded-md px-3 py-2"
+                            class="rounded-md px-6 py-2"
                         >
                             Вход
                         </Link>
@@ -162,11 +162,34 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
         </header>
 
         <slot />
+        <div class=" rounded-t-xl w-full  fixed z-50 lg:hidden bg-green-950 bottom-0">
+            <div class="flex h-fit justify-center max-h-full space-x-10 text-white flex-row py-0.5">
+                <Link :href="route('main')">
+                    <div class=" flex flex-col cursor-pointer">
+                        <i class="ri-home-4-line h-fit text-center text-[1.25rem]"></i>
+                        <p class="text-[0.6rem] -translate-y-0.5 h-fit text-center font-semibold">Главная</p>
+                    </div>
+                </Link>
 
+                <Link :href="route('product.index')">
+                    <div class=" flex flex-col cursor-pointer">
+                        <i class="ri-shopping-basket-2-fill
+                        h-fit text-center text-[1.25rem]"></i>
+                        <p class="text-[0.6rem] -translate-y-0.5 h-fit text-center font-semibold">Товары</p>
+                    </div>
+                </Link>
 
-
-
+                <Link :href="route('order.index')">
+                    <div class=" flex flex-col cursor-pointer">
+                        <i class="ri-list-ordered-2 h-fit text-center text-[1.25rem]"></i>
+                        <p class="text-[0.6rem] -translate-y-0.5 h-fit text-center font-semibold">Заказы</p>
+                    </div>
+                </Link>
+            </div>
+        </div>
     </div>
+
+
     <nav
         v-if="breadcrumbs.length > 1"
         aria-label="Breadcrumb"
@@ -191,6 +214,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
             </li>
         </ol>
     </nav>
+
 
 </template>
 
