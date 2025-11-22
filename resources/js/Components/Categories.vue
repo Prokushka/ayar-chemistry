@@ -1,5 +1,5 @@
 <template>
-    <div class="ml-4 mb-2">
+    <div class="ml-4 ">
         <div @click.prevent="categoryShow(category.slug)" >
         <div
             class="w-full text-lg flex flex-row justify-between items-center break-words whitespace-normal px-2 py-1 bg-green-700/40 rounded cursor-pointer hover:bg-green-700/60 transition"

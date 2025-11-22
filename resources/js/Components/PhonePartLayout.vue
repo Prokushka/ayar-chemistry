@@ -189,12 +189,12 @@ function categoryShow(slug){
 
 
         </div>
-        <div v-if="!visionMenu" class="z-60" >
-            <Categories
-                v-for="category in categories"
-                :key="category.id"
-                :category="category"
-            />
+        <div v-if="!visionMenu" class="z-60 flex flex-col max-h-[80vh] overflow-y-auto overscroll-y-contain" >
+                <Categories
+                    v-for="category in categories"
+                    :key="category.id"
+                    :category="category"
+                />
         </div><!--break-words whitespace-normal-->
     </div>
     <div class="w-full bg-green-950 py-2">

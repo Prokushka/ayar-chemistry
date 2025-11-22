@@ -79,7 +79,8 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
 
         <PhonePartLayout v-if="layout.isMobile"></PhonePartLayout>
 
-        <header v-if="!layout.isMobile" class="flex fixed z-50 flex-row  w-full  h-auto   font-rubick text-xl  bg-green-950 items-center py-3 lg:grid-cols-3">
+        <header v-if="!layout.isMobile" class="flex fixed z-50 flex-row  w-full  h-auto   font-rubick text-xl
+          bg-green-950 items-center py-3 lg:grid-cols-3">
             <nav class="mx-3 text-white font-medium flex flex-1  justify-between pr-3">
                 <div class=" pt-2">
                     <Link
@@ -150,7 +151,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
             </nav>
             <div id="right-cat-menu" v-if="openCategoryMenu" class="absolute text-white font-rubick font-bold rounded-l-xl h-screen bg-green-950 right-0 top-0 w-1/5 ">
                 <div class="text-4xl  text-center pt-16">Категории</div>
-                <div class="pt-12  space-y-4 ">
+                <div class="pt-12 flex flex-col max-h-[80vh] overflow-y-auto overscroll-contain space-y-2 ">
 
                     <Categories
                         v-for="category in categories"
