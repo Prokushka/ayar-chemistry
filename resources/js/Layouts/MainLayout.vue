@@ -80,7 +80,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
         <PhonePartLayout v-if="layout.isMobile"></PhonePartLayout>
 
         <header v-if="!layout.isMobile" class="flex fixed z-50 flex-row  w-full  h-auto   font-rubick text-xl
-          bg-green-950 items-center py-3 lg:grid-cols-3">
+          bg-green-950 items-center py-2 lg:grid-cols-3">
             <nav class="mx-3 text-white font-medium flex flex-1  justify-between pr-3">
                 <div class=" pt-2">
                     <Link
@@ -115,7 +115,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
                     <Link
                         v-if="$page.props.auth.user"
                         :href="route('order.index')"
-                        class="rounded-md px-6 py-2 "
+                        class="rounded-md px-6 py-1 "
                     >
                         <p>Мои заказы</p>
                     </Link>
@@ -123,7 +123,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
                         <Link
                             @click.prevent="logout"
                             method="post"
-                            class="rounded-md text-center px-6 py-2"
+                            class="rounded-md text-center px-6 py-1"
                         >
                             <p>Выйти</p>
                         </Link>
@@ -134,7 +134,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
                     <div class="pt-2">
                         <Link
                             :href="route('login')"
-                            class="rounded-md px-6 py-2"
+                            class="rounded-md px-6 py-1"
                         >
                             Вход
                         </Link>
@@ -142,7 +142,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
                         <Link
 
                             :href="route('register')"
-                            class="rounded-md px-3 py-2 "
+                            class="rounded-md px-3 py-1 "
                         >
                             Регистрация
                         </Link>

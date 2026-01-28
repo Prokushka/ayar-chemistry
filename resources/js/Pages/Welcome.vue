@@ -304,26 +304,26 @@ const userStore = useUserStore()
     <section>
         <header-component/>
         <section>
-            <nav class="w-full xs:text-[0.7rem] lg:text-[1.2rem] flex text-white font-semibold lg:space-x-2 justify-center bg-green-950">
-                <div   id="cursor-1"  class="xs:px-1 lg:px-2  cursor-pointer flex justify-center flex-row py-[1rem]">
+            <nav class="w-full text-[0.7rem] lg:text-[1.2rem] flex text-white font-semibold lg:space-x-2 justify-center bg-green-950">
+                <div   id="cursor-1"  class="px-1 lg:px-2  cursor-pointer flex justify-center flex-row py-[1rem]">
                     <div>
                         <span @click.prevent="navLink(1)" class="hover:text-yellow-500">О нас </span>
                     </div>
-                    <div class="ml-1.5 lg:ml-4 xs:h-5 lg:h-8 bg-white w-0.5 rounded-sm"></div>
+                    <div class="ml-1.5 lg:ml-4 h-5 lg:h-8 bg-white w-0.5 rounded-sm"></div>
                 </div>
-                <div id="cursor-2" class="xs:px-1 lg:px-2  cursor-pointer flex justify-center flex-row py-[1rem]">
+                <div id="cursor-2" class="px-1 lg:px-2  cursor-pointer flex justify-center flex-row py-[1rem]">
                     <div>
                         <span @click.prevent="navLink(2)" class="hover:text-yellow-500">Популярные товары </span>
                     </div>
-                      <div class="ml-1.5 lg:ml-4 xs:h-5 lg:h-8 bg-white w-0.5 rounded-sm"></div>
+                      <div class="ml-1.5 lg:ml-4 h-5 lg:h-8 bg-white w-0.5 rounded-sm"></div>
                 </div>
-                <div id="cursor-3" class="xs:px-1 lg:px-2  cursor-pointer flex justify-center flex-row py-[1rem]">
+                <div id="cursor-3" class="px-1 lg:px-2  cursor-pointer flex justify-center flex-row py-[1rem]">
                     <div>
                         <span @click.prevent="navLink(3)" class="hover:text-yellow-500">Отзывы  </span>
                     </div>
-                      <div class="ml-1.5 lg:ml-4 xs:h-5 lg:h-8 bg-white w-0.5 rounded-sm"></div>
+                      <div class="ml-1.5 lg:ml-4 h-5 lg:h-8 bg-white w-0.5 rounded-sm"></div>
                 </div>
-                <div id="cursor-4" class="xs:px-1 md:px-2  cursor-pointer mt-[1rem] ">
+                <div id="cursor-4" class="px-1 md:px-2  cursor-pointer mt-[1rem] ">
                     <div>
                         <span @click.prevent="navLink(4)" class="hover:text-yellow-500 ">Как добраться?</span>
                     </div>
@@ -332,64 +332,64 @@ const userStore = useUserStore()
         </section>
     </section>
     <main>
-        <div class=" xs:space-y-[155px] lg:space-y-[240px]  overflow-hidden relative">
+        <div class=" space-y-[155px] lg:space-y-[240px]  overflow-hidden relative">
 
 
             <!--    classic containers        -->
             <section id="section-1" class="relative z-10 flex flex-col items-center justify-center space-y-12 pt-[5rem]  text-white font-lobster ">
-                <div id="text2" :class="{'animate-text-up': firstAnimation}" class="xs:text-[40px] font-rubick font-semibold xs:text-4xl w-11/12 text-center md:text-5xl lg:text-7xl xs:pb-12 xs:pb-16 md:pb-24 lg:pb-32 items-center lg:text-center">
+                <div id="text2" :class="{'animate-text-up': firstAnimation}" class="text-[40px] font-rubick font-semibold text-3xl w-11/12 text-center md:text-5xl lg:text-6xl pb-12 pb-16 md:pb-24 lg:pb-32 items-center lg:text-center">
                     Почему стоит <p v-if="layout.isMobile" >брать у наc?</p><span v-if="!layout.isMobile" >брать у наc?</span>
                 </div>
                 <img :class="{'animate-roll-right ': firstAnimation}" id="cleaning_logo"
                      @click.prevent="rotateFirstLogo($event)" src="/stickers/cleaning_logo.png"
-                     class="absolute xs:hidden lg:block overflow-hidden xs:opacity-25 lg:opacity-75
-                     z-30 xs:-left-[38%] lg:-left-[48vw]  xs:top-[15%] md:top-[20%]  rounded-[100%]">
+                     class="absolute hidden lg:block overflow-hidden opacity-25 lg:opacity-75
+                     z-30 -left-[38%] lg:-left-[48vw]  top-[15%] md:top-[20%]  rounded-[100%]">
                 <img id="cleaning_more_logo" src="/stickers/more_cleaning_logo.png"
                      :class="{'animate-roll-left': secondAnimation}" @click.prevent="rotateSecondLogo($event)"
-                     class=" overflow-hidden absolute xs:hidden lg:block xs:opacity-25 z-50
-                     lg:opacity-75 xs:top-[50%] lg:top-[35%] xs:-right-[48%] lg:-right-[48vw] bottom-[35%]  rounded-[100%]">
+                     class=" overflow-hidden absolute hidden lg:block opacity-25 z-50
+                     lg:opacity-75 top-[50%] lg:top-[35%] -right-[48%] lg:-right-[48vw] bottom-[35%]  rounded-[100%]">
                 <div class="grid grid-rows-3 gap-y-10 justify-items-center">
-                    <div id="container-1" :class="{'animate-slide-left': container1}" class="bg-green-950  xs:w-11/12 md:w-5/6 lg:w-1/3 xs:p-4 xs:p-5 xs:text-center lg:p-10 rounded-lg">
-                        <div class="flex flex-row  ">
+                    <div id="container-1" :class="{'animate-slide-left': container1}" class="bg-green-950 z-50  w-11/12 md:w-5/6 lg:w-2/3 xl:w-1/2  p-4 p-5 text-center lg:p-10 rounded-lg">
+                        <div class="flex flex-row place-content-center ">
                             <div>
-                                <p class="xs:text-xl lg:text-4xl text-center mb-7 font-semibold font-lobster">Честные цены и удобные условия работы </p>
+                                <p class="text-xl lg:text-3xl text-center mb-7 font-semibold font-lobster">Честные цены и удобные условия работы </p>
                             </div>
-                            <div>
+                            <div class="ml-2">
                                 <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7">
                                     <path class="cursor-pointer" stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                                 </svg>
                             </div>
                         </div>
 
-                        <span class="xs:text-[0.8rem] font-medium lg:text-xl font-rubick">
+                        <span class="text-[0.8rem] font-medium lg:text-xl font-rubick">
             Мы закупаем продукцию <strong class="text-yellow-500 ">напрямую</strong>  у производителей и держим собственные складские запасы,
             поэтому можем предлагать действительно выгодные цены и гибкие условия поставки.
             Для постоянных клиентов действуют персональные скидки и ускоренная доставка.
         </span>
                     </div>
 
-                    <div id="container-2" :class="{'animate-slide-right': container2}" class="bg-green-950 xs:w-11/12 md:w-5/6 lg:w-1/3 xs:p-4 xs:p-5 xs:text-center lg:p-10 rounded-lg">
-                        <div class="flex flex-row  ">
+                    <div id="container-2" :class="{'animate-slide-right': container2}" class="bg-green-950 z-50 w-11/12 md:w-5/6 lg:w-2/3 xl:w-1/2 p-4 p-5 text-center lg:p-10 rounded-lg">
+                        <div class="flex flex-row place-content-center  ">
                             <div>
-                                <p class="xs:text-xl lg:text-4xl text-center mb-7 font-semibold font-lobster">Качество, за которое отвечаем</p>
+                                <p class="text-xl lg:text-4xl text-center mb-7 font-semibold font-lobster">Качество, за которое отвечаем</p>
                             </div>
-                            <div>
+                            <div class="ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path class="cursor-pointer" stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
                                 </svg>
                             </div>
                         </div>
-                        <span class="xs:text-[0.8rem] font-medium lg:text-xl font-rubick">
+                        <span class="text-[0.8rem] font-medium lg:text-xl font-rubick">
             Вся наша продукция проходит проверку на соответствие стандартам и требованиям безопасности.
             Мы работаем только с надёжными брендами и поставщиками, а каждую партию дополнительно контролируем перед отгрузкой.
             Мы уверены в том, что поставляем — и <strong class="text-yellow-500 ">отвечаем</strong> за результат.
         </span>
                     </div>
 
-                    <div id="container-3" :class="{'animate-slide-left': container3}" class="bg-green-950 xs:w-11/12 md:w-5/6 lg:w-1/3 xs:p-4 xs:p-5 xs:text-center lg:p-10 rounded-lg">
-                        <div class="flex flex-row ">
-                            <div><p class="xs:text-xl lg:text-4xl text-center mb-7 font-semibold font-lobster">Ассортимент и доставка без границ</p></div>
-                            <div>
+                    <div id="container-3" :class="{'animate-slide-left': container3}" class="bg-green-950 z-50 w-11/12 md:w-5/6 lg:w-2/3 xl:w-1/2 p-4 p-5 text-center lg:p-10 rounded-lg">
+                        <div class="flex flex-row place-content-center ">
+                            <div><p class="text-xl lg:text-4xl text-center mb-7 font-semibold font-lobster">Ассортимент и доставка без границ</p></div>
+                            <div class="ml-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m20.893 13.393-1.135-1.135a2.252 2.252 0 0 1-.421-.585l-1.08-2.16a.414.414 0 0 0-.663-.107.827.827 0 0 1-.812.21l-1.273-.363a.89.89 0 0 0-.738 1.595l.587.39c.59.395.674 1.23.172 1.732l-.2.2c-.212.212-.33.498-.33.796v.41c0 .409-.11.809-.32 1.158l-1.315 2.191a2.11 2.11 0 0 1-1.81 1.025 1.055 1.055 0 0 1-1.055-1.055v-1.172c0-.92-.56-1.747-1.414-2.089l-.655-.261a2.25 2.25 0 0 1-1.383-2.46l.007-.042a2.25 2.25 0 0 1 .29-.787l.09-.15a2.25 2.25 0 0 1 2.37-1.048l1.178.236a1.125 1.125 0 0 0 1.302-.795l.208-.73a1.125 1.125 0 0 0-.578-1.315l-.665-.332-.091.091a2.25 2.25 0 0 1-1.591.659h-.18c-.249 0-.487.1-.662.274a.931.931 0 0 1-1.458-1.137l1.411-2.353a2.25 2.25 0 0 0 .286-.76m11.928 9.869A9 9 0 0 0 8.965 3.525m11.928 9.868A9 9 0 1 1 8.965 3.525" />
                                 </svg>
@@ -397,7 +397,7 @@ const userStore = useUserStore()
                         </div>
 
 
-                        <span class="xs:text-[0.8rem] font-medium lg:text-xl font-rubick">
+                        <span class="text-[0.8rem] font-medium lg:text-xl font-rubick">
             На наших складах — всё от бытовой химии до профессиональных средств для клининга.
             Мы <strong class="text-yellow-500 ">регулярно</strong> расширяем ассортимент и поддерживаем наличие ходовых позиций.
             Благодаря собственной логистике доставляем заказы быстро и точно в срок — по всему региону и за его пределы.
@@ -407,10 +407,10 @@ const userStore = useUserStore()
             </section>
 
             <section id="section-2" class="flex-col flex scroll-mt-20  justify-center items-center" v-if="products.length > 3" >
-                <div class=" w-full text text-white font-rubick font-semibold xs:text-[32px] xs:text-4xl place-content-center text-center md:text-5xl lg:text-7xl xs:pb-28 xs:pb-32 md:pb-48 lg:pb-52  items-center lg:text-7xl">
+                <div class=" w-full text text-white font-rubick font-semibold text-[32px] text-3xl place-content-center text-center md:text-4xl lg:text-6xl pb-28 pb-32 md:pb-48 lg:pb-52  items-center ">
                     Популярные товары
                 </div>
-                <div  class="flex justify-center place-self-center bg-green-950/70 py-10 rounded-md shadow-xl shadow-green-900/70 ring-2 ring-green-950 w-11/12 grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-36 items-center justify-items-center  ">
+                <div  class="flex justify-center place-self-center bg-green-950/70 py-10 rounded-md shadow-xl shadow-green-900/70 ring-2 ring-green-950 w-11/12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-36 items-center justify-items-center  ">
                     <div id="popular-1"  class="rounded-md shadow-xl w-[95%] min-h-[340px]    px-10 pt-20 shadow-green-950 h-auto relative space-y-3 bg-green-950 flex justify-end items-center flex-col">
 
                         <img :src="`/storage/${ products[0].image_url}`" class="absolute w-48 -top-4 left-1/2   -translate-y-1/2 -translate-x-1/2 transform hover:-top-8 duration-500 ease-in-out   items-center" >
@@ -522,7 +522,7 @@ const userStore = useUserStore()
 
                 </div>
                 <div class="bg-green-950
-                text-white lg:text-4xl font-rubick font-semibold p-6 mt-12 xs:text-xl
+                text-white lg:text-4xl font-rubick font-semibold p-6 mt-12 text-xl
                  md:text-3xl w-auto hover:ring-white hover:text-yellow-600 ring-2 text-center  place-self-center ring-yellow-500 rounded-full">
                     <Link :href="route('product.index')" >
                         Посмотреть все товары
@@ -533,8 +533,8 @@ const userStore = useUserStore()
             <section id="section-3"  class="z-40 scroll-mt-20 ">
                 <div class="bg-green-950 text-white mt-10  font-lobster py-10 space-y-6 ">
 
-                <div id="text1" :class="{'animate-slide-right': doverie}" class=" lg:pl-24 xs:text-center  w-full  xs:text-center lg:text-start
-                 xs:text-3xl md:text-5xl lg:text-7xl font-lobster pt-2 ">Эти клиенты <p v-if="layout.isMobile">доверились нам</p><span  v-if="!layout.isMobile">доверились нам</span> </div>
+                <div id="text1" :class="{'animate-slide-right': doverie}" class=" lg:pl-24 text-center  w-full  text-center lg:text-start
+                 text-3xl md:text-5xl lg:text-7xl font-lobster pt-2 ">Эти клиенты <p v-if="layout.isMobile">доверились нам</p><span  v-if="!layout.isMobile">доверились нам</span> </div>
 
                 <div class="swiper">
                     <!-- Additional required wrapper -->
@@ -658,7 +658,7 @@ const userStore = useUserStore()
                     <!-- If we need scrollbar -->
                     <div class="swiper-scrollbar"></div>
                 </div>
-                <div id="dovolny" :class="{'animate-slide-left': dovolny}" class="  w-full  xs:text-center  xs:text-3xl lg:text-end lg:pr-24 md:text-5xl pb-2 lg:text-7xl font-lobster ">
+                <div id="dovolny" :class="{'animate-slide-left': dovolny}" class="  w-full  text-center  text-3xl lg:text-end lg:pr-24 md:text-5xl pb-2 lg:text-7xl font-lobster ">
                     И остались <span class="text-yellow-500">довольны</span>
                 </div>
                 </div>
@@ -666,12 +666,13 @@ const userStore = useUserStore()
 
             <!--   Ynd Map         -->
             <section id="section-4" class="relative scroll-mt-20 z-40 flex overflow-visible items-center justify-center  text-white font-lobster ">
-                <div id="mapPage" class="absolute z-0 w-[30dvw] h-[30dvw] rounded-[100%] top-0 -left-[30dvw] bg-green-950 "></div>
+                <div id="mapPage" class="absolute z-0 size-[30dvw] rounded-[100%] top-0 -left-[30dvw] bg-green-950 mb-12 "></div>
                 <div class="flex flex-col items-center z-10 space-y-12 ">
-                    <span class="text-white xs:-bottom-3/4 lg:-bottom-[36%] text-center lg:-right-[45%] xs:text-3xl xs:w-11/12 md:w-full md:text-5xl lg:text-7xl font-rubick font-semibold  py-10 ">
+                    <span class="text-white -bottom-3/4 lg:-bottom-[36%] text-center lg:-right-[45%]
+                     text-3xl w-11/12 md:w-full md:text-5xl lg:text-6xl font-rubick font-semibold  py-10 ">
                         Как до нас добраться?
                     </span>
-                    <div id="map" v-if="!layout.isMobile" style="width: 800px; height: 500px"></div>
+                    <div id="map" v-if="!layout.isMobile" style="width: 700px; height: 450px"></div>
                     <div id="map" class="items-center" v-else  style=" width: 80dvw; height: 80dvw"></div>
                 </div>
             </section>

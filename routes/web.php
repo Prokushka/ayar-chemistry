@@ -82,5 +82,8 @@ Route::group(['middleware' => \App\Http\Middleware\BreadCrumbsMiddleware::class]
     });
 });
 
+Route::get('/download-products', [\App\Http\Controllers\ExcelController::class, 'download'])
+->name('excel.download');
+
 
 require __DIR__.'/auth.php';

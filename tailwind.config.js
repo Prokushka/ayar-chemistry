@@ -25,6 +25,7 @@ export default {
             },
             fontFamily: {
                 lobster: ["Lobster"],
+                ubuntu: ["Ubuntu", "sans-serif"],
                 rubick: ['Rubik', ...defaultTheme.fontFamily.sans],
                 jost: ["Jost", "sans-serif"],
                 Roboto: ["Roboto", "sans-serif"],

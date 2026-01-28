@@ -101,7 +101,7 @@ onUnmounted(() => order.$reset())
     <MainLayout></MainLayout>
     <div class="w-full flex justify-center pt-16 lg:pt-36">
         <div class=" flex flex-col md:w-11/12 lg:w-3/4 bg-green-950  justify-between space-y-12">
-            <div class="grid  text-white md:grid-cols-3 lg:grid-cols-4 xs:grid-cols-2">
+            <div class="grid  text-white md:grid-cols-3 lg:grid-cols-4 grid-cols-2">
                 <div v-for="(product, i) in products" :key="product.id" :class="{'col-span-2 md:col-span-3 lg:col-span-4 h-[28rem] ': i === 0}" class="flex flex-col justify-between w-full justify-items-center h-64 font-rubick font-semibold border border-green-900 space-y-4">
                     <img
                         :src="`/storage/${product?.image_url}`"

@@ -52,7 +52,7 @@ function convertion(){
     <Head title="Product-Show" />
     <MainLayout></MainLayout>
     <div class="z-10 py-36 ">
-        <div class="z-20 max-w-4xl mx-auto xs:p-6  rounded-lg  bg-green-950   shadow-md text-white ">
+        <div class="z-20 max-w-4xl mx-auto p-6  rounded-lg  bg-green-950   shadow-md text-white ">
             <div class="grid grid-cols-1 md:grid-cols-2  gap-8">
                 <!-- Фото товара -->
                 <div class="py-12 lg:mt-0 relative overflow-hidden">
@@ -61,7 +61,7 @@ function convertion(){
                         <p class="text-base">{{ event.title }}</p></div>
                     <img v-if="product && product.image_url" :src="`/storage/${product.image_url}`"
                          alt="Фото товара"
-                         class="w-full xs:h-96 object-contain rounded-lg " />
+                         class="w-full h-96 object-contain rounded-lg " />
                 </div>
                 <!-- Описание и детали -->
                 <div class="flex flex-col  justify-between">

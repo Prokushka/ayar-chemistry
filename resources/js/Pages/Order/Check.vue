@@ -72,7 +72,7 @@ function orderComplete(id){
 
 
                 <div v-for="product in order.products"
-                     class="flex relative min-h-[200px]  flex-row mx-auto xs:w-11/12 bg-green-950 rounded-md ring-1 ring-yellow-500 items-center lg:w-3/5 ">
+                     class="flex relative min-h-[200px]  flex-row mx-auto w-11/12 bg-green-950 rounded-md ring-1 ring-yellow-500 items-center lg:w-3/5 ">
                     <div v-if="order.status === 'Новый'" @click.prevent="deleteOrder(product.id)" class="absolute -top-3 -right-3" >
                         <button class="bg-red-600 py-0.5 px-1 rounded-lg border hover:border-red-500 text-lg hover:text-red-500 hover:bg-gray-200
                          border-white transform duration-500 ease-out"> <i class="ri-close-fill"></i>
@@ -80,13 +80,13 @@ function orderComplete(id){
                     </div>
                     <div class="flex md:flex-row w-full py-4 flex-col items-center">
                         <div class=" p-6">
-                            <img width="" class="xs:h-64 md:h-96 w-full object-contain rounded-lg " :src="`/storage/${product.image_url}`" alt="">
+                            <img width="" class="h-64 md:h-96 w-full object-contain rounded-lg " :src="`/storage/${product.image_url}`" alt="">
                         </div>
                         <div class=" md:w-[50%] w-full flex-col space-y-5 justify-between pr-4 ">
-                            <div class="text-white   xs:text-lg lg:text-xl xl:text-2xl line-clamp-3 text-unwrap text-top font-comic font-medium">
+                            <div class="text-white   text-lg lg:text-xl xl:text-2xl line-clamp-3 text-unwrap text-top font-comic font-medium">
                                 {{product.title}}
                             </div>
-                            <div class=" text-white xs:text-[15px] md:text-md lg:text-lg xl:text-xl  text-bottom font-comic font-medium">
+                            <div class=" text-white text-[15px] md:text-md lg:text-lg xl:text-xl  text-bottom font-comic font-medium">
                                 <div>
                                     Количество: <span class="text-yellow-500">{{product.pivot.quantity}} шт.</span>
                                 </div>

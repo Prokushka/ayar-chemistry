@@ -2,7 +2,7 @@
     <div class="ml-4 ">
         <div @click.prevent="categoryShow(category.slug)" >
         <div
-            class="w-full text-lg flex flex-row justify-between items-center break-words whitespace-normal px-2 py-1 bg-green-700/40 rounded cursor-pointer hover:bg-green-700/60 transition"
+            class="w-full text-lg flex flex-row justify-between items-center break-words my-1 whitespace-normal px-2 py-1 bg-green-700/40 rounded cursor-pointer hover:bg-green-700/60 transition"
             @click="toggle"
         >
             <div class="max-w-[80vw] break-words whitespace-normal text-white break-words whitespace-normal">

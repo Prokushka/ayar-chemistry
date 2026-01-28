@@ -1,7 +1,7 @@
 <script setup xmlns="http://www.w3.org/1999/html">
 
 import {Link, router, usePage} from "@inertiajs/vue3";
-import {computed, onMounted, ref, useTemplateRef} from "vue";
+import {computed, nextTick, onMounted, onUnmounted, ref, useTemplateRef} from "vue";
 import {animate} from "animejs";
 import {useLayoutStore} from "@/stores/layout.js";
 import {useUserStore} from "@/stores/user.js";
@@ -122,11 +122,27 @@ onMounted(() => createCategoryLayout())
 function categoryShow(slug){
     router.visit(route('product.category.show', slug))
 }
+
+onMounted(() => {
+    window.addEventListener('scroll', roll)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', roll)
+})
+
+const down = ref(true)
+
+async function roll(el){
+
+}
+
 </script>
 
 <template>
-    <div :class="{'backdrop-blur-xl': openMenu, 'bg-green-950': !visionMenu}"   v-if="openMenu" class=" z-50  h-screen w-screen flex justify-center  items-center">
-        <div v-if="openMenu && showMenu" class=" flex font-bold flex-col text-yellow-400 font-medium  justify-items-center place-content-center text-center  space-y-4 z-50 text-2xl z-60 absolute translate-y-0 " >
+
+    <div  :class="{'backdrop-blur-xl': openMenu, 'bg-green-950': !visionMenu}"   v-if="openMenu" class=" z-50  h-screen w-screen flex justify-center  items-center">
+        <div  v-if="openMenu && showMenu" class=" flex font-bold flex-col text-yellow-400 font-medium  justify-items-center place-content-center text-center  space-y-4 z-50 text-2xl z-60 absolute translate-y-0 " >
             <Link
 
                 :href="route('main')"
@@ -189,28 +205,29 @@ function categoryShow(slug){
 
 
         </div>
-        <div v-if="!visionMenu" class="z-60 flex flex-col max-h-[80vh] overflow-y-auto overscroll-y-contain" >
+        <div @scroll="roll($event)" v-if="!visionMenu" class="z-60  w-auto flex flex-col max-h-[80vh] overflow-auto overscroll-y-contain" >
                 <Categories
                     v-for="category in categories"
                     :key="category.id"
                     :category="category"
                 />
+            <div v-if="down" class="absolute bg-yellow-600 rounded-[100%] z-70 size-8 bottom-24 right-8"></div>
         </div><!--break-words whitespace-normal-->
     </div>
-    <div class="w-full bg-green-950 py-2">
-        <div  v-if="layout.isMobile && visionMenu" class="z-50 absolute top-2.5 left-2 rounded-md z-50 text-white text-3xl px-1 transform bg-green-950 py-0.5 ">
-            <i @click.prevent="mobileMenu($event)" class="ri-menu-line "></i>
+    <div class="w-full bg-green-950 py-1">
+        <div  v-if="layout.isMobile && visionMenu" class="z-50 absolute top-1.5 left-2 rounded-md z-50 text-white text-3xl px-1 transform  py-0.5 ">
+            <i @click.prevent="mobileMenu($event)" class="ri-menu-line  "></i>
         </div>
         <div class=" w-full flex justify-center   ">
-            <div class="xs:w-2/3 lg:w-1/3 relative">
+            <div class="w-2/3 lg:w-1/3 relative">
                 <i class="ri-search-2-line  text-yellow-600 text-xl absolute top-2 right-2   "></i>
-                <input @keyup.enter.prevent="searchProduct" v-model="search" class="rounded-md ring-2 mb-1 ring-yellow-600 text-gray-800  text-xl w-full placeholder:text-gray-500 placeholder:text-center" placeholder="Поиск" type="text" >
+                <input @keyup.enter.prevent="searchProduct" v-model="search" class="rounded-md ring-2 my-1 ring-yellow-600 focus:ring-yellow-600 focus:outline-none placeholder:text-[0.9em] text-gray-800 h-9 text-xl w-full placeholder:text-gray-500 placeholder:text-center" placeholder="Поиск" type="text" >
 
             </div>
 
         </div>
-        <div id="cat-list" :class="{'bg-green-950' : visionCat}" v-if="layout.isMobile && visionCat" class="z-50 absolute top-0 right-1 rounded-md z-50 text-white text-3xl mt-1 transform  p-2 ">
-            <i @click.prevent="getCategories($event)" class="ri-equalizer-3-fill "></i>
+        <div id="cat-list"  v-if="layout.isMobile && visionCat" class="z-50 absolute top-0 right-1 rounded-md z-50 text-white text-3xl  transform  p-2 ">
+            <i @click.prevent="getCategories($event)" class="ri-equalizer-3-fill  "></i>
         </div>
     </div>
 

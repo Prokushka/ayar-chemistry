@@ -18,13 +18,14 @@ class ProductFactory extends Factory
     {
         return [
             'title' => fake()->realText(35),
+            'description' => '',
             'sku' => null,
             'image_url' => fake()->imageUrl(),
             'purchase_price' => fake()->numberBetween(100, 150),
-            'sale_price' => fake()->numberBetween(151, 250),
             'quantity' => fake()->numberBetween(11, 22),
             'is_active' => 1,
-            'slug' => fake()->slug()
+            'slug' => fake()->slug(),
+            'size' => '1 кг'
         ];
     }
 }

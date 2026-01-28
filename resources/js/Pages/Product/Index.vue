@@ -26,20 +26,20 @@ export default {
 
     <div class=" text-white z-20 flex flex-col justify-center items-center">
 
-        <div class="xs:text-5xl md:text-6xl lg:text-7xl font-lobster text-center py-28 font-medium">
+        <div class="text-5xl md:text-6xl lg:text-7xl font-lobster text-center py-28 font-medium">
             Наши товары
         </div>
 
         <!--
    <div class="w-full justify-end flex  ">
 
-            <select  v-model="categoryModel" id="quantity" class="xs:w-1/3 mr-8 rounded-md focus:ring-4 focus:ring-yellow-600  flex text-white  mb-4  h-6 bg-green-950 ">
+            <select  v-model="categoryModel" id="quantity" class="w-1/3 mr-8 rounded-md focus:ring-4 focus:ring-yellow-600  flex text-white  mb-4  h-6 bg-green-950 ">
 
                 <option  class="text-sm" v-for="category in categories" :value="category.title">{{category.title}}</option>
             </select>
         </div>-->
 
-        <div v-if="products.length > 0"  class="flex justify-center place-self-center bg-green-950/70 py-10 rounded-md shadow-xl shadow-green-90/70 ring-2 ring-green-950 w-11/12  grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-6 items-center justify-items-center">
+        <div v-if="products.length > 0"  class="flex justify-center place-self-center bg-green-950/70 py-10 rounded-md shadow-xl shadow-green-90/70 ring-2 ring-green-950 w-11/12  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-6 items-center justify-items-center">
             <div v-for="product in products" class="rounded-md shadow-md shadow-xl overflow-hidden shadow-green-950 w-11/12  relative  h-[420px]  p-4   relative  bg-green-950 flex place-content-center justify-between items-center flex-col">
                 <div v-if="product && product.is_active === false" class="absolute bg-yellow-700 rounded-lg text-white transform text-sm  h-5 w-[118px] z-30  text-center font-bold font-rubick top-[220px] right-4">
                     Нет в Наличии</div>
@@ -76,7 +76,7 @@ export default {
             </div>
 
         </div>
-        <div  v-else class="xs:text-2xl md:text-4xl lg:text-5xl font-lato text-center py-28 font-medium">
+        <div  v-else class="text-2xl md:text-4xl lg:text-5xl font-lato text-center py-28 font-medium">
            Ничего не найдено по запросу
         </div>
 
