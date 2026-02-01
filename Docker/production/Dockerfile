@@ -71,7 +71,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libfcgi-bin \
     libpng16-16 \
     procps \
-    && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Download and install php-fpm health check script
 RUN curl -o /usr/local/bin/php-fpm-healthcheck \
