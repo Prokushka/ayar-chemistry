@@ -61,8 +61,7 @@ RUN find /var/www/laravel -name "manifest.json"
 # Stage 3: Production image
 FROM php:8.4-fpm AS php
 
-RUN docker-php-ext-install pcntl \
-    gd
+RUN docker-php-ext-install pcntl gd
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
