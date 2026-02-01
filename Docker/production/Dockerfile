@@ -61,7 +61,7 @@ RUN find /var/www/laravel -name "manifest.json"
 # Stage 3: Production image
 FROM php:8.4-fpm AS php
 
-RUN docker-php-ext-install pcntl gd
+RUN docker-php-ext-install pcntl
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
@@ -72,7 +72,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpng16-16 \
     libfcgi-bin \
     procps \
-    && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && docker-php-ext-install gd
 
 # Download and install php-fpm health check script
 RUN curl -o /usr/local/bin/php-fpm-healthcheck \
