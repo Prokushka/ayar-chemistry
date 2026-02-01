@@ -64,14 +64,17 @@ FROM php:8.4-fpm AS php
 RUN docker-php-ext-install pcntl
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpq-dev \
+    libpq5 \
     supervisor \
-    libicu-dev \
-    libzip-dev \
-    libfcgi-bin \
+    libicu72 \
+    libzip4 \
     libpng16-16 \
+    libjpeg62-turbo \
+    libfreetype6 \
+    libfcgi-bin \
     procps \
-    && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Download and install php-fpm health check script
 RUN curl -o /usr/local/bin/php-fpm-healthcheck \
