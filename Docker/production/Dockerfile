@@ -61,13 +61,16 @@ RUN find /var/www/laravel -name "manifest.json"
 # Stage 3: Production image
 FROM php:8.4-fpm AS php
 
-RUN docker-php-ext-install pcntl
+RUN docker-php-ext-install pcntl \
+    gd
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
     supervisor \
     libicu-dev \
     libzip-dev \
+    libpng-dev \
+    libpng16-16 \
     libfcgi-bin \
     procps \
     && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
