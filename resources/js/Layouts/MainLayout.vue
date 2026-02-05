@@ -82,7 +82,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
         <header v-if="!layout.isMobile" class="flex fixed z-50 flex-row  w-full  h-auto   font-rubick text-xl
           bg-green-950 items-center py-2 lg:grid-cols-3">
             <nav class="mx-3 text-white font-medium flex flex-1  justify-between pr-3">
-                <div class=" pt-2">
+                <div class=" mt-2.5">
                     <Link
 
                         :href="route('main')"
@@ -111,7 +111,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs ?? [])
                     </div>
 
                 </div>
-                <div class="flex flex-row"  v-if="$page.props.auth.user">
+                <div class="flex flex-row mt-1"  v-if="$page.props.auth.user">
                     <Link
                         v-if="$page.props.auth.user"
                         :href="route('order.index')"

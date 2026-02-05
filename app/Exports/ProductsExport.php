@@ -82,7 +82,7 @@ class ProductsExport implements FromCollection, WithStyles, WithMapping, WithHea
 
     public function map($row): array
     {
-        $opt = optional($row->priceTiers->latest())->price;
+        $opt = optional($row->priceTiers->last())->price;
         return [
             $row->title,
             "$opt руб.",
