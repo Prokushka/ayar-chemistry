@@ -42,9 +42,8 @@ class ProductsExport implements FromCollection, WithStyles, WithMapping, WithHea
     {
         return [
             'Название',
-            'Цена (от)',
-            'Количество',
             'Объём',
+            'Цена (от)',
         ];
     }
     public function registerEvents(): array
@@ -82,12 +81,13 @@ class ProductsExport implements FromCollection, WithStyles, WithMapping, WithHea
 
     public function map($row): array
     {
-        $opt = optional($row->priceTiers->last())->price;
+        // $opt = optional($row->priceTiers->last())->price;
+        $arr = $row->priceTiers
+            ->map(fn ($t) => "От {$t['from_quantity']} шт. — {$t['price']} руб.");
         return [
             $row->title,
-            "$opt руб.",
-            $row->quantity,
             $row->size,
+            ...$arr
         ];
     }
 }
